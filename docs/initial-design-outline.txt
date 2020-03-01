@@ -1,15 +1,40 @@
+DUE 3/13
+
+DUBBY
+
 1 INTRODUCTION
-1.1 Project Overview
-1.2 Objective
-1.3 Expected Customers and Market
-1.4 System Features
+    1.1 Project Overview
+    	Dubby is a service that connects those that want to do sports with those that don’t necessarily have partners to do them with.
+    1.2 Objective
+	We want to let CUHK students use this service to find partners to do sports with, and ultimately become the no1 sport service in HK.
+    1.3 Expected Customers and Market
+	CUHK students
+    1.4 System Features
+Events
+add/edit events
+join/interested in events
+Group chat for events
+Vote too
+Self destructs after (some time)
+Gym info
+Per university
+Per gym
+Upload current state of gym for users
+Profiles
+Friending
+Chatting
+(administrative works)
+Verify state of gyms
 
 2 BACKGROUND
-Emphasize why your design the product, and its most attractive functionality/features.
+Emphasize why you design the product, and its most attractive functionality/features.
+We cannot see whether sports place is open (in CUHK)
+For some sports we need more people to play with and we may not always have so many friends.
 
 3 SPECIFICATION (e.g., DFD)
 
 4 SYSTEM ARCHITECTURE
-4.1 Architecture Diagram
-4.2 System Components
-4.3 Description of Major System Components by UML
+    4.1 Architecture Diagram
+    4.2 System Components
+    4.3 Description of Major System Components by UML
+
