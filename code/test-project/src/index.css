@@ -54,16 +54,21 @@ body::-webkit-scrollbar {
   height: 100%;
 }
 
+.nav-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
 .nav-item:last-child {
   margin-top: auto;
 }
 
 .nav-link {
-  display: flex;
-  align-items: center;
   height: 5rem;
 }
 
 .navbar:hover {
-  width: 16rem;
+  width: 10rem;
 }
