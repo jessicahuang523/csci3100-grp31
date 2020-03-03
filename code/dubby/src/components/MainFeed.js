@@ -4,6 +4,9 @@ import EventCard from "./Event";
 const MainFeed = () => {
   return (
     <div className="main-container">
+      <header>
+        <h1>Events</h1>
+      </header>
       <EventCard />
       <EventCard />
       <EventCard />
