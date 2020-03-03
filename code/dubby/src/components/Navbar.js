@@ -19,7 +19,7 @@ const Navbar = () => {
       <ul className="navbar-nav">
         <li className="nav-item">
           <div
-            className="menubar"
+            className="menubar menubar-left"
             onMouseEnter={() => setLeftMenuMouseEnter(true)}
             onMouseLeave={() => setLeftMenuMouseEnter(false)}
           >
@@ -34,13 +34,19 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="menu-item">
-                <Link className="menu-link">Events</Link>
+                <Link className="menu-link" to="/e">
+                  Events
+                </Link>
               </li>
               <li className="menu-item">
-                <Link className="menu-link">Chat</Link>
+                <Link className="menu-link" to="/c">
+                  Chat
+                </Link>
               </li>
               <li className="menu-item">
-                <Link className="menu-link">Gym</Link>
+                <Link className="menu-link" to="/g">
+                  Gym
+                </Link>
               </li>
             </ul>
           </div>
@@ -51,7 +57,7 @@ const Navbar = () => {
           </Link>
         </li>
         <li className="nav-item">
-          <div className="menubar" style={{ textAlign: "end" }}>
+          <div className="menubar menubar-right">
             <ul className="menubar-menu">
               <li className="menu-item">
                 <Link className="menu-link">
@@ -59,13 +65,29 @@ const Navbar = () => {
                 </Link>
               </li>
               <li className="menu-item">
-                <Link className="menu-link">Events</Link>
+                <Link className="menu-link" to="/u">
+                  Profile
+                </Link>
               </li>
               <li className="menu-item">
-                <Link className="menu-link">Chat</Link>
+                <Link className="menu-link" to="/settings">
+                  Settings
+                </Link>
               </li>
               <li className="menu-item">
-                <Link className="menu-link">Gym</Link>
+                <Link className="menu-link" to="/histrory">
+                  History
+                </Link>
+              </li>
+              <li className="menu-item">
+                <Link className="menu-link" to="/friends">
+                  Friends
+                </Link>
+              </li>
+              <li className="menu-item">
+                <Link className="menu-link" to="/signout">
+                  Sign out
+                </Link>
               </li>
             </ul>
           </div>

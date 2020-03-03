@@ -57,12 +57,27 @@ a:hover {
   width: 6rem;
   height: 3rem;
   overflow: hidden;
-  transition: height 200ms ease;
+  transition: all 200ms ease;
 }
 
 .menubar:hover {
   background-color: #eee;
+}
+
+.menubar-left {
+  text-align: left;
+}
+
+.menubar-left:hover {
   height: 12rem;
+}
+
+.menubar-right {
+  text-align: right;
+}
+
+.menubar-right:hover {
+  height: 18rem;
 }
 
 .menubar-menu {
