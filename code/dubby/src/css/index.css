@@ -3,16 +3,22 @@
 /* Google Noto Fonts */
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC:100,400,900&display=swap&subset=chinese-traditional");
 
-body {
-  margin: 0;
+html {
+  font-size: 12px;
   font-family: "Noto Sans TC";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  margin: 0;
+}
+
 body::-webkit-scrollbar {
   display: none;
 }
+
+/* reset link style */
 
 a,
 a:visited,
@@ -21,13 +27,40 @@ a:hover {
   color: inherit;
 }
 
+/* reset text style */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  font-size: 1rem;
+  font-weight: normal;
+  margin: 0;
+}
+
+/* reset button style */
+
+button {
+  border: none;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+  color: inherit;
+  background-color: inherit;
+}
+
 /* navbar */
 
 .navbar {
-  background-color: #eee;
+  background-color: #fff;
+  border-bottom: solid #eee 1px;
   width: 100vw;
   height: 3rem;
   position: fixed;
+  top: 0;
 }
 
 .navbar ul {
@@ -54,14 +87,15 @@ a:hover {
 /* menubar */
 
 .menubar {
-  width: 6rem;
+  width: 9rem;
   height: 3rem;
   overflow: hidden;
   transition: all 200ms ease;
+  background-color: #fff;
 }
 
 .menubar:hover {
-  background-color: #eee;
+  border-bottom: solid #eee 1px;
 }
 
 .menubar-left {
@@ -70,6 +104,7 @@ a:hover {
 
 .menubar-left:hover {
   height: 12rem;
+  border-right: solid #eee 1px;
 }
 
 .menubar-right {
@@ -78,6 +113,7 @@ a:hover {
 
 .menubar-right:hover {
   height: 18rem;
+  border-left: solid #eee 1px;
 }
 
 .menubar-menu {
@@ -91,10 +127,46 @@ a:hover {
 }
 
 .menu-item:hover {
-  background-color: #bbb;
+  background-color: #eee;
 }
 
 .menu-link {
   padding: 0 1rem;
   display: block;
+}
+
+/* container for pages with navbar */
+
+.main-container {
+  margin-top: 3rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* event card */
+
+.event-card {
+  min-width: 23rem;
+  max-width: 30rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: solid #eee 1px;
+  border-radius: 1rem;
+}
+
+.event-description-short {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.event-icon {
+  font-size: 2rem;
+}
+
+.event-description-actions {
+  display: grid;
 }
