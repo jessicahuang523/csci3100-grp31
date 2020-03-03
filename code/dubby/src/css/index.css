@@ -1,0 +1,85 @@
+/* fontawesome icons */
+@import url("./all.min.css");
+/* Google Noto Fonts */
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC:100,400,900&display=swap&subset=chinese-traditional");
+
+body {
+  margin: 0;
+  font-family: "Noto Sans TC";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+a,
+a:visited,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* navbar */
+
+.navbar {
+  background-color: #eee;
+  width: 100vw;
+  height: 3rem;
+  position: fixed;
+}
+
+.navbar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-nav {
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-item {
+  height: 3rem;
+  line-height: 3rem;
+}
+
+.nav-link {
+  display: block;
+}
+
+/* menubar */
+
+.menubar {
+  width: 6rem;
+  height: 3rem;
+  overflow: hidden;
+  transition: height 200ms ease;
+}
+
+.menubar:hover {
+  background-color: #eee;
+  height: 12rem;
+}
+
+.menubar-menu {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-item {
+  height: 3rem;
+  transition: 200ms;
+}
+
+.menu-item:hover {
+  background-color: #bbb;
+}
+
+.menu-link {
+  padding: 0 1rem;
+  display: block;
+}
