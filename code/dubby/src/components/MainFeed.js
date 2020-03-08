@@ -1,5 +1,5 @@
 import React from "react";
-import EventCard from "./Event";
+import EventCard from "./EventPages";
 
 const MainFeed = () => {
   return (

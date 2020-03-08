@@ -178,3 +178,58 @@ button {
 .event-description-actions {
   display: grid;
 }
+
+/* gym page */
+
+.gym-page-list {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  min-width: 30rem;
+}
+
+.gym-list-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  height: 3rem;
+}
+
+.gym-list-item:hover > .gym-list-title h3 {
+  background-color: #eee;
+}
+
+.gym-list-item > .gym-detail {
+  opacity: 0;
+}
+
+.gym-list-item:hover > .gym-detail {
+  opacity: 1;
+}
+
+.gym-list-title h3 {
+  padding: 0.5rem;
+  margin: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 1.5rem;
+  line-height: 3rem;
+  transition: all 200ms ease;
+}
+
+.gym-detail {
+  border-radius: 1rem;
+  border: solid #eee 1px;
+  padding: 1rem;
+  transition: all 200ms ease;
+}
+
+.gym-detail-timetable {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 1rem;
+}
+
+.gym-detail-timetable ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
