@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import RootPage from "./components/RootPage";
 import Signout from "./components/Signout";
 import GymPage from "./components/GymPages";
+import ChatPage from "./components/ChatPages";
 
 const Routes = () => {
   return (
@@ -18,6 +19,7 @@ const Routes = () => {
         <Route exact path="/" children={<RootPage />} />
         <Route exact path="/g" children={<GymPage />} />
         <Route exact path="/e" children={<Redirect to="/" />} />
+        <Route exact path="/c" children={<ChatPage />} />
         <Route path="/signout" children={<Signout />} />
       </Switch>
     </Router>

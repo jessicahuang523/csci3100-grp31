@@ -6,7 +6,7 @@ const GymPage = () => {
       <header>
         <h1>Gym Information</h1>
       </header>
-      <ul className="gym-page-list">
+      <ul>
         <GymListItem gymName="University Gym" />
         <GymListItem gymName="New Asia College" />
         <GymListItem gymName="Shaw College" />
