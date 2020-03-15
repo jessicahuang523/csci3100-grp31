@@ -1,11 +1,10 @@
 /* fontawesome icons */
-@import url("./all.min.css");
-/* Google Noto Fonts */
+@import url("./all.min.css"); /* Google Noto Fonts */
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC:100,400,900&display=swap&subset=chinese-traditional");
 
 html {
-  font-size: small;
-  font-family: "Noto Sans TC";
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -17,18 +16,14 @@ body {
 body::-webkit-scrollbar {
   display: none;
 }
-
 /* reset link style */
-
 a,
-a:visited,
-a:hover {
+a:hover,
+a:visited {
   text-decoration: none;
   color: inherit;
 }
-
 /* reset text style */
-
 h1,
 h2,
 h3,
@@ -40,9 +35,7 @@ p {
   font-weight: normal;
   margin: 0;
 }
-
 /* reset button style */
-
 button {
   border: none;
   cursor: pointer;
@@ -51,9 +44,7 @@ button {
   color: inherit;
   background-color: inherit;
 }
-
 /* navbar */
-
 .navbar {
   background-color: #fff;
   border-bottom: solid #eee 1px;
@@ -83,9 +74,7 @@ button {
 .nav-link {
   display: block;
 }
-
 /* menubar */
-
 .menubar {
   width: 9rem;
   height: 3rem;
@@ -134,9 +123,7 @@ button {
   padding: 0 1rem;
   display: block;
 }
-
 /* container for pages with navbar */
-
 .main-container {
   margin-top: 3rem;
   display: flex;
@@ -160,9 +147,7 @@ button {
   list-style-type: none;
   width: 30rem;
 }
-
 /* event card */
-
 .event-card {
   padding: 1rem;
   margin-bottom: 1rem;
@@ -184,9 +169,7 @@ button {
 .event-description-actions {
   display: grid;
 }
-
 /* gym page */
-
 .gym-list-item {
   display: grid;
   grid-template-columns: 15rem 15rem;
@@ -206,8 +189,7 @@ button {
 }
 
 .gym-list-title h3 {
-  padding: 0.5rem;
-  padding-left: 0;
+  padding: 0.5rem 0.5rem 0.5rem 0;
   border-radius: 1.5rem;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
@@ -228,9 +210,7 @@ button {
   grid-template-columns: 8rem 8rem;
   margin-bottom: 1rem;
 }
-
 /* chat page */
-
 .chat-short-container {
   border-radius: 1rem;
   border: solid #eee 1px;
