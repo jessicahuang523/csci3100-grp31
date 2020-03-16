@@ -9,10 +9,7 @@ const Navbar = () => {
   const [leftMenuMouseEnter, setLeftMenuMouseEnter] = useState(false);
 
   if (userIsLoggedin) {
-    return (<div style={{
-        height: '300px',
-        position: 'relative'
-      }}>
+    return (<div className="demo-big-content">
       <Layout>
         <Header className="header-color" title="Dubby" scroll="scroll">
           <Navigation>
@@ -21,7 +18,7 @@ const Navbar = () => {
             <Link className="menu-link" to="/g">Gym</Link>
           </Navigation>
         </Header>
-        <Drawer title="Navigator">
+        <Drawer title="Menu">
           <Navigation>
             <Link className="menu-link" to="/u">Profile</Link>
             <Link className="menu-link" to="/settings">Settings</Link>
