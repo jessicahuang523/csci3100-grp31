@@ -47,6 +47,9 @@ const ChatPage = () => {
             ))}
           </ul>
         )}
+        <Link to="/c/test">
+          (dev) link to test chat. click add yourself in it as well.
+        </Link>
       </div>
     );
   } else {
@@ -85,7 +88,7 @@ const ChatShort = ({ cid }) => {
           <span className="chat-short-detail">
             <div>
               <b>{chatData.title}</b>
-              <p>{`${chatMessages.sender}: ${chatMessages.text}`}</p>
+              <p>{`${chatMessages.sender.username}: ${chatMessages.text}`}</p>
             </div>
           </span>
         </Link>
