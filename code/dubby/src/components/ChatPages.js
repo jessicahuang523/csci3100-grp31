@@ -1,64 +1,99 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, Link, Redirect } from "react-router-dom";
 import { firestore, auth } from "firebase";
+import { UserContext } from "../contexts/UserContext";
+import { devSetupChat, devAddToChat } from "../devutil";
 
 const ChatPage = () => {
-  return (
-    <div className="main-container">
-      <header>
-        <h1>Chats</h1>
-      </header>
-      <ul>
-        <ChatShort
-          chat={{
-            icon: "fa-basketball-ball",
-            title: "2020/02/02 20:20 at SC",
-            messages: [
-              { sender: "none", message: "not displayed" },
-              {
-                sender: "none",
-                message: "second last message also not displayed"
-              },
-              { sender: "Tom", message: "Where are you?" }
-            ]
-          }}
-        />
-        <ChatShort
-          chat={{
-            icon: "fa-user",
-            title: "Tim",
-            messages: [{ sender: "You", message: "..." }]
-          }}
-        />
-        <ChatShort
-          chat={{
-            icon: "fa-users",
-            title: "Tennis Group (6)",
-            messages: [{ sender: "Tom", message: "..." }]
-          }}
-        />
-      </ul>
-    </div>
-  );
+  const [chatList, setChatList] = useState();
+  const { userIsLoggedin, userLoading } = useContext(UserContext);
+
+  useEffect(() => {
+    if (userIsLoggedin) {
+      const { uid } = auth().currentUser;
+      const unsubscribeChatList = firestore()
+        .collection("user_profile")
+        .doc(uid)
+        .collection("chats")
+        .onSnapshot(snap => {
+          let tmp = [];
+          snap.forEach(doc => tmp.push(doc.data()));
+          setChatList(tmp);
+        });
+      return () => {
+        unsubscribeChatList();
+      };
+    }
+  }, [userIsLoggedin, chatList]);
+
+  if (userLoading || !chatList) {
+    return (
+      <div className="main-container">
+        <header>
+          <h1>loading...</h1>
+        </header>
+      </div>
+    );
+  } else if (userIsLoggedin) {
+    return (
+      <div className="main-container">
+        <header>
+          <h1>Chats</h1>
+        </header>
+        {chatList && chatList.length > 0 && (
+          <ul>
+            {chatList.map(chat => (
+              <ChatShort key={chat.cid} cid={chat.cid} />
+            ))}
+          </ul>
+        )}
+      </div>
+    );
+  } else {
+    return <Redirect to="/" />;
+  }
 };
 
-const ChatShort = ({ chat }) => {
-  const { icon, title, messages } = chat;
-  return (
-    <li className="chat-short-container">
-      <span className="chat-short-icon">
-        <i className={`fas ${icon}`}></i>
-      </span>
-      <span className="chat-short-detail">
-        <div>
-          <b>{title}</b>
-          <p>{`${messages[messages.length - 1].sender}: ${
-            messages[messages.length - 1].message
-          }`}</p>
-        </div>
-      </span>
-    </li>
-  );
+const ChatShort = ({ cid }) => {
+  const [chatData, setChatData] = useState();
+  const [chatMessages, setChatMessages] = useState();
+  useEffect(() => {
+    const chatRef = firestore()
+      .collection("chat")
+      .doc(cid);
+    const unsubscribeChatData = chatRef.onSnapshot(snap =>
+      setChatData(snap.data())
+    );
+    const unsubscribeChatMessages = chatRef
+      .collection("messages")
+      .orderBy("created_at")
+      .limitToLast(1)
+      .onSnapshot(snap => snap.forEach(doc => setChatMessages(doc.data())));
+    return () => {
+      unsubscribeChatData();
+      unsubscribeChatMessages();
+    };
+  }, [cid]);
+
+  if (chatData && chatMessages) {
+    return (
+      <li className="chat-short-container">
+        <Link to={`/c/${cid}`}>
+          <span className="chat-short-icon">
+            <i className={chatData.icon}></i>
+          </span>
+          <span className="chat-short-detail">
+            <div>
+              <b>{chatData.title}</b>
+              <p>{`${chatMessages.sender}: ${chatMessages.text}`}</p>
+            </div>
+          </span>
+        </Link>
+      </li>
+    );
+  } else {
+    return null;
+  }
 };
 
 export const Chat = () => {
@@ -66,46 +101,57 @@ export const Chat = () => {
 
   const [chatData, setChatData] = useState();
   const [chatMessages, setChatMessages] = useState();
+  const [chatParticipants, setChatParticipants] = useState();
   const [inputMessage, setInputMessage] = useState("");
 
   useEffect(() => {
-    const chatData = firestore()
+    const chatDataRef = firestore()
       .collection("chat")
       .doc(cid);
-    const chatMessages = chatData.collection("messages");
+    const chatMessagesRef = chatDataRef.collection("messages");
+    const chatParticipantsRef = chatDataRef.collection("participants");
 
-    const unsubscribeChatData = chatData.onSnapshot(snap => {
+    const unsubscribeChatData = chatDataRef.onSnapshot(snap => {
       setChatData(snap.data());
     });
-    const unsubscribeChatMessages = chatMessages
+    const unsubscribeChatMessages = chatMessagesRef
       .orderBy("created_at", "asc")
       .onSnapshot(snap => {
-        const tmp = [];
+        let tmp = [];
         snap.forEach(doc => tmp.push(doc.data()));
         setChatMessages(tmp);
       });
+    const unsubscribeChatParticipants = chatParticipantsRef.onSnapshot(snap => {
+      let tmp = [];
+      snap.forEach(doc => tmp.push(doc.data()));
+      setChatParticipants(tmp);
+    });
 
     return () => {
       unsubscribeChatData();
       unsubscribeChatMessages();
+      unsubscribeChatParticipants();
     };
   }, [cid]);
 
   const handleMessageRequest = text => {
     if (text.length > 0) {
-      const uid = auth().currentUser.uid;
-      const username = "Anonymous User"; // change this after profile is set up
-      const toSend = {
-        text,
-        created_at: Date.now(),
-        sender: { username, uid }
-      };
+      const { uid } = auth().currentUser;
+      const storedUserData = chatParticipants.find(p => p.uid === uid);
+      if (storedUserData) {
+        const { username } = storedUserData;
+        const toSend = {
+          text: text.trim(),
+          created_at: Date.now(),
+          sender: { username, uid }
+        };
 
-      firestore()
-        .collection("chat")
-        .doc(cid)
-        .collection("messages")
-        .add(toSend);
+        firestore()
+          .collection("chat")
+          .doc(cid)
+          .collection("messages")
+          .add(toSend);
+      }
     }
   };
 
@@ -113,11 +159,17 @@ export const Chat = () => {
     return (
       <div className="main-container">
         <h3>chat id: {cid}</h3>
+        <p
+          style={{ cursor: "pointer" }}
+          onClick={() => devAddToChat(cid, auth().currentUser.uid)}
+        >
+          <i>(dev) click to add self to chat</i>
+        </p>
 
-        <h3>chatData (participants)</h3>
+        <h3>chatParticipants</h3>
         <ul>
-          {chatData &&
-            chatData.participants.map(p => (
+          {chatParticipants &&
+            chatParticipants.map(p => (
               <li key={p.uid}>
                 {p.username} [uid: {p.uid}]
               </li>
@@ -160,6 +212,15 @@ export const Chat = () => {
       <div className="main-container">
         <h3>chat id: {cid}</h3>
         <h3>Loading... (or this chat doesn't exist)</h3>
+        <p
+          style={{ cursor: "pointer" }}
+          onClick={() => {
+            devSetupChat(cid);
+            devAddToChat(cid, auth().currentUser.uid);
+          }}
+        >
+          <i>(dev) click to setup this chat</i>
+        </p>
       </div>
     );
   }
