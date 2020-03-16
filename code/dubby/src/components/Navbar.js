@@ -1,8 +1,8 @@
 import React, {useState, useContext} from "react";
 import {Link} from "react-router-dom";
 import {UserContext} from "../contexts/UserContext";
-import '../App.css';
-import {Layout, Header, Navigation, Drawer, Content} from 'react-mdl';
+import "../App.css";
+import {Layout, Header, Navigation, Drawer, Content} from "react-mdl";
 
 const Navbar = () => {
   const {userIsLoggedin} = useContext(UserContext);
