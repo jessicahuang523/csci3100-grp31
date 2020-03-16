@@ -9,7 +9,7 @@ const Navbar = () => {
 
   if (userIsLoggedin) {
     return (
-      <Layout fixedHeader fixedDrawer>
+      <Layout fixedHeader>
         <Header title="Dubby" scroll>
           <Navigation>
             <Link className="menu-link" to="/e">
