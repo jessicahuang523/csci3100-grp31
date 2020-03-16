@@ -3,12 +3,13 @@ import {Link} from "react-router-dom";
 import {auth} from "firebase";
 import {Button, Form, FormGroup, Label, Input} from "reactstrap";
 import {GoogleLoginButton} from "react-social-login-buttons";
+import logo from '../image/Dubby_logo.png';
 
 const LandingPage = () => {
   return (<div className="page">
     <div className="landing-container">
       <header>
-        <h1>Dubby</h1>
+       <img src={logo} alt="logo" className="landing-logo"/>
         <p>buddy dubby dubby buddy</p>
       </header>
       <Form onSubmit={e => e.preventDefault()} className="login-form-landing">
