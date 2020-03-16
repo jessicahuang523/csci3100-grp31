@@ -4,7 +4,8 @@ import Navbar from "./components/Navbar";
 import RootPage from "./components/RootPage";
 import Signout from "./components/Signout";
 import GymPage from "./components/GymPages";
-import ChatPage, {Chat} from "./components/ChatPages";
+import ChatPage from "./components/Chat/ChatPage";
+import Chat from "./components/Chat/Chat";
 import Profile from "./components/Profile";
 
 const Routes = () => {
