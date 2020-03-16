@@ -1,5 +1,4 @@
 /* app.js */
-
 .navbar {
   background: #F0C27B;
   /* fallback for old browsers */
@@ -23,3 +22,11 @@
   color: white;
 }
 /* landingpage.js */
+
+.landing-container {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  height: 100%;
+}
