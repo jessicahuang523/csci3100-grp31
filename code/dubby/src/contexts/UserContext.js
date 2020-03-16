@@ -4,6 +4,7 @@ import firebase from "firebase";
 export const UserContext = createContext();
 
 const UserContextProvider = props => {
+  const [userLoading, setUserLoading] = useState(true);
   const [userIsLoggedin, setUserIsLoggedin] = useState(false);
   const [userData, setUserData] = useState(null);
 
@@ -11,6 +12,7 @@ const UserContextProvider = props => {
     const unsubscribeAuthStateListener = firebase
       .auth()
       .onAuthStateChanged(user => {
+        setUserLoading(true);
         console.log("UserContext changed", { user });
         if (user) {
           setUserIsLoggedin(true);
@@ -19,6 +21,7 @@ const UserContextProvider = props => {
           setUserIsLoggedin(false);
           setUserData(null);
         }
+        setUserLoading(false);
       });
     return () => {
       unsubscribeAuthStateListener();
@@ -26,7 +29,7 @@ const UserContextProvider = props => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userIsLoggedin, userData }}>
+    <UserContext.Provider value={{ userIsLoggedin, userData, userLoading }}>
       {props.children}
     </UserContext.Provider>
   );
