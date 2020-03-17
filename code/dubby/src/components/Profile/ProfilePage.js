@@ -28,10 +28,6 @@ const ProfilePage = () => {
     }
   }, [userIsLoggedin, uid]);
 
-  useEffect(() => {
-    console.log({ profileData });
-  }, [profileData]);
-
   if (profileData) {
     return (
       <div className="main-container">

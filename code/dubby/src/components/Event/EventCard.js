@@ -27,11 +27,6 @@ const EventCard = ({ eid }) => {
     }
   }, [eid]);
 
-  useEffect(() => {
-    console.log({ eventData });
-    return () => {};
-  }, [eventData]);
-
   if (eventData && eventParticipants) {
     return (
       <div className="event-card">

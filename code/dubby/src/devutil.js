@@ -53,6 +53,50 @@ export const devAddToChat = async (cid, uid) => {
       .collection("chats")
       .doc(cid)
       .set({ cid });
-    alert("added account to chat!");
+    alert(`Added account to chat ${cid}!`);
+  }
+};
+
+export const devSetupEvent = async eid => {
+  const eventRef = firestore()
+    .collection("event")
+    .doc(eid);
+  const eventData = {
+    allowedPeople: 3,
+    eventName: "Come play basketball with us!",
+    eventType: "basketball",
+    isPublic: true,
+    location: "NA Gym",
+    startingTime: Date.now(),
+    hostUid: "dev"
+  };
+  eventRef.set(eventData);
+  await eventRef
+    .collection("participants")
+    .doc("dev")
+    .set({ username: "dev", uid: "uid" });
+  alert("Event data set!");
+};
+
+export const devAddToEvent = async (eid, uid) => {
+  const eventRef = firestore()
+    .collection("event")
+    .doc(eid);
+  const userRef = firestore()
+    .collection("user_profile")
+    .doc(uid);
+  const eventDataSnap = await eventRef.get();
+  const userDataSnap = await userRef.get();
+  if (eventDataSnap.exists && userDataSnap.exists) {
+    const { username, uid } = userDataSnap.data();
+    await eventRef
+      .collection("participants")
+      .doc(uid)
+      .set({ username, uid });
+    await userRef
+      .collection("events")
+      .doc(eid)
+      .set({ eid });
+    alert(`Added account to event ${eid}!`);
   }
 };

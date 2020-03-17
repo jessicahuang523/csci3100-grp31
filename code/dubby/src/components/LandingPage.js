@@ -4,7 +4,12 @@ import { auth } from "firebase";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { GoogleLoginButton } from "react-social-login-buttons";
 import logo from "../image/Dubby_logo.png";
-import { devSetupAccount, devAddToChat } from "../devutil";
+import {
+  devSetupAccount,
+  devAddToChat,
+  devSetupEvent,
+  devAddToEvent
+} from "../devutil";
 
 const LandingPage = () => {
   return (
@@ -41,6 +46,8 @@ const LandingPage = () => {
                 .then(({ user }) => {
                   devSetupAccount();
                   devAddToChat("test", user.uid);
+                  devSetupEvent("test");
+                  devAddToEvent("test", user.uid);
                 })
             }
           >
