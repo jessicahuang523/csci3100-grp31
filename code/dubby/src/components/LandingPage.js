@@ -7,7 +7,6 @@ import logo from "../image/Dubby_logo.png";
 import {
   devSetupAccount,
   devAddToChat,
-  devSetupEvent,
   devAddToEvent,
   devAddEvent
 } from "../devutil";

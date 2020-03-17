@@ -24,11 +24,6 @@ const MainFeed = () => {
     };
   }, []);
 
-  useEffect(() => {
-    console.log(eventList);
-    return () => {};
-  }, [eventList]);
-
   if (userLoading || !eventList) {
     return (
       <div className="main-container">

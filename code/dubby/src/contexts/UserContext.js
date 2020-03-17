@@ -13,7 +13,6 @@ const UserContextProvider = props => {
       .auth()
       .onAuthStateChanged(user => {
         setUserLoading(true);
-        console.log("UserContext changed", { user });
         if (user) {
           setUserIsLoggedin(true);
           setUserData(user);
