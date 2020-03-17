@@ -1,19 +1,61 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { Link, Redirect } from "react-router-dom";
+import { firestore } from "firebase";
+import { UserContext } from "../contexts/UserContext";
+import EventCard from "./Event/EventCard";
 
 const MainFeed = () => {
-  return (
-    <div className="main-container">
-      <header>
-        <h1>My Feed</h1>
-      </header>
-      <p>
-        to separate event page and main feed, temporately setting here like
-        this.
-      </p>
-      <Link to="/e">link to event page</Link>
-    </div>
-  );
+  const { userIsLoggedin, userLoading } = useContext(UserContext);
+
+  const [eventList, setEventList] = useState();
+
+  useEffect(() => {
+    const eventRef = firestore()
+      .collection("event")
+      .orderBy("startingTime")
+      .limitToLast(20);
+    const unsubscribeEventList = eventRef.onSnapshot(snap => {
+      let tmp = [];
+      snap.forEach(doc => tmp.push(doc.id));
+      setEventList(tmp);
+    });
+    return () => {
+      unsubscribeEventList();
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(eventList);
+    return () => {};
+  }, [eventList]);
+
+  if (userLoading || !eventList) {
+    return (
+      <div className="main-container">
+        <header>
+          <h1>loading...</h1>
+        </header>
+      </div>
+    );
+  } else if (userIsLoggedin) {
+    return (
+      <div className="main-container">
+        <header>
+          <h1>My Feed</h1>
+        </header>
+        {eventList && eventList.length > 0 && (
+          <ul>
+            {eventList.map(eid => (
+              <EventCard key={eid} eid={eid} />
+            ))}
+          </ul>
+        )}
+        <Link to="/e">link to event page</Link>
+      </div>
+    );
+  } else {
+    return <Redirect to="/" />;
+  }
 };
 
 export default MainFeed;
