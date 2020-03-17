@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { firestore, auth } from "firebase";
+import { firestore } from "firebase";
 
 const EventCard = ({ eid }) => {
   const [eventData, setEventData] = useState();

@@ -25,7 +25,7 @@ const EventPage = () => {
         unsubscribeUserEventList();
       };
     }
-  }, []);
+  }, [userIsLoggedin]);
 
   if (userLoading || !userEventList) {
     return (
