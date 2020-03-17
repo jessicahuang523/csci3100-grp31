@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { firestore, auth } from "firebase";
-import { devSetupChat, devAddToChat } from "../../devutil";
 
 export const Chat = () => {
   const { cid } = useParams();
@@ -66,13 +65,6 @@ export const Chat = () => {
     return (
       <div className="main-container">
         <h3>chat id: {cid}</h3>
-        <p
-          style={{ cursor: "pointer" }}
-          onClick={() => devAddToChat(cid, auth().currentUser.uid)}
-        >
-          <i>(dev) click to add self to chat</i>
-        </p>
-
         <h3>chatParticipants</h3>
         <ul>
           {chatParticipants &&
@@ -119,15 +111,6 @@ export const Chat = () => {
       <div className="main-container">
         <h3>chat id: {cid}</h3>
         <h3>Loading... (or this chat doesn't exist)</h3>
-        <p
-          style={{ cursor: "pointer" }}
-          onClick={() => {
-            devSetupChat(cid);
-            devAddToChat(cid, auth().currentUser.uid);
-          }}
-        >
-          <i>(dev) click to setup this chat</i>
-        </p>
       </div>
     );
   }
