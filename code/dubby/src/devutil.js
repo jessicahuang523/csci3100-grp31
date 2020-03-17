@@ -78,6 +78,37 @@ export const devSetupEvent = async eid => {
   alert("Event data set!");
 };
 
+export const devCreateEvent = async ({
+  eid,
+  allowedPeople,
+  eventName,
+  eventType,
+  isPublic,
+  location
+}) => {
+  const { username, uid } = auth().currentUser
+    ? auth.currentUser
+    : { username: "dev", uid: "dev" };
+  const eventRef = firestore()
+    .collection("event")
+    .doc(eid);
+  const eventData = {
+    allowedPeople: allowedPeople ? allowedPeople : 3,
+    eventName: eventName ? eventName : "Come play basketball with us!",
+    eventType: eventType ? eventType : "basketball",
+    isPublic: isPublic ? isPublic : true,
+    location: location ? location : "NA Gym",
+    startingTime: Date.now(),
+    hostUid: uid
+  };
+  eventRef.set(eventData);
+  await eventRef
+    .collection("participants")
+    .doc(uid)
+    .set({ username, uid });
+  alert("Event data set!");
+};
+
 export const devAddToEvent = async (eid, uid) => {
   const eventRef = firestore()
     .collection("event")
