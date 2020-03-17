@@ -1,3 +1,5 @@
 .DS_Store
 /specs
 # /code/test-project
+package-lock.json
+/node_modules
