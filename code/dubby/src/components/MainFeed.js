@@ -1,26 +1,17 @@
 import React from "react";
-import EventCard from "./EventPages";
+import { Link } from "react-router-dom";
 
 const MainFeed = () => {
   return (
     <div className="main-container">
       <header>
-        <h1>Events</h1>
+        <h1>My Feed</h1>
       </header>
-      <ul>
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-      </ul>
+      <p>
+        to separate event page and main feed, temporately setting here like
+        this.
+      </p>
+      <Link to="/e">link to event page</Link>
     </div>
   );
 };

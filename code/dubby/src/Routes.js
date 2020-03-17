@@ -12,6 +12,7 @@ import GymPage from "./components/GymPages";
 import ChatPage from "./components/Chat/ChatPage";
 import Chat from "./components/Chat/Chat";
 import ProfilePage from "./components/Profile/ProfilePage";
+import EventPage from "./components/Event/EventPage";
 
 const Routes = () => {
   return (
@@ -20,7 +21,7 @@ const Routes = () => {
       <Switch>
         <Route exact path="/" children={<RootPage />} />
         <Route exact path="/g" children={<GymPage />} />
-        <Route exact path="/e" children={<Redirect to="/" />} />
+        <Route exact path="/e" children={<EventPage />} />
         <Route exact path="/c" children={<ChatPage />} />
         <Route path="/c/:cid" children={<Chat />} />
         <Route exact path="/u" children={<ProfilePage />} />
