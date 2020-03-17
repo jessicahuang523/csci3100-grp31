@@ -11,7 +11,7 @@ import Signout from "./components/Signout";
 import GymPage from "./components/GymPages";
 import ChatPage from "./components/Chat/ChatPage";
 import Chat from "./components/Chat/Chat";
-import Profile from "./components/Profile";
+import ProfilePage from "./components/Profile/ProfilePage";
 
 const Routes = () => {
   return (
@@ -23,8 +23,9 @@ const Routes = () => {
         <Route exact path="/e" children={<Redirect to="/" />} />
         <Route exact path="/c" children={<ChatPage />} />
         <Route path="/c/:cid" children={<Chat />} />
+        <Route exact path="/u" children={<ProfilePage />} />
+        <Route path="/u/:uid" children={<ProfilePage />} />
         <Route path="/signout" children={<Signout />} />
-        <Route exact path="/u" children={<Profile />} />
       </Switch>
     </Router>
   );
