@@ -8,7 +8,8 @@ import {
   devSetupAccount,
   devAddToChat,
   devSetupEvent,
-  devAddToEvent
+  devAddToEvent,
+  devAddEvent
 } from "../devutil";
 
 const LandingPage = () => {
@@ -46,8 +47,21 @@ const LandingPage = () => {
                 .then(({ user }) => {
                   devSetupAccount();
                   devAddToChat("test", user.uid);
-                  devSetupEvent("test");
                   devAddToEvent("test", user.uid);
+                  devAddEvent({
+                    allowedPeople: 10,
+                    eventName: "Let's play!",
+                    eventType: "Tennis",
+                    isPublic: true,
+                    location: "NA Tennis Court"
+                  });
+                  devAddEvent({
+                    allowedPeople: 7,
+                    eventName: "Super exciting tournament",
+                    eventType: "Basketball",
+                    isPublic: true,
+                    location: "UC Gym"
+                  });
                 })
             }
           >
