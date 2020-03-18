@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { firestore, auth } from "firebase";
 import ChatShort from "./ChatShort";
 import { UserContext } from "../../contexts/UserContext";
-import Navbar from "../Navbar";
+import Navbar from "../Navbar/Navbar";
 import { Layout } from "react-mdl";
 
 const ChatPage = () => {

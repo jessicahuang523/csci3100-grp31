@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Tabs, Tab, Grid, Cell, Layout } from "react-mdl";
-import Navbar from "./Navbar";
+import Navbar from "../Navbar/Navbar";
 
 const GymPage = () => {
   const [activeTab, setActiveTab] = useState(0);

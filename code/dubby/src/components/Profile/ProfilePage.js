@@ -4,7 +4,7 @@ import self from "../../self.jpg";
 import { firestore, auth } from "firebase";
 import { useParams, Redirect } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
-import Navbar from "../Navbar";
+import Navbar from "../Navbar/Navbar";
 
 const ProfilePage = () => {
   const { uid } = useParams();

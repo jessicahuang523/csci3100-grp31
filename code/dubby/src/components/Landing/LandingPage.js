@@ -3,14 +3,14 @@ import { Link, Redirect } from "react-router-dom";
 import { auth } from "firebase";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { GoogleLoginButton } from "react-social-login-buttons";
-import logo from "../image/Dubby_logo.png";
+import logo from "../../image/Dubby_logo.png";
 import {
   devSetupAccount,
   devAddToChat,
   devAddToEvent,
   devAddEvent
-} from "../devutil";
-import { UserContext } from "../contexts/UserContext";
+} from "../../devutil";
+import { UserContext } from "../../contexts/UserContext";
 
 const LandingPage = () => {
   const { userData, userLoading } = useContext(UserContext);

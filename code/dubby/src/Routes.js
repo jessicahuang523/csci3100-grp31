@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import GymPage from "./components/GymPages";
+import GymPage from "./components/Gym/GymPages";
 import ChatPage from "./components/Chat/ChatPage";
 import Chat from "./components/Chat/Chat";
 import ProfilePage from "./components/Profile/ProfilePage";
 import EventPage from "./components/Event/EventPage";
-import LandingPage from "./components/LandingPage";
-import MainFeed from "./components/MainFeed";
+import LandingPage from "./components/Landing/LandingPage";
+import MainFeed from "./components/Root/MainFeed";
 
 const Routes = () => {
   return (

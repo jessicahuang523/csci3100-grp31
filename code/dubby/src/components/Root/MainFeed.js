@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { firestore } from "firebase";
-import { UserContext } from "../contexts/UserContext";
-import EventCard from "./Event/EventCard";
-import Navbar from "./Navbar";
+import { UserContext } from "../../contexts/UserContext";
+import EventCard from "../Event/EventCard";
+import Navbar from "../Navbar/Navbar";
 import { Layout } from "react-mdl";
 
 const MainFeed = () => {

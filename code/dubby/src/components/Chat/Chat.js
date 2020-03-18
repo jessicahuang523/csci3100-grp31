@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, Redirect } from "react-router-dom";
 import { firestore, auth } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
-import Navbar from "../Navbar";
+import Navbar from "../Navbar/Navbar";
 import { Layout } from "react-mdl";
 
 export const Chat = () => {
