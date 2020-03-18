@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Tabs, Tab, Grid, Cell } from "react-mdl";
+import { Tabs, Tab, Grid, Cell, Layout } from "react-mdl";
+import Navbar from "./Navbar";
 
 const GymPage = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -28,18 +29,23 @@ const GymPage = () => {
   };
 
   return (
-    <div className="catagory-tabs">
-      <Tabs
-        activeTab={activeTab}
-        onChange={tabId => setActiveTab(tabId)}
-        ripple="ripple"
-      >
-        <Tab>CUHK</Tab>
-        <Tab>HKU</Tab>
-      </Tabs>
-      <Grid>
-        <Cell col={12}>{toggleCategories()}</Cell>
-      </Grid>
+    <div>
+      <Navbar />
+      <Layout>
+        <div className="main-container catagory-tabs">
+          <Tabs
+            activeTab={activeTab}
+            onChange={tabId => setActiveTab(tabId)}
+            ripple="ripple"
+          >
+            <Tab>CUHK</Tab>
+            <Tab>HKU</Tab>
+          </Tabs>
+          <Grid>
+            <Cell col={12}>{toggleCategories()}</Cell>
+          </Grid>
+        </div>
+      </Layout>
     </div>
   );
 };

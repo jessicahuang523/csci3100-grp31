@@ -54,7 +54,12 @@ const EventCard = ({ eid }) => {
       </div>
     );
   } else {
-    return null;
+    return (
+      <div
+        className="event-card"
+        style={{ height: "200px", backgroundColor: "#eee" }}
+      ></div>
+    );
   }
 };
 

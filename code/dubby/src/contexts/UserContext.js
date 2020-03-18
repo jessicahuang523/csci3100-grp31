@@ -5,7 +5,6 @@ export const UserContext = createContext();
 
 const UserContextProvider = props => {
   const [userLoading, setUserLoading] = useState(true);
-  const [userIsLoggedin, setUserIsLoggedin] = useState(false);
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -14,10 +13,8 @@ const UserContextProvider = props => {
       .onAuthStateChanged(user => {
         setUserLoading(true);
         if (user) {
-          setUserIsLoggedin(true);
           setUserData(user);
         } else {
-          setUserIsLoggedin(false);
           setUserData(null);
         }
         setUserLoading(false);
@@ -28,7 +25,7 @@ const UserContextProvider = props => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ userIsLoggedin, userData, userLoading }}>
+    <UserContext.Provider value={{ userData, userLoading }}>
       {props.children}
     </UserContext.Provider>
   );

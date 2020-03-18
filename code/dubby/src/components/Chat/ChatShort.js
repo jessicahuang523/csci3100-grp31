@@ -5,6 +5,7 @@ import { firestore } from "firebase";
 const ChatShort = ({ cid }) => {
   const [chatData, setChatData] = useState();
   const [chatMessages, setChatMessages] = useState();
+
   useEffect(() => {
     const chatRef = firestore()
       .collection("chat")
@@ -40,7 +41,12 @@ const ChatShort = ({ cid }) => {
       </li>
     );
   } else {
-    return null;
+    return (
+      <li
+        className="chat-short-container"
+        style={{ height: "150px", backgroundColor: "#eee" }}
+      ></li>
+    );
   }
 };
 

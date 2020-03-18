@@ -3,9 +3,11 @@ import { Link, Redirect } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../contexts/UserContext";
 import EventCard from "./Event/EventCard";
+import Navbar from "./Navbar";
+import { Layout } from "react-mdl";
 
 const MainFeed = () => {
-  const { userIsLoggedin, userLoading } = useContext(UserContext);
+  const { userData, userLoading } = useContext(UserContext);
 
   const [eventList, setEventList] = useState();
 
@@ -26,30 +28,33 @@ const MainFeed = () => {
 
   if (userLoading || !eventList) {
     return (
-      <div className="main-container">
-        <header>
-          <h1>loading...</h1>
-        </header>
+      <div>
+        <h1>Loading...</h1>
       </div>
     );
-  } else if (userIsLoggedin) {
-    return (
-      <div className="main-container">
-        <header>
-          <h1>My Feed</h1>
-        </header>
-        {eventList && eventList.length > 0 && (
-          <ul>
-            {eventList.map(eid => (
-              <EventCard key={eid} eid={eid} />
-            ))}
-          </ul>
-        )}
-        <Link to="/e">link to event page</Link>
-      </div>
-    );
+  } else if (!userData) {
+    return <Redirect to="/launch" />;
   } else {
-    return <Redirect to="/" />;
+    return (
+      <div>
+        <Navbar />
+        <div className="main-container">
+          <Layout>
+            <header>
+              <h1>My Feed</h1>
+            </header>
+            {eventList && eventList.length > 0 && (
+              <ul>
+                {eventList.map(eid => (
+                  <EventCard key={eid} eid={eid} />
+                ))}
+              </ul>
+            )}
+            <Link to="/e">link to event page</Link>
+          </Layout>
+        </div>
+      </div>
+    );
   }
 };
 

@@ -3,14 +3,16 @@ import EventCard from "./EventCard";
 import { UserContext } from "../../contexts/UserContext";
 import { firestore, auth } from "firebase";
 import { Redirect } from "react-router-dom";
+import { Layout } from "react-mdl";
+import Navbar from "../Navbar";
 
 const EventPage = () => {
-  const { userIsLoggedin, userLoading } = useContext(UserContext);
+  const { userData, userLoading } = useContext(UserContext);
 
   const [userEventList, setUserEventList] = useState();
 
   useEffect(() => {
-    if (userIsLoggedin) {
+    if (userData) {
       const { uid } = auth().currentUser;
       const unsubscribeUserEventList = firestore()
         .collection("user_profile")
@@ -25,33 +27,36 @@ const EventPage = () => {
         unsubscribeUserEventList();
       };
     }
-  }, [userIsLoggedin]);
+  }, [userData]);
 
   if (userLoading || !userEventList) {
     return (
-      <div className="main-container">
-        <header>
-          <h1>loading...</h1>
-        </header>
+      <div>
+        <h1>Loading...</h1>
       </div>
     );
-  } else if (userIsLoggedin) {
-    return (
-      <div className="main-container">
-        <header>
-          <h1>Events</h1>
-        </header>
-        {userEventList && userEventList.length > 0 && (
-          <ul>
-            {userEventList.map(event => (
-              <EventCard key={event.eid} eid={event.eid} />
-            ))}
-          </ul>
-        )}
-      </div>
-    );
+  } else if (!userData) {
+    return <Redirect to="/launch" />;
   } else {
-    return <Redirect to="/" />;
+    return (
+      <div>
+        <Navbar />
+        <div className="main-container">
+          <Layout>
+            <header>
+              <h1>My Events</h1>
+            </header>
+            {userEventList && userEventList.length > 0 && (
+              <ul>
+                {userEventList.map(event => (
+                  <EventCard key={event.eid} eid={event.eid} />
+                ))}
+              </ul>
+            )}
+          </Layout>
+        </div>
+      </div>
+    );
   }
 };
 
