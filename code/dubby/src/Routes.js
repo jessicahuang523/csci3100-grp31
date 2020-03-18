@@ -7,12 +7,14 @@ import ProfilePage from "./components/Profile/ProfilePage";
 import EventPage from "./components/Event/EventPage";
 import LandingPage from "./components/Landing/LandingPage";
 import MainFeed from "./components/Root/MainFeed";
+import SignupPage from "./components/Landing/SignupPage";
 
 const Routes = () => {
   return (
     <Router>
       <Switch>
         <Route exact path="/launch" children={<LandingPage />} />
+        <Route exact path="/signup" children={<SignupPage />} />
         <Route exact path="/" children={<MainFeed />} />
         <Route exact path="/g" children={<GymPage />} />
         <Route exact path="/e" children={<EventPage />} />

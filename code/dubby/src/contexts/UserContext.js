@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from "react";
-import firebase from "firebase";
+import { firestore, auth } from "firebase";
+import { setupFirestoreForNewAccount } from "../utilityfunctions/Utilities";
 
 export const UserContext = createContext();
 
@@ -8,17 +9,24 @@ const UserContextProvider = props => {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    const unsubscribeAuthStateListener = firebase
-      .auth()
-      .onAuthStateChanged(user => {
+    const unsubscribeAuthStateListener = auth().onAuthStateChanged(
+      async user => {
         setUserLoading(true);
         if (user) {
+          const profile = await firestore()
+            .collection("user_profile")
+            .doc(user.uid)
+            .get();
+          if (!profile.exists) {
+            setupFirestoreForNewAccount(user);
+          }
           setUserData(user);
         } else {
           setUserData(null);
         }
         setUserLoading(false);
-      });
+      }
+    );
     return () => {
       unsubscribeAuthStateListener();
     };
