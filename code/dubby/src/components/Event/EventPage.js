@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import EventCard from "./EventCard";
 import { UserContext } from "../../contexts/UserContext";
 import { firestore, auth } from "firebase";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { Layout } from "react-mdl";
 import Navbar from "../Navbar/Navbar";
 
@@ -53,6 +53,7 @@ const EventPage = () => {
                 ))}
               </ul>
             )}
+            <Link to="/e/add">add event</Link>
           </Layout>
         </div>
       </div>
