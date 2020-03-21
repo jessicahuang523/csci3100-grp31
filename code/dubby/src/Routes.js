@@ -8,6 +8,7 @@ import EventPage from "./components/Event/EventPage";
 import LandingPage from "./components/Landing/LandingPage";
 import MainFeed from "./components/Root/MainFeed";
 import SignupPage from "./components/Landing/SignupPage";
+import AddEvent from "./components/Event/AddEvent";
 
 const Routes = () => {
   return (
@@ -22,6 +23,7 @@ const Routes = () => {
         <Route exact path="/u" children={<ProfilePage />} />
         <Route path="/c/:cid" children={<Chat />} />
         <Route path="/u/:uid" children={<ProfilePage />} />
+        <Route path="/e/add" children={<AddEvent />} />
       </Switch>
     </Router>
   );
