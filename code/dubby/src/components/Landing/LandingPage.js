@@ -11,6 +11,7 @@ import {
   devAddEvent
 } from "../../devutil";
 import { UserContext } from "../../contexts/UserContext";
+import Loading from "../Loading/Loading";
 
 const LandingPage = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -21,11 +22,7 @@ const LandingPage = () => {
   const [alertSignin, setAlertSignin] = useState();
 
   if (userLoading) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <Loading />;
   } else if (userData) {
     return <Redirect to="/" />;
   } else {

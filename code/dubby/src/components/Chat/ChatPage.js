@@ -4,7 +4,7 @@ import { firestore, auth } from "firebase";
 import ChatShort from "./ChatShort";
 import { UserContext } from "../../contexts/UserContext";
 import Navbar from "../Navbar/Navbar";
-import { Layout } from "react-mdl";
+import Loading from "../Loading/Loading";
 
 const ChatPage = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -30,11 +30,7 @@ const ChatPage = () => {
   }, [userData]);
 
   if (userLoading || !chatList) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
   } else {
@@ -42,18 +38,16 @@ const ChatPage = () => {
       <div>
         <Navbar />
         <div className="main-container">
-          <Layout>
-            <header>
-              <h1>Chats</h1>
-            </header>
-            {chatList && chatList.length > 0 && (
-              <ul>
-                {chatList.map(chat => (
-                  <ChatShort key={chat.cid} cid={chat.cid} />
-                ))}
-              </ul>
-            )}
-          </Layout>
+          <header>
+            <h1>Chats</h1>
+          </header>
+          {chatList && chatList.length > 0 && (
+            <ul>
+              {chatList.map(chat => (
+                <ChatShort key={chat.cid} cid={chat.cid} />
+              ))}
+            </ul>
+          )}
         </div>
       </div>
     );

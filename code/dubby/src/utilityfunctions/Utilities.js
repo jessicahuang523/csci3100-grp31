@@ -1,4 +1,4 @@
-import { firestore, auth } from "firebase";
+import { firestore } from "firebase";
 
 export const setupFirestoreForNewAccount = async ({ uid }) => {
   const accountData = {

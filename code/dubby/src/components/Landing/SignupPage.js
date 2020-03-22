@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { UserContext } from "../../contexts/UserContext";
 import { Redirect } from "react-router-dom";
 import { auth } from "firebase";
+import Loading from "../Loading/Loading";
 
 const SignupPage = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -10,11 +11,7 @@ const SignupPage = () => {
   const [inputPassword, setInputPassword] = useState();
 
   if (userLoading) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <Loading />;
   } else if (userData) {
     return <Redirect to="/" />;
   } else {

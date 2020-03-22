@@ -3,7 +3,7 @@ import { useParams, Redirect } from "react-router-dom";
 import { firestore, auth } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import Navbar from "../Navbar/Navbar";
-import { Layout } from "react-mdl";
+import Loading from "../Loading/Loading";
 
 export const Chat = () => {
   const { cid } = useParams();
@@ -94,61 +94,51 @@ export const Chat = () => {
   };
 
   if (userLoading) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
   } else if (chatParticipants && !chatAuthorized) {
     return <Redirect to="/c" />;
   } else if (!chatData || !chatMessages) {
-    return (
-      <div>
-        <h1>Loading...</h1>
-      </div>
-    );
+    return <Loading />;
   } else {
     return (
       <div>
         <Navbar />
         <div className="main-container">
-          <Layout>
-            <header>
-              <h1>
-                <i className={chatData.icon}></i> {chatData.title}
-              </h1>
-            </header>
-            <h1>chatParticipants</h1>
-            <ul>
-              {chatParticipants &&
-                chatParticipants.map(p => (
-                  <li key={p.uid}>
-                    {p.username} [uid: {p.uid}]
-                  </li>
-                ))}
-            </ul>
-            <h1>chatMessages</h1>
-            <ul>
-              {chatMessages &&
-                chatMessages.length > 0 &&
-                chatMessages.map(message => (
-                  <li key={message.created_at}>
-                    [{new Date(message.created_at).toLocaleTimeString()}]{" "}
-                    {message.sender.username}: {message.text}
-                  </li>
-                ))}
-              {chatMessages && chatMessages.length === 0 && (
-                <li>Wow, such empty</li>
-              )}
-            </ul>
-            <form onSubmit={handleSendMessage}>
-              <label>Message</label>
-              <input value={inputMessage} onChange={handleInputChange} />
-              <button type="submit">Send</button>
-            </form>
-          </Layout>
+          <header>
+            <h1>
+              <i className={chatData.icon}></i> {chatData.title}
+            </h1>
+          </header>
+          <h1>chatParticipants</h1>
+          <ul>
+            {chatParticipants &&
+              chatParticipants.map(p => (
+                <li key={p.uid}>
+                  {p.username} [uid: {p.uid}]
+                </li>
+              ))}
+          </ul>
+          <h1>chatMessages</h1>
+          <ul>
+            {chatMessages &&
+              chatMessages.length > 0 &&
+              chatMessages.map(message => (
+                <li key={message.created_at}>
+                  [{new Date(message.created_at).toLocaleTimeString()}]{" "}
+                  {message.sender.username}: {message.text}
+                </li>
+              ))}
+            {chatMessages && chatMessages.length === 0 && (
+              <li>Wow, such empty</li>
+            )}
+          </ul>
+          <form onSubmit={handleSendMessage}>
+            <label>Message</label>
+            <input value={inputMessage} onChange={handleInputChange} />
+            <button type="submit">Send</button>
+          </form>
         </div>
       </div>
     );
