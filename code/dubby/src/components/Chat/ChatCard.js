@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { firestore } from "firebase";
+import LoadingChatCard from "../Loading/LoadingChatCard";
 
-const ChatShort = ({ cid }) => {
+const ChatCard = ({ cid }) => {
   const [chatData, setChatData] = useState();
   const [chatMessages, setChatMessages] = useState();
 
@@ -24,7 +25,9 @@ const ChatShort = ({ cid }) => {
     };
   }, [cid]);
 
-  if (chatData && chatMessages) {
+  if (!chatData || !chatMessages) {
+    return <LoadingChatCard />;
+  } else {
     return (
       <li className="chat-short-container">
         <Link to={`/c/${cid}`}>
@@ -40,14 +43,7 @@ const ChatShort = ({ cid }) => {
         </Link>
       </li>
     );
-  } else {
-    return (
-      <li
-        className="chat-short-container"
-        style={{ height: "150px", backgroundColor: "#eee" }}
-      ></li>
-    );
   }
 };
 
-export default ChatShort;
+export default ChatCard;

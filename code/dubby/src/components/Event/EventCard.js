@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { firestore } from "firebase";
+import LoadingEventCard from "../Loading/LoadingEventCard";
 
 const EventCard = ({ eid }) => {
   const [eventData, setEventData] = useState();
@@ -27,7 +28,9 @@ const EventCard = ({ eid }) => {
     }
   }, [eid]);
 
-  if (eventData && eventParticipants) {
+  if (!eventData || !eventParticipants) {
+    return <LoadingEventCard />;
+  } else {
     return (
       <div className="event-card">
         <div className="event-description-short">
@@ -52,13 +55,6 @@ const EventCard = ({ eid }) => {
           <button>Show more</button>
         </div>
       </div>
-    );
-  } else {
-    return (
-      <div
-        className="event-card"
-        style={{ height: "200px", backgroundColor: "#eee" }}
-      ></div>
     );
   }
 };

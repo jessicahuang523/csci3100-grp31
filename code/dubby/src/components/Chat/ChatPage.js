@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { firestore, auth } from "firebase";
-import ChatShort from "./ChatShort";
+import ChatCard from "./ChatCard";
 import { UserContext } from "../../contexts/UserContext";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -43,7 +43,7 @@ const ChatPage = () => {
         {chatList && chatList.length > 0 && (
           <ul>
             {chatList.map(chat => (
-              <ChatShort key={chat.cid} cid={chat.cid} />
+              <ChatCard key={chat.cid} cid={chat.cid} />
             ))}
           </ul>
         )}

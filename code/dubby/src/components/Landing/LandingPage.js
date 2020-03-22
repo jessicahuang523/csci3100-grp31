@@ -21,6 +21,45 @@ const LandingPage = () => {
 
   const [alertSignin, setAlertSignin] = useState();
 
+  const handleEmailLoginFormSubmit = async e => {
+    e.preventDefault();
+    setAlertSignin(null);
+    if (/\S+@\S+\.\S+/.test(inputEmail) && inputPassword !== "") {
+      try {
+        await auth().signInWithEmailAndPassword(inputEmail, inputPassword);
+      } catch (error) {
+        setAlertSignin(
+          "credentials aren't correct, check your email or password@@"
+        );
+      }
+    } else {
+      setAlertSignin("input must match email and password!");
+    }
+  };
+
+  const handleDevLogin = () =>
+    auth()
+      .signInAnonymously()
+      .then(({ user }) => {
+        devSetupAccount();
+        devAddToChat("test", user.uid);
+        devAddToEvent("test", user.uid);
+        devAddEvent({
+          allowedPeople: 10,
+          eventName: "Let's play!",
+          eventType: "Tennis",
+          isPublic: true,
+          location: "NA Tennis Court"
+        });
+        devAddEvent({
+          allowedPeople: 7,
+          eventName: "Super exciting tournament",
+          eventType: "Basketball",
+          isPublic: true,
+          location: "UC Gym"
+        });
+      });
+
   if (userLoading) {
     return <Loading />;
   } else if (userData) {
@@ -39,24 +78,7 @@ const LandingPage = () => {
             <p>buddy dubby dubby buddy</p>
           </header>
           <Form
-            onSubmit={async e => {
-              e.preventDefault();
-              setAlertSignin(null);
-              if (/\S+@\S+\.\S+/.test(inputEmail) && inputPassword !== "") {
-                try {
-                  await auth().signInWithEmailAndPassword(
-                    inputEmail,
-                    inputPassword
-                  );
-                } catch (error) {
-                  setAlertSignin(
-                    "credentials aren't correct, check your email or password@@"
-                  );
-                }
-              } else {
-                setAlertSignin("input must match email and password!");
-              }
-            }}
+            onSubmit={handleEmailLoginFormSubmit}
             className="login-form-landing"
           >
             <FormGroup>
@@ -91,31 +113,7 @@ const LandingPage = () => {
           <div className="text-center pt-3">
             <Link to="/forgotpassword">Forgot Password?</Link>
           </div>
-          <Button
-            onClick={() =>
-              auth()
-                .signInAnonymously()
-                .then(({ user }) => {
-                  devSetupAccount();
-                  devAddToChat("test", user.uid);
-                  devAddToEvent("test", user.uid);
-                  devAddEvent({
-                    allowedPeople: 10,
-                    eventName: "Let's play!",
-                    eventType: "Tennis",
-                    isPublic: true,
-                    location: "NA Tennis Court"
-                  });
-                  devAddEvent({
-                    allowedPeople: 7,
-                    eventName: "Super exciting tournament",
-                    eventType: "Basketball",
-                    isPublic: true,
-                    location: "UC Gym"
-                  });
-                })
-            }
-          >
+          <Button onClick={handleDevLogin}>
             totally for development use anonymous sign in button
           </Button>
         </div>
