@@ -21,9 +21,10 @@ const Routes = () => {
         <Route exact path="/e" children={<EventPage />} />
         <Route exact path="/c" children={<ChatPage />} />
         <Route exact path="/u" children={<ProfilePage />} />
+        <Route exact path="/e/add" children={<AddEvent />} />
+        <Route path="/e/:eid" children={null} />
         <Route path="/c/:cid" children={<Chat />} />
         <Route path="/u/:uid" children={<ProfilePage />} />
-        <Route path="/e/add" children={<AddEvent />} />
       </Switch>
     </Router>
   );

@@ -59,11 +59,11 @@ const NavBar = () => {
                   Profile
                 </Link>
               </DropdownItem>
-              <DropdownItem>
+              {/* <DropdownItem>
                 <Link className="menu-link" to="/settings">
                   Settings
                 </Link>
-              </DropdownItem>
+              </DropdownItem> */}
               <DropdownItem>
                 <Link className="menu-link" to="/friends">
                   Friends
