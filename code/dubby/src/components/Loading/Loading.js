@@ -1,9 +1,11 @@
 import React from "react";
+import NavBar from "../Navbar/Navbar";
 
-const Loading = () => {
+const Loading = ({ message }) => {
   return (
     <div>
-      <h1>Loading...</h1>
+      <NavBar />
+      <h1>{message ? message : "Loading..."}</h1>
     </div>
   );
 };

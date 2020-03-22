@@ -5,9 +5,9 @@ const AddEvent = () => {
   return (
     <div>
       <Navbar />
-      <div className="main-container">
+      <header>
         <h1>Add new event</h1>
-      </div>
+      </header>
     </div>
   );
 };

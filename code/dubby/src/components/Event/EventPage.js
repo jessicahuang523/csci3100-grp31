@@ -37,18 +37,16 @@ const EventPage = () => {
     return (
       <div>
         <NavBar />
-        <div className="main-container">
-          <header>
-            <h1>My Events</h1>
-          </header>
-          {userEventList && userEventList.length > 0 && (
-            <ul>
-              {userEventList.map(event => (
-                <EventCard key={event.eid} eid={event.eid} />
-              ))}
-            </ul>
-          )}
-        </div>
+        <header>
+          <h1>My Events</h1>
+        </header>
+        {userEventList && userEventList.length > 0 && (
+          <ul>
+            {userEventList.map(event => (
+              <EventCard key={event.eid} eid={event.eid} />
+            ))}
+          </ul>
+        )}
       </div>
     );
   }

@@ -37,18 +37,16 @@ const ChatPage = () => {
     return (
       <div>
         <Navbar />
-        <div className="main-container">
-          <header>
-            <h1>Chats</h1>
-          </header>
-          {chatList && chatList.length > 0 && (
-            <ul>
-              {chatList.map(chat => (
-                <ChatShort key={chat.cid} cid={chat.cid} />
-              ))}
-            </ul>
-          )}
-        </div>
+        <header>
+          <h1>Chats</h1>
+        </header>
+        {chatList && chatList.length > 0 && (
+          <ul>
+            {chatList.map(chat => (
+              <ChatShort key={chat.cid} cid={chat.cid} />
+            ))}
+          </ul>
+        )}
       </div>
     );
   }

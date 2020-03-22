@@ -105,41 +105,39 @@ export const Chat = () => {
     return (
       <div>
         <Navbar />
-        <div className="main-container">
-          <header>
-            <h1>
-              <i className={chatData.icon}></i> {chatData.title}
-            </h1>
-          </header>
-          <h1>chatParticipants</h1>
-          <ul>
-            {chatParticipants &&
-              chatParticipants.map(p => (
-                <li key={p.uid}>
-                  {p.username} [uid: {p.uid}]
-                </li>
-              ))}
-          </ul>
-          <h1>chatMessages</h1>
-          <ul>
-            {chatMessages &&
-              chatMessages.length > 0 &&
-              chatMessages.map(message => (
-                <li key={message.created_at}>
-                  [{new Date(message.created_at).toLocaleTimeString()}]{" "}
-                  {message.sender.username}: {message.text}
-                </li>
-              ))}
-            {chatMessages && chatMessages.length === 0 && (
-              <li>Wow, such empty</li>
-            )}
-          </ul>
-          <form onSubmit={handleSendMessage}>
-            <label>Message</label>
-            <input value={inputMessage} onChange={handleInputChange} />
-            <button type="submit">Send</button>
-          </form>
-        </div>
+        <header>
+          <h1>
+            <i className={chatData.icon}></i> {chatData.title}
+          </h1>
+        </header>
+        <h1>chatParticipants</h1>
+        <ul>
+          {chatParticipants &&
+            chatParticipants.map(p => (
+              <li key={p.uid}>
+                {p.username} [uid: {p.uid}]
+              </li>
+            ))}
+        </ul>
+        <h1>chatMessages</h1>
+        <ul>
+          {chatMessages &&
+            chatMessages.length > 0 &&
+            chatMessages.map(message => (
+              <li key={message.created_at}>
+                [{new Date(message.created_at).toLocaleTimeString()}]{" "}
+                {message.sender.username}: {message.text}
+              </li>
+            ))}
+          {chatMessages && chatMessages.length === 0 && (
+            <li>Wow, such empty</li>
+          )}
+        </ul>
+        <form onSubmit={handleSendMessage}>
+          <label>Message</label>
+          <input value={inputMessage} onChange={handleInputChange} />
+          <button type="submit">Send</button>
+        </form>
       </div>
     );
   }
