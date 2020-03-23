@@ -42,10 +42,10 @@ export const setupFirestoreForNewEvent = async ({
     const eventRef = firestore().collection("event");
     const eventData = {
       allowedPeople,
-      eventName,
-      eventType,
+      eventName: eventName.trim(),
+      eventType: eventType.trim(),
       isPublic,
-      location,
+      location: location.trim(),
       startingTime,
       hostUid: uid
     };

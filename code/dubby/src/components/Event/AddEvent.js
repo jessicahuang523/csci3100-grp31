@@ -11,7 +11,7 @@ const eventTypeChoices = [
 const eventLocationChoices = [
   { value: "cuhk_nagym", display: "NA Gym (CUHK)" },
   { value: "cuhk_ugym", display: "University Gym (CUHK)" },
-  { value: "cuhk_ucgym", display: "UC Gym (CUHK" }
+  { value: "cuhk_ucgym", display: "UC Gym (CUHK)" }
 ];
 
 const calculateMinStartingDate = () => {
@@ -35,9 +35,9 @@ const AddEvent = () => {
 
   const [allowedPeople, setAllowedPeople] = useState();
   const [eventName, setEventName] = useState();
-  const [eventType, setEventType] = useState();
-  const [isPublic, setIsPublic] = useState();
-  const [location, setLocation] = useState();
+  const [eventType, setEventType] = useState(eventTypeChoices[0].value);
+  const [isPublic, setIsPublic] = useState(true);
+  const [location, setLocation] = useState(eventLocationChoices[0].value);
   const [startingTime, setStartingTime] = useState();
   const [eventStartingDate, setEventStartingDate] = useState(
     calculateMinStartingDate()
@@ -46,6 +46,7 @@ const AddEvent = () => {
     calculateMinStartingTime()
   );
   const [submittingEventData, setSubmittingEventData] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
     setStartingTime(
@@ -63,6 +64,7 @@ const AddEvent = () => {
       isPublic &&
       location
     ) {
+      setErrorMessage("");
       setSubmittingEventData(true);
       const eventData = {
         allowedPeople,
@@ -74,6 +76,8 @@ const AddEvent = () => {
       };
       await setupFirestoreForNewEvent(eventData);
       setSubmittingEventData(false);
+    } else {
+      setErrorMessage("Please fill in all data!");
     }
   };
 
@@ -92,19 +96,25 @@ const AddEvent = () => {
         <header>
           <h1>Add new event</h1>
         </header>
+        <p>{errorMessage}</p>
         <form
           style={{ display: "flex", flexDirection: "column" }}
           onSubmit={handleEventSubmit}
         >
           <label>Allowed People</label>
           <input
+            required
             type="number"
             onChange={e => setAllowedPeople(e.target.value)}
           />
           <label>Event Name</label>
-          <input type="text" onChange={e => setEventName(e.target.value)} />
+          <input
+            required
+            type="text"
+            onChange={e => setEventName(e.target.value)}
+          />
           <label>Event Type</label>
-          <select onChange={e => setEventType(e.target.value)}>
+          <select required onChange={e => setEventType(e.target.value)}>
             {eventTypeChoices.map(({ value, display }) => (
               <option key={value} value={value}>
                 {display}
@@ -113,6 +123,7 @@ const AddEvent = () => {
           </select>
           <label>Public Event?</label>
           <select
+            required
             onChange={e =>
               setIsPublic(e.target.value === "true" ? true : false)
             }
@@ -121,7 +132,7 @@ const AddEvent = () => {
             <option value={false}>no</option>
           </select>
           <label>Event Location</label>
-          <select onChange={e => setLocation(e.target.value)}>
+          <select required onChange={e => setLocation(e.target.value)}>
             {eventLocationChoices.map(({ value, display }) => (
               <option key={value} value={value}>
                 {display}
@@ -130,12 +141,14 @@ const AddEvent = () => {
           </select>
           <label>Event Starting Time</label>
           <input
+            required
             type="date"
             value={eventStartingDate}
             min={calculateMinStartingDate()}
             onChange={e => setEventStartingDate(e.target.value)}
           />
           <input
+            required
             type="time"
             value={eventStartingTime}
             min={calculateMinStartingTime()}

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import EventCard from "./EventCard";
 import { UserContext } from "../../contexts/UserContext";
 import { firestore, auth } from "firebase";
-import { Redirect } from "react-router-dom";
+import { Redirect, Link } from "react-router-dom";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 
@@ -41,6 +41,7 @@ const EventPage = () => {
         <header>
           <h1>My Events</h1>
         </header>
+        <Link to="/e/add">Add new Event</Link>
         {userEventList && userEventList.length > 0 && (
           <ul>
             {userEventList.map(event => (
