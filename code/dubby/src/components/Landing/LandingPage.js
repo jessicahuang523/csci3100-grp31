@@ -4,12 +4,7 @@ import { auth } from "firebase";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { GoogleLoginButton } from "react-social-login-buttons";
 import logo from "../../image/Dubby_logo.png";
-import {
-  devSetupAccount,
-  devAddToChat,
-  devAddToEvent,
-  devAddEvent
-} from "../../devutil";
+import { devSetupAccount } from "../../devutil";
 import { UserContext } from "../../contexts/UserContext";
 import Loading from "../Loading/Loading";
 import { setupFirestoreForNewEvent } from "../../utilityfunctions/Utilities";

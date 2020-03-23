@@ -18,6 +18,7 @@ const EventPage = () => {
         .collection("user_profile")
         .doc(uid)
         .collection("events")
+        .orderBy("startingTime")
         .onSnapshot(snap => {
           let tmp = [];
           snap.forEach(doc => tmp.push(doc.data()));

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { firestore } from "firebase";
+import { firestore, auth } from "firebase";
 import LoadingEventCard from "../Loading/LoadingEventCard";
+import { addParticipantToEvent } from "../../utilityfunctions/Utilities";
 
 const EventCard = ({ eid }) => {
   const [eventData, setEventData] = useState();
@@ -48,11 +49,24 @@ const EventCard = ({ eid }) => {
               {eventData.allowedPeople -
                 (eventParticipants.length ? eventParticipants.length : 0)}
             </p>
+            <p>Host: {eventData.hostUid}</p>
           </div>
         </div>
         <div className="event-description-actions">
           {/* <p>Your friends Tom and others are going</p> */}
           <button>Show more</button>
+          <button
+            onClick={async () => {
+              await addParticipantToEvent({
+                eid: eventData.eid,
+                uid: auth().currentUser.uid,
+                status: "joined"
+              });
+              alert("joined!");
+            }}
+          >
+            Join
+          </button>
         </div>
       </div>
     );

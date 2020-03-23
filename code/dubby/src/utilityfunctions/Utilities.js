@@ -57,7 +57,11 @@ export const setupFirestoreForNewEvent = async ({
       status: "joined"
     });
     // automatically calls setupFirestoreForNewEventChat()
-    await setupFirestoreForNewEventChat({ eid: eventDataRef.id, eventName });
+    const { cid } = await setupFirestoreForNewEventChat({
+      eid: eventDataRef.id,
+      eventName
+    });
+    eventDataRef.update({ cid, eid: eventDataRef.id });
   }
 };
 
@@ -75,7 +79,8 @@ export const setupFirestoreForNewEventChat = async ({ eid, eventName }) => {
       const chatData = {
         type: "event",
         icon: "fab fa-dev",
-        title: eventName
+        title: eventName,
+        eid
       };
       const chatDataRef = await firestore()
         .collection("chat")
@@ -85,6 +90,7 @@ export const setupFirestoreForNewEventChat = async ({ eid, eventName }) => {
       });
       // automatically calls addParticipantToChat() to add current user
       await addParticipantToChat({ cid: chatDataRef.id, uid });
+      return { cid: chatDataRef.id };
     }
   }
 };
@@ -118,6 +124,7 @@ export const addParticipantToChat = async ({ cid, uid }) => {
 // adds participant to event provided event id, user id
 // and status ("joined" or "interested")
 // will check if event and user data exists
+// automatically participant to chat (for now)
 export const addParticipantToEvent = async ({ eid, uid, status }) => {
   if (auth().currentUser && eid && uid && status) {
     const eventDataRef = firestore()
@@ -130,6 +137,7 @@ export const addParticipantToEvent = async ({ eid, uid, status }) => {
     const userDataSnap = await userDataRef.get();
     if (eventDataSnap.exists && userDataSnap.exists) {
       const { username, uid } = userDataSnap.data();
+      const { cid } = eventDataSnap.data();
       await eventDataRef
         .collection("participants")
         .doc(uid)
@@ -138,6 +146,7 @@ export const addParticipantToEvent = async ({ eid, uid, status }) => {
         .collection("events")
         .doc(eid)
         .set({ eid, status, ...eventDataSnap.data() });
+      await addParticipantToChat({ cid, uid });
     }
   }
 };
