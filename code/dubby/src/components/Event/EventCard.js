@@ -6,6 +6,7 @@ import { addParticipantToEvent } from "../../utilityfunctions/Utilities";
 const EventCard = ({ eid }) => {
   const [eventData, setEventData] = useState();
   const [eventParticipants, setEventParticipants] = useState();
+  const [hostUserData, setHostUserData] = useState();
 
   useEffect(() => {
     if (eid) {
@@ -29,14 +30,29 @@ const EventCard = ({ eid }) => {
     }
   }, [eid]);
 
+  useEffect(() => {
+    if (eventData) {
+      const userRef = firestore()
+        .collection("user_profile")
+        .doc(eventData.hostUid);
+      const unsubscribeUserData = userRef.onSnapshot(snap =>
+        setHostUserData(snap.data())
+      );
+      return () => {
+        unsubscribeUserData();
+      };
+    }
+  }, [eventData]);
+
   useEffect(() => console.log({ eventData, eventParticipants }), [
     eventData,
     eventParticipants
   ]);
 
-  if (!eventData || !eventParticipants) {
+  if (!eventData || !eventParticipants || !hostUserData) {
     return <LoadingEventCard />;
   } else {
+    const { uid } = auth().currentUser;
     return (
       <div className="event-card">
         <div className="event-description-short">
@@ -54,24 +70,28 @@ const EventCard = ({ eid }) => {
               {eventData.allowedPeople -
                 (eventParticipants.length ? eventParticipants.length : 0)}
             </p>
-            <p>Host: {eventData.hostUid}</p>
+            <p>Host: {hostUserData.username}</p>
           </div>
         </div>
         <div className="event-description-actions">
           {/* <p>Your friends Tom and others are going</p> */}
-          <button>Show more</button>
-          <button
-            onClick={async () => {
-              await addParticipantToEvent({
-                eid: eventData.eid,
-                uid: auth().currentUser.uid,
-                status: "joined"
-              });
-              alert("joined!");
-            }}
-          >
-            Join
-          </button>
+          {/* <button>Show more</button> */}
+          {eventParticipants.find(x => x.uid === uid) ? (
+            <p>joined!</p>
+          ) : (
+            <button
+              onClick={async () => {
+                await addParticipantToEvent({
+                  eid: eventData.eid,
+                  uid: auth().currentUser.uid,
+                  status: "joined"
+                });
+                alert("joined!");
+              }}
+            >
+              Join
+            </button>
+          )}
         </div>
       </div>
     );
