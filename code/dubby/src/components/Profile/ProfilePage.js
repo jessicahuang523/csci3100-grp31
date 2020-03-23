@@ -67,11 +67,11 @@ const ProfilePage = () => {
               <h2 style={{
                   marginTop: "50px"
                 }}>University</h2>
-              <p>{profileData.university}</p>
               <hr style={{
                   borderTop: "3px solid #D9993C",
                   margin: "auto"
                 }}/>
+              <p>{profileData.university}</p>
             </Col>
           </Row>
           <Row>
@@ -82,14 +82,13 @@ const ProfilePage = () => {
               <h2 style={{
                   marginTop: "50px"
                 }}>Sports</h2>
-              <p>{profileData.interested_sports}</p>
               <hr style={{
                   borderTop: "3px solid #D9993C",
                   margin: "auto"
                 }}/>
+              <p>{profileData.interested_sports}</p>
             </Col>
           </Row>
-
         </Container>
       </div>
     </div>);
