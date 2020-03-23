@@ -112,7 +112,11 @@ const AddEvent = () => {
             ))}
           </select>
           <label>Public Event?</label>
-          <select onChange={e => setIsPublic(e.target.value)}>
+          <select
+            onChange={e =>
+              setIsPublic(e.target.value === "true" ? true : false)
+            }
+          >
             <option value={true}>yes</option>
             <option value={false}>no</option>
           </select>

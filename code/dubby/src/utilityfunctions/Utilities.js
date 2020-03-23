@@ -110,7 +110,7 @@ export const addParticipantToChat = async ({ cid, uid }) => {
       await userDataRef
         .collection("chats")
         .doc(cid)
-        .set({ cid });
+        .set({ cid, ...chatDataSnap.data() });
     }
   }
 };
@@ -137,7 +137,7 @@ export const addParticipantToEvent = async ({ eid, uid, status }) => {
       await userDataRef
         .collection("events")
         .doc(eid)
-        .set({ eid, status });
+        .set({ eid, status, ...eventDataSnap.data() });
     }
   }
 };
