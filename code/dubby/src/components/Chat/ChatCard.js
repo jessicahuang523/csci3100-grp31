@@ -25,7 +25,7 @@ const ChatCard = ({ cid }) => {
     };
   }, [cid]);
 
-  if (!chatData || !chatMessages) {
+  if (!chatData) {
     return <LoadingChatCard />;
   } else {
     return (
@@ -37,7 +37,11 @@ const ChatCard = ({ cid }) => {
           <span className="chat-short-detail">
             <div>
               <b>{chatData.title}</b>
-              <p>{`${chatMessages.sender.username}: ${chatMessages.text}`}</p>
+              <p>
+                {chatMessages
+                  ? `${chatMessages.sender.username}: ${chatMessages.text}`
+                  : "Wow, such empty"}
+              </p>
             </div>
           </span>
         </Link>

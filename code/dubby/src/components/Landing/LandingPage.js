@@ -4,14 +4,10 @@ import { auth } from "firebase";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import { GoogleLoginButton } from "react-social-login-buttons";
 import logo from "../../image/Dubby_logo.png";
-import {
-  devSetupAccount,
-  devAddToChat,
-  devAddToEvent,
-  devAddEvent
-} from "../../devutil";
+import { devSetupAccount } from "../../devutil";
 import { UserContext } from "../../contexts/UserContext";
 import Loading from "../Loading/Loading";
+import { setupFirestoreForNewEvent } from "../../utilityfunctions/Utilities";
 
 const LandingPage = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -40,23 +36,15 @@ const LandingPage = () => {
   const handleDevLogin = () =>
     auth()
       .signInAnonymously()
-      .then(({ user }) => {
+      .then(() => {
         devSetupAccount();
-        devAddToChat("test", user.uid);
-        devAddToEvent("test", user.uid);
-        devAddEvent({
+        setupFirestoreForNewEvent({
           allowedPeople: 10,
           eventName: "Let's play!",
           eventType: "Tennis",
           isPublic: true,
-          location: "NA Tennis Court"
-        });
-        devAddEvent({
-          allowedPeople: 7,
-          eventName: "Super exciting tournament",
-          eventType: "Basketball",
-          isPublic: true,
-          location: "UC Gym"
+          location: "University Gym (CUHK)",
+          startingTime: Date.now()
         });
       });
 
