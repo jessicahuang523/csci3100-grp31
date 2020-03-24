@@ -45,11 +45,6 @@ const EventCard = ({ eid }) => {
     }
   }, [eventData]);
 
-  useEffect(() => console.log({ eventData, eventParticipants }), [
-    eventData,
-    eventParticipants
-  ]);
-
   if (!eventData || !eventParticipants || !hostUserData) {
     return <LoadingEventCard />;
   } else {
