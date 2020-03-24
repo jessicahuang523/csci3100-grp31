@@ -5,6 +5,7 @@ import { firestore, auth } from "firebase";
 import { addParticipantToEvent } from "../../utilityfunctions/Utilities";
 import Loading from "../Loading/Loading";
 import NavBar from "../Navbar/Navbar";
+import { Jumbotron, Button, Badge } from "reactstrap";
 
 const Event = () => {
   const { eid } = useParams();
@@ -56,6 +57,15 @@ const Event = () => {
     eventParticipants
   ]);
 
+  const handleJoinButtonClick = async () => {
+    await addParticipantToEvent({
+      eid: eventData.eid,
+      uid: auth().currentUser.uid,
+      status: "joined"
+    });
+    alert("joined!");
+  };
+
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -67,43 +77,31 @@ const Event = () => {
     return (
       <div>
         <NavBar />
-        <header>
-          <h1>{eventData.eventName}</h1>
-          <p>Location: {eventData.location}</p>
-        </header>
-        <span>
-          Starting at {new Date(eventData.startingTime).toLocaleString()}
-        </span>
+        <Jumbotron fluid>
+          <h1>
+            {eventData.eventName}{" "}
+            {eventParticipants.find(x => x.uid === uid) && (
+              <Badge>Joined</Badge>
+            )}
+          </h1>
+          {eventParticipants.find(x => x.uid === uid) ? (
+            <Button tag={Link} to={`/c/${eventData.cid}`}>
+              Talk with participants!
+            </Button>
+          ) : (
+            <Button onClick={handleJoinButtonClick}>Join</Button>
+          )}
+        </Jumbotron>
+        <p>Location: {eventData.location}</p>
+        <p>Starting at {new Date(eventData.startingTime).toLocaleString()}</p>
         <p>
           Vacancy:{" "}
           {eventData.allowedPeople -
             (eventParticipants.length ? eventParticipants.length : 0)}
         </p>
-        <p>
-          Host:{" "}
-          <Link to={`/u/${hostUserData.uid}`}>{hostUserData.username}</Link>
-        </p>
-        <div className="event-description-actions">
-          {eventParticipants.find(x => x.uid === uid) ? (
-            <button>Joined</button>
-          ) : (
-            <button
-              onClick={async () => {
-                await addParticipantToEvent({
-                  eid: eventData.eid,
-                  uid: auth().currentUser.uid,
-                  status: "joined"
-                });
-                alert("joined!");
-              }}
-            >
-              Join
-            </button>
-          )}
-          <button>
-            <Link to={`/c/${eventData.cid}`}>Talk with participants!</Link>
-          </button>
-        </div>
+        <Button tag={Link} to={`/u/${hostUserData.uid}`}>
+          Host: {hostUserData.username}
+        </Button>
       </div>
     );
   }

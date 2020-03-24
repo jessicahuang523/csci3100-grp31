@@ -3,6 +3,7 @@ import EventCard from "./EventCard";
 import { UserContext } from "../../contexts/UserContext";
 import { firestore, auth } from "firebase";
 import { Redirect, Link } from "react-router-dom";
+import { CardColumns, Jumbotron, Button } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 
@@ -38,16 +39,19 @@ const EventPage = () => {
     return (
       <div>
         <NavBar />
-        <header>
+        <Jumbotron fluid>
           <h1>My Events</h1>
-        </header>
-        <Link to="/e/add">Add new Event</Link>
+          <hr />
+          <Button tag={Link} to="/e/add">
+            Add new Event
+          </Button>
+        </Jumbotron>
         {userEventList && userEventList.length > 0 && (
-          <ul>
+          <CardColumns>
             {userEventList.map(event => (
               <EventCard key={event.eid} eid={event.eid} />
             ))}
-          </ul>
+          </CardColumns>
         )}
       </div>
     );

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { firestore } from "firebase";
 import LoadingEventCard from "../Loading/LoadingEventCard";
 import { Link } from "react-router-dom";
+import { Card, CardTitle, CardSubtitle, CardText, Button } from "reactstrap";
 
 const EventCard = ({ eid }) => {
   const [eventData, setEventData] = useState();
@@ -53,34 +54,22 @@ const EventCard = ({ eid }) => {
     return <LoadingEventCard />;
   } else {
     return (
-      <div className="event-card">
-        <div className="event-description-short">
-          <div className="event-icon">
-            <i className={`fas ${"fa-basketball-ball"}`}></i>
-          </div>
-          <div>
-            <Link to={`/e/${eventData.eid}`}>
-              <h3>{eventData.eventName}</h3>
-            </Link>
-            <p>at {eventData.location}</p>
-            <span>
-              Starting at {new Date(eventData.startingTime).toLocaleString()}
-            </span>
-            <p>
-              Vacancy:{" "}
-              {eventData.allowedPeople -
-                (eventParticipants.length ? eventParticipants.length : 0)}
-            </p>
-            <p>
-              Host:{" "}
-              <Link to={`/u/${hostUserData.uid}`}>{hostUserData.username}</Link>
-            </p>
-          </div>
-        </div>
-        <div className="event-description-actions">
-          <Link to={`/e/${eventData.eid}`}>More/Join</Link>
-        </div>
-      </div>
+      <Card body>
+        <CardTitle>{eventData.eventName}</CardTitle>
+        <CardSubtitle>{eventData.location}</CardSubtitle>
+        <CardText>
+          Starting at {new Date(eventData.startingTime).toLocaleString()}
+        </CardText>
+        <CardText>
+          Vacancy:{" "}
+          {eventData.allowedPeople -
+            (eventParticipants.length ? eventParticipants.length : 0)}
+        </CardText>
+        <CardText>Hosted by {hostUserData.username}</CardText>
+        <Button tag={Link} to={`/e/${eventData.eid}`}>
+          More/Join
+        </Button>
+      </Card>
     );
   }
 };
