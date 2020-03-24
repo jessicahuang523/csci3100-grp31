@@ -215,7 +215,7 @@ export const acceptFriendRequest = async ({ targetUid }) => {
         const { username, uid } = userDataSnap.data();
         const friendRequestRef = targetDataRef
           .collection("sent_friend_requests")
-          .doc(targetUid);
+          .doc(uid);
         const friendRequestSnap = await friendRequestRef.get();
         if (friendRequestSnap.exists) {
           await friendRequestRef.delete();

@@ -116,7 +116,7 @@ const Friend = () => {
       <ListGroup>
         <ListGroupItemHeading>Received Requests</ListGroupItemHeading>
         {receivedRequests && receivedRequests.length > 0 ? (
-          friendList.map(u => (
+          receivedRequests.map(u => (
             <ListGroupItem key={u.uid}>
               <Link to={`/u/${u.uid}`}>{u.username}</Link>
               <Button onClick={() => acceptFriendRequest({ targetUid: u.uid })}>
