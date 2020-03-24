@@ -39,7 +39,7 @@ const EventPage = () => {
     return (
       <div>
         <NavBar />
-        <Jumbotron fluid>
+        <Jumbotron>
           <h1>My Events</h1>
           <hr />
           <Button tag={Link} to="/e/add">

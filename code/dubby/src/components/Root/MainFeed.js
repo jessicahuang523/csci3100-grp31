@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Link, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import EventCard from "../Event/EventCard";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
+import { Jumbotron } from "reactstrap";
 
 const MainFeed = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -34,19 +35,12 @@ const MainFeed = () => {
     return (
       <div>
         <NavBar />
-        <div className="main-container">
-          <header>
-            <h1>My Feed</h1>
-          </header>
-          {eventList && eventList.length > 0 && (
-            <ul>
-              {eventList.map(eid => (
-                <EventCard key={eid} eid={eid} />
-              ))}
-            </ul>
-          )}
-          <Link to="/e">link to event page</Link>
-        </div>
+        <Jumbotron>
+          <h1>My Feed</h1>
+        </Jumbotron>
+        {eventList &&
+          eventList.length > 0 &&
+          eventList.map(eid => <EventCard key={eid} eid={eid} />)}
       </div>
     );
   }

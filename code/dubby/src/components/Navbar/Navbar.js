@@ -11,7 +11,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText
+  NavbarBrand
 } from "reactstrap";
 
 const NavBar = () => {
@@ -23,41 +23,34 @@ const NavBar = () => {
 
   return (
     <Navbar color="light" light expand="md">
-      <NavbarText>
-        <Link to="/">
-          <b>Dubby</b>
-        </Link>
-      </NavbarText>
+      <NavbarBrand tag={Link} to="/">
+        Dubby
+      </NavbarBrand>
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
         <Nav className="mr-auto" navbar>
-          <NavItem>
-            <Link to="/">Home</Link>
+          <NavItem tag={Link} to="/e">
+            Events
           </NavItem>
-          <NavItem>
-            <Link to="/e">Events</Link>
+          <NavItem tag={Link} to="/c">
+            Chat
           </NavItem>
-          <NavItem>
-            <Link to="/c">Chat</Link>
-          </NavItem>
-          <NavItem>
-            <Link to="/g">Gym</Link>
+          <NavItem tag={Link} to="/g">
+            Gym
           </NavItem>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
               Menu
             </DropdownToggle>
             <DropdownMenu right>
-              <DropdownItem>
-                <Link to="/u">Profile</Link>
+              <DropdownItem tag={Link} to="/u">
+                Profile
               </DropdownItem>
-              <DropdownItem>
-                <Link to="/friends">Friends</Link>
+              <DropdownItem tag={Link} to="/friends">
+                Friends
               </DropdownItem>
-              <DropdownItem>
-                <a href="/" onClick={handleSignOutClick}>
-                  Sign out
-                </a>
+              <DropdownItem tag={Link} to="/" onClick={handleSignOutClick}>
+                Sign out
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

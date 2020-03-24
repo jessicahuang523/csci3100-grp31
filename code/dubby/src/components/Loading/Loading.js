@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import NavBar from "../Navbar/Navbar";
 import { UserContext } from "../../contexts/UserContext";
+import { Spinner } from "reactstrap";
 
-const Loading = ({ message }) => {
+const Loading = () => {
   const { userData, userLoading } = useContext(UserContext);
 
   if (userLoading || !userData) {
@@ -11,7 +12,16 @@ const Loading = ({ message }) => {
     return (
       <div>
         <NavBar />
-        <h1>{message ? message : "Loading..."}</h1>
+        <div
+          style={{
+            width: "100vw",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center"
+          }}
+        >
+          <Spinner />
+        </div>
       </div>
     );
   }
