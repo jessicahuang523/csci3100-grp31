@@ -14,6 +14,7 @@ import {
 } from "reactstrap";
 import classnames from "classnames";
 import NavBar from "../Navbar/Navbar";
+import UploadImageComponent from "./UploadImageComponent";
 
 const GymPage = () => {
   const [activeTab, setActiveTab] = useState("1");
@@ -67,9 +68,13 @@ const GymPage = () => {
         <TabPane tabId="1">
           <Row>
             <Col sm="12">
+              <UploadImageComponent key={1} imageName={'University Gym'}/>
               <GymListItem gymName="University Gym" />
+              <UploadImageComponent key={2} imageName={'New Asia College'}/>
               <GymListItem gymName="New Asia College" />
+              <UploadImageComponent key={3} imageName={'Shaw College'}/>
               <GymListItem gymName="Shaw College" />
+              <UploadImageComponent key={4} imageName={'United College'}/>
               <GymListItem gymName="United College" />
             </Col>
           </Row>

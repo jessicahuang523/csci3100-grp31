@@ -159,7 +159,7 @@ ul {
 .gym-list-item {
   display: grid;
   grid-template-columns: 15rem 15rem;
-  height: 3rem;
+  height: 16rem;
 }
 
 .gym-list-item:hover > .gym-list-title h3 {
@@ -167,7 +167,7 @@ ul {
 }
 
 .gym-list-item > .gym-detail {
-  opacity: 0;
+  opacity: 1;
 }
 
 .gym-list-item:hover > .gym-detail {
