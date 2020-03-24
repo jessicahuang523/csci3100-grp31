@@ -54,7 +54,7 @@ const EventCard = ({ eid }) => {
     return <LoadingEventCard />;
   } else {
     return (
-      <Card body>
+      <Card body style={{ marginBottom: "1rem" }}>
         <CardTitle>{eventData.eventName}</CardTitle>
         <CardSubtitle>{eventData.location}</CardSubtitle>
         <CardText>

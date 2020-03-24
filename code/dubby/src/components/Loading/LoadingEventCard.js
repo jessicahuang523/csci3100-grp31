@@ -1,11 +1,18 @@
 import React from "react";
+import { Card } from "reactstrap";
 
 const LoadingEventCard = () => {
   return (
-    <div
-      className="event-card"
-      style={{ height: "200px", backgroundColor: "#eee" }}
-    ></div>
+    <Card
+      body
+      inverse
+      style={{
+        backgroundColor: "#eee",
+        height: "200px",
+        border: "none",
+        marginBottom: "1rem"
+      }}
+    ></Card>
   );
 };
 

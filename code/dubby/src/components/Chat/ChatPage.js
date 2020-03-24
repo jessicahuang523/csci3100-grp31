@@ -5,6 +5,7 @@ import ChatCard from "./ChatCard";
 import { UserContext } from "../../contexts/UserContext";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
+import { Jumbotron } from "reactstrap";
 
 const ChatPage = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -37,16 +38,12 @@ const ChatPage = () => {
     return (
       <div>
         <Navbar />
-        <header>
+        <Jumbotron>
           <h1>Chats</h1>
-        </header>
-        {chatList && chatList.length > 0 && (
-          <ul>
-            {chatList.map(chat => (
-              <ChatCard key={chat.cid} cid={chat.cid} />
-            ))}
-          </ul>
-        )}
+        </Jumbotron>
+        {chatList &&
+          chatList.length > 0 &&
+          chatList.map(chat => <ChatCard key={chat.cid} cid={chat.cid} />)}
       </div>
     );
   }
