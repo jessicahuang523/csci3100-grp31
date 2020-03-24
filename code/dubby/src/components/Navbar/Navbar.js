@@ -22,7 +22,7 @@ const NavBar = () => {
   const handleSignOutClick = () => auth().signOut();
 
   return (
-    <Navbar color="light" light expand="md">
+    <Navbar color="light" light expand="sm">
       <NavbarBrand tag={Link} to="/">
         Dubby
       </NavbarBrand>
