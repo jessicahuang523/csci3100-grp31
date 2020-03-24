@@ -19,6 +19,8 @@ const NavBar = () => {
 
   const toggle = () => setIsOpen(!isOpen);
 
+  const handleSignOutClick = () => auth().signOut();
+
   return (
     <Navbar color="light" light expand="md">
       <NavbarText>
@@ -30,24 +32,16 @@ const NavBar = () => {
       <Collapse isOpen={isOpen} navbar>
         <Nav className="mr-auto" navbar>
           <NavItem>
-            <Link className="menu-link" to="/">
-              Home
-            </Link>
+            <Link to="/">Home</Link>
           </NavItem>
           <NavItem>
-            <Link className="menu-link" to="/e">
-              Events
-            </Link>
+            <Link to="/e">Events</Link>
           </NavItem>
           <NavItem>
-            <Link className="menu-link" to="/c">
-              Chat
-            </Link>
+            <Link to="/c">Chat</Link>
           </NavItem>
           <NavItem>
-            <Link className="menu-link" to="/g">
-              Gym
-            </Link>
+            <Link to="/g">Gym</Link>
           </NavItem>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
@@ -55,28 +49,13 @@ const NavBar = () => {
             </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem>
-                <Link className="menu-link" to="/u">
-                  Profile
-                </Link>
-              </DropdownItem>
-              {/* <DropdownItem>
-                <Link className="menu-link" to="/settings">
-                  Settings
-                </Link>
-              </DropdownItem> */}
-              <DropdownItem>
-                <Link className="menu-link" to="/friends">
-                  Friends
-                </Link>
+                <Link to="/u">Profile</Link>
               </DropdownItem>
               <DropdownItem>
-                <a
-                  href="/"
-                  className="menu-link"
-                  onClick={() => {
-                    auth().signOut();
-                  }}
-                >
+                <Link to="/friends">Friends</Link>
+              </DropdownItem>
+              <DropdownItem>
+                <a href="/" onClick={handleSignOutClick}>
                   Sign out
                 </a>
               </DropdownItem>
