@@ -9,6 +9,7 @@ import { Input, Select, Tooltip, Button } from "antd";
 import { InfoCircleOutlined, UserOutlined } from "@ant-design/icons";
 
 import "./ProfilePage.css";
+import { sendFriendRequest } from "../../utilityfunctions/Utilities";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -71,6 +72,11 @@ const ProfilePage = () => {
               style={{ width: "300px", borderRadius: "150px" }}
             />
           </div>
+          {uid && uid !== auth().currentUser.uid && (
+            <Button onClick={() => sendFriendRequest({ targetUid: uid })}>
+              add friend
+            </Button>
+          )}
           {isEditable ? (
             <Button type={"primary"} onClick={() => persistProfileData()}>
               Save
