@@ -150,3 +150,89 @@ export const addParticipantToEvent = async ({ eid, uid, status }) => {
     }
   }
 };
+
+// sends friend request and writes friend data in sent_friend_request of user,
+// writes user data in received_friend_request of target
+// this now makes sure request is sent only once
+export const sendFriendRequest = async ({ targetUid }) => {
+  if (auth().currentUser && targetUid) {
+    const { uid } = auth().currentUser;
+    const userDataRef = firestore()
+      .collection("user_profile")
+      .doc(uid);
+    const targetDataRef = firestore()
+      .collection("user_profile")
+      .doc(targetUid);
+    const userDataSnap = await userDataRef.get();
+    const targetDataSnap = await targetDataRef.get();
+    if (userDataSnap.exists && targetDataSnap.exists) {
+      const friendRequestSnap = await userDataRef
+        .collection("sent_friend_requests")
+        .doc(targetUid)
+        .get();
+      if (!friendRequestSnap.exists) {
+        const time = Date.now();
+        {
+          const { username, uid } = targetDataSnap.data();
+          await userDataRef
+            .collection("sent_friend_requests")
+            .doc(targetUid)
+            .set({ username, uid, time });
+        }
+        {
+          const { username, uid } = userDataSnap.data();
+          await targetDataRef
+            .collection("received_friend_requests")
+            .doc(uid)
+            .set({ username, uid, time });
+        }
+      }
+    }
+  }
+};
+
+// accepts friend request and moves user data from request to friend_list
+export const acceptFriendRequest = async ({ targetUid }) => {
+  if (auth().currentUser && targetUid) {
+    const { uid } = auth().currentUser;
+    const userDataRef = firestore()
+      .collection("user_profile")
+      .doc(uid);
+    const targetDataRef = firestore()
+      .collection("user_profile")
+      .doc(targetUid);
+    const userDataSnap = await userDataRef.get();
+    const targetDataSnap = await targetDataRef.get();
+    if (userDataSnap.exists && targetDataSnap.exists) {
+      const time = Date.now();
+      {
+        const { username, uid } = targetDataSnap.data();
+        const friendRequestRef = userDataRef
+          .collection("received_friend_requests")
+          .doc(targetUid);
+        const friendRequestSnap = await friendRequestRef.get();
+        if (friendRequestSnap.exists) {
+          await friendRequestRef.delete();
+          await userDataRef
+            .collection("friend_list")
+            .doc(targetUid)
+            .set({ username, uid, time });
+        }
+      }
+      {
+        const { username, uid } = userDataSnap.data();
+        const friendRequestRef = targetDataRef
+          .collection("sent_friend_requests")
+          .doc(uid);
+        const friendRequestSnap = await friendRequestRef.get();
+        if (friendRequestSnap.exists) {
+          await friendRequestRef.delete();
+          await targetDataRef
+            .collection("friend_list")
+            .doc(uid)
+            .set({ username, uid, time });
+        }
+      }
+    }
+  }
+};

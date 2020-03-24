@@ -1,11 +1,18 @@
 import React from "react";
+import { Card } from "reactstrap";
 
 const LoadingChatCard = () => {
   return (
-    <li
-      className="chat-short-container"
-      style={{ height: "150px", backgroundColor: "#eee" }}
-    ></li>
+    <Card
+      body
+      inverse
+      style={{
+        backgroundColor: "#eee",
+        height: "100px",
+        border: "none",
+        marginBottom: "1rem"
+      }}
+    ></Card>
   );
 };
 

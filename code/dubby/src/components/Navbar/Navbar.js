@@ -11,7 +11,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText
+  NavbarBrand
 } from "reactstrap";
 
 const NavBar = () => {
@@ -19,66 +19,38 @@ const NavBar = () => {
 
   const toggle = () => setIsOpen(!isOpen);
 
+  const handleSignOutClick = () => auth().signOut();
+
   return (
-    <Navbar color="light" light expand="md">
-      <NavbarText>
-        <Link to="/">
-          <b>Dubby</b>
-        </Link>
-      </NavbarText>
+    <Navbar color="light" light expand="sm">
+      <NavbarBrand tag={Link} to="/">
+        Dubby
+      </NavbarBrand>
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
         <Nav className="mr-auto" navbar>
-          <NavItem>
-            <Link className="menu-link" to="/">
-              Home
-            </Link>
+          <NavItem tag={Link} to="/e">
+            Events
           </NavItem>
-          <NavItem>
-            <Link className="menu-link" to="/e">
-              Events
-            </Link>
+          <NavItem tag={Link} to="/c">
+            Chat
           </NavItem>
-          <NavItem>
-            <Link className="menu-link" to="/c">
-              Chat
-            </Link>
-          </NavItem>
-          <NavItem>
-            <Link className="menu-link" to="/g">
-              Gym
-            </Link>
+          <NavItem tag={Link} to="/g">
+            Gym
           </NavItem>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
               Menu
             </DropdownToggle>
             <DropdownMenu right>
-              <DropdownItem>
-                <Link className="menu-link" to="/u">
-                  Profile
-                </Link>
+              <DropdownItem tag={Link} to="/u">
+                Profile
               </DropdownItem>
-              {/* <DropdownItem>
-                <Link className="menu-link" to="/settings">
-                  Settings
-                </Link>
-              </DropdownItem> */}
-              <DropdownItem>
-                <Link className="menu-link" to="/friends">
-                  Friends
-                </Link>
+              <DropdownItem tag={Link} to="/friends">
+                Friends
               </DropdownItem>
-              <DropdownItem>
-                <a
-                  href="/"
-                  className="menu-link"
-                  onClick={() => {
-                    auth().signOut();
-                  }}
-                >
-                  Sign out
-                </a>
+              <DropdownItem tag={Link} to="/" onClick={handleSignOutClick}>
+                Sign out
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>

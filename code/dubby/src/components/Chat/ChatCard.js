@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { firestore } from "firebase";
 import LoadingChatCard from "../Loading/LoadingChatCard";
+import { Card, CardHeader, CardText, CardBody } from "reactstrap";
 
 const ChatCard = ({ cid }) => {
   const [chatData, setChatData] = useState();
@@ -29,23 +30,19 @@ const ChatCard = ({ cid }) => {
     return <LoadingChatCard />;
   } else {
     return (
-      <li className="chat-short-container">
-        <Link to={`/c/${cid}`}>
-          <span className="chat-short-icon">
-            <i className={chatData.icon}></i>
-          </span>
-          <span className="chat-short-detail">
-            <div>
-              <b>{chatData.title}</b>
-              <p>
-                {chatMessages
-                  ? `${chatMessages.sender.username}: ${chatMessages.text}`
-                  : "Wow, such empty"}
-              </p>
-            </div>
-          </span>
-        </Link>
-      </li>
+      <Card tag={Link} to={`/c/${cid}`} style={{ marginBottom: "1rem" }}>
+        <CardHeader>
+          <i className={chatData.icon}></i>
+          {chatData.title}
+        </CardHeader>
+        <CardBody>
+          <CardText>
+            {chatMessages
+              ? `${chatMessages.sender.username}: ${chatMessages.text}`
+              : "Wow, such empty"}
+          </CardText>
+        </CardBody>
+      </Card>
     );
   }
 };

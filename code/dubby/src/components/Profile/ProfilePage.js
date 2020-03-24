@@ -6,9 +6,10 @@ import { UserContext } from "../../contexts/UserContext";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import { Input, Select, Tooltip, Button } from "antd";
-import { InfoCircleOutlined, UserOutlined } from '@ant-design/icons';
+import { InfoCircleOutlined, UserOutlined } from "@ant-design/icons";
 
-import './ProfilePage.css'
+import "./ProfilePage.css";
+import { sendFriendRequest } from "../../utilityfunctions/Utilities";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -24,10 +25,10 @@ const ProfilePage = () => {
   useEffect(() => {
     if (userData) {
       const profileDataRef = firestore()
-          .collection("user_profile")
-          .doc(uid ? uid : auth().currentUser.uid);
+        .collection("user_profile")
+        .doc(uid ? uid : auth().currentUser.uid);
       const unsubscribeProfileData = profileDataRef.onSnapshot(snap =>
-          setProfileData(snap.data())
+        setProfileData(snap.data())
       );
       return () => {
         unsubscribeProfileData();
@@ -42,9 +43,9 @@ const ProfilePage = () => {
   async function persistProfileData() {
     enableEditProfile();
     await firestore()
-        .collection("user_profile")
-        .doc(uid ? uid : auth().currentUser.uid)
-        .set(profileData);
+      .collection("user_profile")
+      .doc(uid ? uid : auth().currentUser.uid)
+      .set(profileData);
   }
 
   function updateProfileData(key, value) {
@@ -62,7 +63,7 @@ const ProfilePage = () => {
     return (
       <div>
         <NavBar />
-        <div className="main-container">
+        <div className="profile">
           <div style={{ textAlign: "center" }}>
             <img
               src={self}
@@ -71,40 +72,67 @@ const ProfilePage = () => {
               style={{ width: "300px", borderRadius: "150px" }}
             />
           </div>
-          {isEditable
-              ? <Button type={'primary'} onClick={() => persistProfileData()}>Save</Button>
-              : <Button type={'dashed'} onClick={() => enableEditProfile()}>Edit</Button>
-          }
+          {uid && uid !== auth().currentUser.uid && (
+            <Button onClick={() => sendFriendRequest({ targetUid: uid })}>
+              add friend
+            </Button>
+          )}
+          {isEditable ? (
+            <Button type={"primary"} onClick={() => persistProfileData()}>
+              Save
+            </Button>
+          ) : (
+            <Button type={"dashed"} onClick={() => enableEditProfile()}>
+              Edit
+            </Button>
+          )}
           <h4 style={{ marginTop: "50px" }}>Username:</h4>
           <Input
-              disabled={!isEditable}
-              onChange={(event) => updateProfileData('username', event.target.value)}
-              value={profileData.username}
-              prefix={<UserOutlined className="site-form-item-icon" />}
-              suffix={
-                <Tooltip title="Username Input">
-                  <InfoCircleOutlined style={{ color: 'rgba(0,0,0,.45)' }} />
-                </Tooltip>
-              }
+            disabled={!isEditable}
+            onChange={event =>
+              updateProfileData("username", event.target.value)
+            }
+            value={profileData.username}
+            prefix={<UserOutlined className="site-form-item-icon" />}
+            suffix={
+              <Tooltip title="Username Input">
+                <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
+              </Tooltip>
+            }
           />
           <hr />
           <h4 style={{ marginTop: "50px" }}>Personal Description:</h4>
-          <TextArea disabled={!isEditable} onChange={(event) => updateProfileData('description', event.target.value)} value={profileData.description} />
+          <TextArea
+            disabled={!isEditable}
+            onChange={event =>
+              updateProfileData("description", event.target.value)
+            }
+            value={profileData.description}
+          />
           <hr />
           <h4 style={{ marginTop: "50px" }}>University:</h4>
-          <Input disabled={!isEditable}
-                 onChange={(event) => updateProfileData('university', event.target.value)}
-                 value={profileData.university}
+          <Input
+            disabled={!isEditable}
+            onChange={event =>
+              updateProfileData("university", event.target.value)
+            }
+            value={profileData.university}
           />
-          <hr/>
+          <hr />
           <h2 style={{ marginTop: "50px" }}>Sports</h2>
           <Input.Group compact>
-            <Select disabled={!isEditable} defaultValue={profileData.interested_sports || 'Select your sport...'} onChange={(value) => updateProfileData('interested_sports', value)}>
+            <Select
+              disabled={!isEditable}
+              defaultValue={
+                profileData.interested_sports || "Select your sport..."
+              }
+              onChange={value => updateProfileData("interested_sports", value)}
+            >
               <Option value="Football">Football</Option>
               <Option value="Waterpolo">Waterpolo</Option>
             </Select>
           </Input.Group>
-          <hr/>
+          <hr />
         </div>
       </div>
     );

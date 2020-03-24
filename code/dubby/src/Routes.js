@@ -9,6 +9,8 @@ import LandingPage from "./components/Landing/LandingPage";
 import MainFeed from "./components/Root/MainFeed";
 import SignupPage from "./components/Landing/SignupPage";
 import AddEvent from "./components/Event/AddEvent";
+import Event from "./components/Event/Event";
+import Friend from "./components/Friend/Friend";
 
 const Routes = () => {
   return (
@@ -16,13 +18,14 @@ const Routes = () => {
       <Switch>
         <Route exact path="/launch" children={<LandingPage />} />
         <Route exact path="/signup" children={<SignupPage />} />
+        <Route exact path="/friends" children={<Friend />} />
         <Route exact path="/" children={<MainFeed />} />
         <Route exact path="/g" children={<GymPage />} />
         <Route exact path="/e" children={<EventPage />} />
         <Route exact path="/c" children={<ChatPage />} />
         <Route exact path="/u" children={<ProfilePage />} />
         <Route exact path="/e/add" children={<AddEvent />} />
-        <Route path="/e/:eid" children={null} />
+        <Route path="/e/:eid" children={<Event />} />
         <Route path="/c/:cid" children={<Chat />} />
         <Route path="/u/:uid" children={<ProfilePage />} />
       </Switch>
