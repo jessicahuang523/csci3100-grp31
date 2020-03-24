@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { firestore, auth } from "firebase";
+import { firestore } from "firebase";
 import LoadingEventCard from "../Loading/LoadingEventCard";
-import { addParticipantToEvent } from "../../utilityfunctions/Utilities";
+import { Link } from "react-router-dom";
 
 const EventCard = ({ eid }) => {
   const [eventData, setEventData] = useState();
@@ -52,7 +52,6 @@ const EventCard = ({ eid }) => {
   if (!eventData || !eventParticipants || !hostUserData) {
     return <LoadingEventCard />;
   } else {
-    const { uid } = auth().currentUser;
     return (
       <div className="event-card">
         <div className="event-description-short">
@@ -60,7 +59,9 @@ const EventCard = ({ eid }) => {
             <i className={`fas ${"fa-basketball-ball"}`}></i>
           </div>
           <div>
-            <h3>{eventData.eventName}</h3>
+            <Link to={`/e/${eventData.eid}`}>
+              <h3>{eventData.eventName}</h3>
+            </Link>
             <p>at {eventData.location}</p>
             <span>
               Starting at {new Date(eventData.startingTime).toLocaleString()}
@@ -70,28 +71,14 @@ const EventCard = ({ eid }) => {
               {eventData.allowedPeople -
                 (eventParticipants.length ? eventParticipants.length : 0)}
             </p>
-            <p>Host: {hostUserData.username}</p>
+            <p>
+              Host:{" "}
+              <Link to={`/u/${hostUserData.uid}`}>{hostUserData.username}</Link>
+            </p>
           </div>
         </div>
         <div className="event-description-actions">
-          {/* <p>Your friends Tom and others are going</p> */}
-          {/* <button>Show more</button> */}
-          {eventParticipants.find(x => x.uid === uid) ? (
-            <p>joined!</p>
-          ) : (
-            <button
-              onClick={async () => {
-                await addParticipantToEvent({
-                  eid: eventData.eid,
-                  uid: auth().currentUser.uid,
-                  status: "joined"
-                });
-                alert("joined!");
-              }}
-            >
-              Join
-            </button>
-          )}
+          <Link to={`/e/${eventData.eid}`}>More/Join</Link>
         </div>
       </div>
     );

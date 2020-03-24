@@ -9,6 +9,7 @@ import LandingPage from "./components/Landing/LandingPage";
 import MainFeed from "./components/Root/MainFeed";
 import SignupPage from "./components/Landing/SignupPage";
 import AddEvent from "./components/Event/AddEvent";
+import Event from "./components/Event/Event";
 
 const Routes = () => {
   return (
@@ -22,7 +23,7 @@ const Routes = () => {
         <Route exact path="/c" children={<ChatPage />} />
         <Route exact path="/u" children={<ProfilePage />} />
         <Route exact path="/e/add" children={<AddEvent />} />
-        <Route path="/e/:eid" children={null} />
+        <Route path="/e/:eid" children={<Event />} />
         <Route path="/c/:cid" children={<Chat />} />
         <Route path="/u/:uid" children={<ProfilePage />} />
       </Switch>
