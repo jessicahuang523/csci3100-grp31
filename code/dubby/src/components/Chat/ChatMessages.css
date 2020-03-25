@@ -1,0 +1,16 @@
+.chat-bubble {
+    height: auto;
+    width: 40%;
+    margin: 40px;
+    border-radius: 15px;
+}
+
+.chat-text {
+    display: inline-block;
+    background-color: lightblue;
+    padding: 8px 15px;
+    text-align: left;
+    line-height: 1.5em;
+    vertical-align: middle;
+    
+}

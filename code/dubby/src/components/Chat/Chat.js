@@ -4,6 +4,8 @@ import { firestore, auth } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
+import {Container, Row, Col} from 'reactstrap';
+import './ChatMessages.css';
 
 export const Chat = () => {
   const { cid } = useParams();
@@ -110,37 +112,60 @@ export const Chat = () => {
             <i className={chatData.icon}></i> {chatData.title}
           </h1>
         </header>
-        <h1>chatParticipants</h1>
-        <ul>
-          {chatParticipants &&
-            chatParticipants.map(p => (
-              <li key={p.uid}>
-                {p.username} [uid: {p.uid}]
-              </li>
-            ))}
-        </ul>
-        <h1>chatMessages</h1>
-        <ul>
-          {chatMessages &&
-            chatMessages.length > 0 &&
-            chatMessages.map(message => (
-              <li key={message.created_at}>
-                [{new Date(message.created_at).toLocaleTimeString()}]{" "}
-                {message.sender.username}: {message.text}
-              </li>
-            ))}
-          {chatMessages && chatMessages.length === 0 && (
-            <li>Wow, such empty</li>
-          )}
-        </ul>
-        <form onSubmit={handleSendMessage}>
-          <label>Message</label>
-          <input value={inputMessage} onChange={handleInputChange} />
-          <button type="submit">Send</button>
-        </form>
+        <Container fluid={true}>
+          <Row>
+            <Col sm="4">
+              <h3>Participants</h3>
+              <ul>
+              {chatParticipants &&
+                chatParticipants.map(p => (
+                  <li key={p.uid}>
+                    {p.username} [uid: {p.uid}]
+                  </li>
+                ))}
+            </ul>
+            </Col>
+            <Col sm="8">
+              <h3>Messages</h3>
+              <ul>
+                {chatMessages &&
+                  chatMessages.length > 0 &&
+                  chatMessages.map(message => (
+                    <div key={message.created_at}>
+                      <Message name={message.sender.username}
+                                time={[new Date(message.created_at).toLocaleTimeString()]}
+                                mes={message.text}/>
+                    </div>
+                  ))}
+                {chatMessages && chatMessages.length === 0 && (
+                  <li>Wow, such empty</li>
+                )}
+              </ul>
+              <form onSubmit={handleSendMessage}>
+                <label>Message</label>
+                <input value={inputMessage} onChange={handleInputChange} />
+                <button type="submit">Send</button>
+              </form>
+            </Col>
+          </Row>
+        </Container>
       </div>
     );
   }
+};
+
+const Message = ({name, time, mes}) => {
+  return(
+    <div>
+      <p>{name}</p>
+      <div className="chat-bubble">
+        <div className="chat-text">
+          <p>{mes}</p>
+        </div>
+      </div>
+      <p>{time}</p>
+    </div>
+  );
 };
 
 export default Chat;
