@@ -11,8 +11,10 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarBrand
+  NavbarBrand,
+  Media
 } from "reactstrap";
+import logo from "../../image/Dubby_logo.png";
 
 const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,12 +22,15 @@ const NavBar = () => {
   const handleSignOutClick = () => auth().signOut();
 
   return (<Navbar color="light" light="light" expand="sm">
-    <NavbarBrand tag={Link} to="/">
-      Dubby
-    </NavbarBrand>
+    <img src={logo} style={{
+        width: "200px"
+      }} alt="logo" className="logo"/>
     <NavbarToggler onClick={toggle}/>
     <Collapse isOpen={isOpen} navbar="navbar">
       <Nav className="mr-auto" navbar="navbar">
+        <NavItem tag={Link} to="/">
+          Home
+        </NavItem>
         <NavItem tag={Link} to="/e">
           Events
         </NavItem>
