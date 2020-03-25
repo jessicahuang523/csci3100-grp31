@@ -137,9 +137,6 @@ export const Chat = () => {
                                 mes={message.text}/>
                     </div>
                   ))}
-                {chatMessages && chatMessages.length === 0 && (
-                  <li>Wow, such empty</li>
-                )}
               </ul>
               <form onSubmit={handleSendMessage}>
                 <label>Message</label>
@@ -156,9 +153,9 @@ export const Chat = () => {
 
 const Message = ({name, time, mes}) => {
   return(
-    <div>
+    <div style={{margin: '40px'}}>
       <p>{name}</p>
-      <div className="chat-bubble">
+      <div className="chat-bubble left">
         <div className="chat-text">
           <p>{mes}</p>
         </div>

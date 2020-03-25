@@ -1,16 +1,38 @@
 .chat-bubble {
+    position: relative;
     height: auto;
-    width: 40%;
-    margin: 40px;
-    border-radius: 15px;
+    max-width: 400px;
+    border-radius: .4em;
+   
 }
 
 .chat-text {
-    display: inline-block;
+    border-radius: 15px;
     background-color: lightblue;
-    padding: 8px 15px;
+    display: inline-block;
+    padding-top: 8px;
+    padding-left: 15px;
+    padding-right: 15px;
     text-align: left;
     line-height: 1.5em;
-    vertical-align: middle;
+}
+
+.round {
     
+}
+
+.left:after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 0;
+    top: 50%;
+    bottom: auto;
+    border: 20px solid transparent;
+    border-right-color: lightblue;
+    border-left: 0;
+    border-top: 0;
+    margin-top: -10px;
+    margin-left: -20px;
 }
