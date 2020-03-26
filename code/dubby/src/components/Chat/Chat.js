@@ -4,8 +4,18 @@ import { firestore, auth } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
-import {Container, Row, Col} from 'reactstrap';
-import './ChatMessages.css';
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Button,
+  Jumbotron
+} from "reactstrap";
+import "./ChatMessages.css";
 
 export const Chat = () => {
   const { cid } = useParams();
@@ -107,14 +117,14 @@ export const Chat = () => {
     return (
       <div>
         <Navbar />
-        <header>
+        <Jumbotron>
           <h1>
             <i className={chatData.icon}></i> {chatData.title}
           </h1>
-        </header>
-        <Container fluid={true}>
+        </Jumbotron>
+        <Container>
           <Row>
-            <Col sm="4">
+            {/* <Col sm="4">
               <h3>Participants</h3>
               <ul>
               {chatParticipants &&
@@ -124,25 +134,36 @@ export const Chat = () => {
                   </li>
                 ))}
             </ul>
-            </Col>
-            <Col sm="8">
-              <h3>Messages</h3>
+            </Col> */}
+            <Col sm={12}>
               <ul>
                 {chatMessages &&
                   chatMessages.length > 0 &&
                   chatMessages.map(message => (
-                    <div key={message.created_at}>
-                      <Message name={message.sender.username}
-                                time={[new Date(message.created_at).toLocaleTimeString()]}
-                                mes={message.text}/>
-                    </div>
+                    <Message
+                      key={message.created_at}
+                      name={message.sender.username}
+                      time={[new Date(message.created_at).toLocaleTimeString()]}
+                      mes={message.text}
+                    />
                   ))}
               </ul>
-              <form onSubmit={handleSendMessage}>
-                <label>Message</label>
-                <input value={inputMessage} onChange={handleInputChange} />
-                <button type="submit">Send</button>
-              </form>
+              <Form onSubmit={handleSendMessage}>
+                <FormGroup row>
+                  <Col sm={10}>
+                    <Input
+                      id="message"
+                      placeholder="message"
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                  <Col sm={2}>
+                    <Button type="submit">
+                      <i className="fas fa-paper-plane"></i>
+                    </Button>
+                  </Col>
+                </FormGroup>
+              </Form>
             </Col>
           </Row>
         </Container>
@@ -151,9 +172,9 @@ export const Chat = () => {
   }
 };
 
-const Message = ({name, time, mes}) => {
-  return(
-    <div style={{margin: '40px'}}>
+const Message = ({ name, time, mes }) => {
+  return (
+    <div style={{ margin: "40px" }}>
       <p>{name}</p>
       <div className="chat-bubble left">
         <div className="chat-text">
