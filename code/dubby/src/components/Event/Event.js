@@ -15,6 +15,7 @@ const Event = () => {
   const [eventData, setEventData] = useState();
   const [eventParticipants, setEventParticipants] = useState();
   const [hostUserData, setHostUserData] = useState();
+  const [joinLoading, setJoinLoading] = useState(false);
 
   useEffect(() => {
     if (eid) {
@@ -58,19 +59,20 @@ const Event = () => {
   ]);
 
   const handleJoinButtonClick = async () => {
+    setJoinLoading(true);
     await addParticipantToEvent({
       eid: eventData.eid,
       uid: auth().currentUser.uid,
       status: "joined"
     });
-    alert("joined!");
+    setJoinLoading(false);
   };
 
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
-  } else if (!eventData || !eventParticipants || !hostUserData) {
+  } else if (!eventData || !eventParticipants || !hostUserData || joinLoading) {
     return <Loading />;
   } else {
     const { uid } = auth().currentUser;
