@@ -13,6 +13,7 @@ import {
   sendFriendRequest,
   updateProfileData
 } from "../../utilityfunctions/Utilities";
+import EditProfileImage from "./EditProfileImage";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -66,7 +67,8 @@ const ProfilePage = () => {
       username,
       description,
       interested_sports,
-      university
+      university,
+      profileImageSrc
     } = profileData;
     return (
       <div>
@@ -74,12 +76,17 @@ const ProfilePage = () => {
         <div className="profile">
           <div style={{ textAlign: "center" }}>
             <img
-              src={self}
+              src={profileImageSrc || self}
               alt="self"
-              className="resume-pic"
-              style={{ width: "300px", borderRadius: "150px" }}
+              style={{
+                width: "300px",
+                height: "300px",
+                overflow: "hidden",
+                borderRadius: "150px"
+              }}
             />
           </div>
+          <EditProfileImage />
           <Button type="primary" onClick={() => handleProfileDataSubmit()}>
             Save
           </Button>
@@ -131,7 +138,8 @@ const ProfilePage = () => {
       username,
       description,
       interested_sports,
-      university
+      university,
+      profileImageSrc
     } = profileData;
     return (
       <div>
@@ -139,10 +147,14 @@ const ProfilePage = () => {
         <div className="profile">
           <div style={{ textAlign: "center" }}>
             <img
-              src={self}
+              src={profileImageSrc || self}
               alt="self"
-              className="resume-pic"
-              style={{ width: "300px", borderRadius: "150px" }}
+              style={{
+                width: "300px",
+                height: "300px",
+                overflow: "hidden",
+                borderRadius: "150px"
+              }}
             />
           </div>
           {uid && uid !== auth().currentUser.uid ? (

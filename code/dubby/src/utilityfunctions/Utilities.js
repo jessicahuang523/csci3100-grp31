@@ -1,4 +1,4 @@
-import { firestore, auth } from "firebase";
+import { firestore, auth, storage } from "firebase";
 
 // sets up database for new account
 // should be called upon login, and when user data does not exist
@@ -254,5 +254,31 @@ export const updateProfileData = async ({ profileData }) => {
     if (userDataSnap.exists) {
       await userDataRef.update(profileData);
     }
+  }
+};
+
+// uploads profile image to firebase storage
+// requires imageFile from <input type="file"/>
+// and setUploadProgress() from useState
+// will then update profile data for profileImageSrc
+export const uploadProfileImage = async ({ imageFile, setUploadProgress }) => {
+  if (auth().currentUser && imageFile) {
+    const { uid } = auth().currentUser;
+    const storageRef = storage()
+      .ref("profile_image")
+      .child(uid + imageFile.name);
+    const uploadTask = storageRef.put(imageFile);
+    const progress = snap =>
+      setUploadProgress(100 * (snap.bytesTransferred / snap.totalBytes));
+    const error = e => console.log(e.message);
+    const complete = async () => {
+      const profileImageSrc = await (await uploadTask).ref.getDownloadURL();
+      await firestore()
+        .collection("user_profile")
+        .doc(uid)
+        .update({ profileImageSrc });
+      console.log("Uploaded profile image, available at", profileImageSrc);
+    };
+    uploadTask.on("state_changed", progress, error, complete);
   }
 };
