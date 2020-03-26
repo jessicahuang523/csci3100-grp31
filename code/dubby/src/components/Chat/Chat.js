@@ -10,7 +10,6 @@ import {
   Col,
   Form,
   FormGroup,
-  Label,
   Input,
   Button,
   Jumbotron
@@ -154,6 +153,7 @@ export const Chat = () => {
                     <Input
                       id="message"
                       placeholder="message"
+                      value={inputMessage}
                       onChange={handleInputChange}
                     />
                   </Col>
