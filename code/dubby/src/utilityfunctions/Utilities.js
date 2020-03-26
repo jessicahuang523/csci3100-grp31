@@ -236,3 +236,23 @@ export const acceptFriendRequest = async ({ targetUid }) => {
     }
   }
 };
+
+// updates profile data given profileData
+// only updates if profileData belongs to current user
+// no verification on data types yet
+export const updateProfileData = async ({ profileData }) => {
+  if (
+    auth().currentUser &&
+    profileData &&
+    profileData.uid === auth().currentUser.uid
+  ) {
+    const { uid } = auth().currentUser;
+    const userDataRef = firestore()
+      .collection("user_profile")
+      .doc(uid);
+    const userDataSnap = await userDataRef.get();
+    if (userDataSnap.exists) {
+      await userDataRef.update(profileData);
+    }
+  }
+};
