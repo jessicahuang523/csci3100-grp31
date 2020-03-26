@@ -1,8 +1,20 @@
 import React, { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { auth } from "firebase";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-import { GoogleLoginButton } from "react-social-login-buttons";
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Jumbotron,
+  Card,
+  CardHeader,
+  CardBody,
+  Row,
+  Col,
+  Media
+} from "reactstrap";
 import logo from "../../image/Dubby_logo.png";
 import { devSetupAccount } from "../../devutil";
 import { UserContext } from "../../contexts/UserContext";
@@ -15,21 +27,19 @@ const LandingPage = () => {
   const [inputEmail, setInputEmail] = useState();
   const [inputPassword, setInputPassword] = useState();
 
-  const [alertSignin, setAlertSignin] = useState();
+  const [alertSignin, setAlertSignin] = useState("Sign in!");
 
   const handleEmailLoginFormSubmit = async e => {
     e.preventDefault();
-    setAlertSignin(null);
+    setAlertSignin("Sign in!");
     if (/\S+@\S+\.\S+/.test(inputEmail) && inputPassword !== "") {
       try {
         await auth().signInWithEmailAndPassword(inputEmail, inputPassword);
       } catch (error) {
-        setAlertSignin(
-          "credentials aren't correct, check your email or password@@"
-        );
+        setAlertSignin("Please check your email or password!");
       }
     } else {
-      setAlertSignin("input must match email and password!");
+      setAlertSignin("Input must match email and password!");
     }
   };
 
@@ -48,63 +58,78 @@ const LandingPage = () => {
         });
       });
 
+  const handleGoogleLogin = () => {
+    auth().signInWithPopup(new auth.GoogleAuthProvider());
+  };
+
   if (userLoading) {
     return <Loading />;
   } else if (userData) {
     return <Redirect to="/" />;
   } else {
     return (
-      <div className="page">
-        <div className="landing-container">
-          <header>
-            <img
-              src={logo}
-              style={{ width: "300px" }}
-              alt="logo"
-              className="landing-logo"
-            />
-            <p>buddy dubby dubby buddy</p>
-          </header>
-          <Form
-            onSubmit={handleEmailLoginFormSubmit}
-            className="login-form-landing"
-          >
-            <FormGroup>
-              <Label for="email">Email</Label>
-              <Input
-                placeholder="account@example.com"
-                type="email"
-                onChange={e => setInputEmail(e.target.value)}
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="password">Password</Label>
-              <Input
-                placeholder="password"
-                type="password"
-                onChange={e => setInputPassword(e.target.value)}
-              />
-            </FormGroup>
-            {alertSignin && <Label>{alertSignin}</Label>}
-            <Button className="btn-lg btn-dark btn-block" type="submit">
-              Login
-            </Button>
-          </Form>
-          <div className="text-center pt-3">No account?</div>
-          <Link to="/signup">
-            <Button color="primary" className="btn-lg btn-block" type="submit">
-              Sign Up
-            </Button>
-          </Link>
-          <div className="text-center pt-3">Or Sign in with Google</div>
-          <GoogleLoginButton className="mt-3 mb-3" />
-          <div className="text-center pt-3">
-            <Link to="/forgotpassword">Forgot Password?</Link>
-          </div>
-          <Button onClick={handleDevLogin}>
-            totally for development use anonymous sign in button
-          </Button>
-        </div>
+      <div>
+        <Jumbotron>
+          <Media src={logo} style={{ width: "10rem" }} />
+          <hr />
+          <p>buddy dubby dubby buddy</p>
+        </Jumbotron>
+        <Row>
+          <Col sm={{ size: 6, offset: 3 }}>
+            <Card>
+              <CardHeader>{alertSignin}</CardHeader>
+              <CardBody>
+                <Form onSubmit={handleEmailLoginFormSubmit}>
+                  <FormGroup>
+                    <Label for="email">Email</Label>
+                    <Input
+                      id="email"
+                      placeholder="account@example.com"
+                      type="email"
+                      required
+                      onChange={e => setInputEmail(e.target.value)}
+                    />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label for="password">Password</Label>
+                    <Input
+                      id="password"
+                      placeholder="password"
+                      type="password"
+                      required
+                      onChange={e => setInputPassword(e.target.value)}
+                    />
+                  </FormGroup>
+                  <Button size="lg" block color="primary" type="submit">
+                    Login
+                  </Button>
+                  <Button
+                    size="lg"
+                    block
+                    color="secondary"
+                    tag={Link}
+                    to="/signup"
+                  >
+                    Sign Up
+                  </Button>
+                  <hr />
+                  <Button
+                    size="lg"
+                    block
+                    color="danger"
+                    onClick={handleGoogleLogin}
+                  >
+                    <i className="fab fa-google"></i> Login With Google
+                  </Button>
+                  <hr />
+                  <Button size="sm" block onClick={handleDevLogin}>
+                    Dev
+                  </Button>
+                </Form>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </div>
     );
   }
