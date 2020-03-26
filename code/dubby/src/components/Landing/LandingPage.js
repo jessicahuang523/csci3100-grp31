@@ -100,25 +100,14 @@ const LandingPage = () => {
                       onChange={e => setInputPassword(e.target.value)}
                     />
                   </FormGroup>
-                  <Button size="lg" block color="primary" type="submit">
+                  <Button block color="primary" type="submit">
                     Login
                   </Button>
-                  <Button
-                    size="lg"
-                    block
-                    color="secondary"
-                    tag={Link}
-                    to="/signup"
-                  >
+                  <Button block color="secondary" tag={Link} to="/signup">
                     Sign Up
                   </Button>
                   <hr />
-                  <Button
-                    size="lg"
-                    block
-                    color="danger"
-                    onClick={handleGoogleLogin}
-                  >
+                  <Button block color="danger" onClick={handleGoogleLogin}>
                     <i className="fab fa-google"></i> Login With Google
                   </Button>
                   <hr />
