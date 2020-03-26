@@ -1,76 +1,60 @@
-import React, {useEffect, useState} from 'react';
-import {Button} from "antd";
-import { storage } from '../../index.js';
-import './UploadImageComponent.css'
-
+import React, { useEffect, useState } from "react";
+import { Button } from "antd";
+import { storage } from "firebase";
+import "./UploadImageComponent.css";
 
 const UploadImageComponent = ({ imageName }) => {
+  const [image, setImage] = useState(null);
+  const [url, setUrl] = useState(false);
 
-    const [image, setImage] = useState(null);
-    const [url, setUrl] = useState(false);
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        const result = await storage()
+          .ref(`gym_images`)
+          .child(imageName)
+          .getDownloadURL();
+        setUrl(result);
+      } catch (e) {}
+    };
+    fetchImage();
+  }, [imageName]);
 
-    useEffect(() => {
-        const fetchImage = async () => {
-            try {
-                const result = await storage
-                    .ref(`gym_images`)
-                    .child(imageName)
-                    .getDownloadURL();
-                setUrl(result);
-            } catch (e) {
-
-            }
-        };
-        fetchImage();
-    }, []);
-
-    async function uploadImage() {
-        if(image) {
-            const progress = (snapshot) => {
-
-            };
-            const error = (err) => {
-                //console.error(err)
-            }
-            const complete = () => {
-                storage
-                    .ref(`gym_images`)
-                    .child(imageName)
-                    .getDownloadURL()
-                    .then(urlResponse => {
-                        console.log(urlResponse);
-                        setUrl(urlResponse)
-                    })
-            }
-            const uploadTask = storage.ref(`gym_images/${imageName}`).put(image)
-            await uploadTask.on('state_changed', progress, error, complete)
-        }
+  const uploadImage = async () => {
+    if (image) {
+      const progress = () => {};
+      const error = () => {};
+      const complete = async () => {
+        const urlResponse = await storage()
+          .ref(`gym_images`)
+          .child(imageName)
+          .getDownloadURL();
+        console.log(urlResponse);
+        setUrl(urlResponse);
+      };
+      const uploadTask = storage.ref(`gym_images/${imageName}`).put(image);
+      uploadTask.on("state_changed", progress, error, complete);
     }
+  };
 
-    function addImage(event) {
-        const newImage = event.target.files[0];
-        if(newImage) {
-            setImage(newImage)
-        }
+  const addImage = event => {
+    const newImage = event.target.files[0];
+    if (newImage && newImage) {
+      setImage(newImage);
     }
+  };
 
-
-    return (
-        <div id={'uploadDiv'}>
-        <input type={'file'} onChange={addImage}/>
-            <Button
-                type="primary"
-                shape="round"
-                onClick={uploadImage}
-            >
-                Upload
-            </Button>
-            {url
-                ? <img className={'displayImage-container'} src={url} />
-                : null
-            }
-        </div>
-    )
+  return (
+    <div id="uploadDiv">
+      <input type="file" onChange={addImage} />
+      <Button type="primary" shape="round" onClick={uploadImage}>
+        Upload
+      </Button>
+      {url ? (
+        <img className="displayImage-container" src={url} alt={imageName} />
+      ) : null}
+    </div>
+  );
 };
 
-export default UploadImageComponent
+export default UploadImageComponent;

@@ -9,7 +9,6 @@ import "antd/dist/antd.css";
 import "./css/index.css";
 
 firebase.initializeApp(firebaseConfig);
-const storage = firebase.storage();
 
 ReactDOM.render(<App />, document.getElementById("root"));
 
@@ -17,6 +16,3 @@ ReactDOM.render(<App />, document.getElementById("root"));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
-export {
-    storage
-}
