@@ -58,10 +58,6 @@ const LandingPage = () => {
         });
       });
 
-  const handleGoogleLogin = () => {
-    auth().signInWithPopup(new auth.GoogleAuthProvider());
-  };
-
   if (userLoading) {
     return <Loading />;
   } else if (userData) {
@@ -107,11 +103,7 @@ const LandingPage = () => {
                     Sign Up
                   </Button>
                   <hr />
-                  <Button block color="danger" onClick={handleGoogleLogin}>
-                    <i className="fab fa-google"></i> Login With Google
-                  </Button>
-                  <hr />
-                  <Button size="sm" block onClick={handleDevLogin}>
+                  <Button color="danger" size="sm" onClick={handleDevLogin}>
                     Dev
                   </Button>
                 </Form>
