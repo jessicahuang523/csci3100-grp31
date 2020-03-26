@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "antd";
+import { Button, Input } from "antd";
 import { storage } from "firebase";
 import "./UploadImageComponent.css";
 
@@ -37,16 +37,20 @@ const UploadImageComponent = ({ imageName }) => {
     }
   };
 
-  const addImage = event => {
-    const newImage = event.target.files[0];
-    if (newImage && newImage) {
+  const addImage = e => {
+    const newImage = e.target.files[0];
+    if (newImage) {
       setImage(newImage);
     }
   };
 
   return (
     <div id="uploadDiv">
-      <input type="file" onChange={addImage} />
+      <Input
+        type="file"
+        accept="image/x-png,image/gif,image/jpeg"
+        onChange={addImage}
+      />
       <Button type="primary" shape="round" onClick={uploadImage}>
         Upload
       </Button>
