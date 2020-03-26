@@ -25,11 +25,11 @@ const SignupPage = () => {
   const [inputEmail, setInputEmail] = useState();
   const [inputPassword, setInputPassword] = useState();
 
-  const [alertSignin, setAlertSignin] = useState("Sign in!");
+  const [alertSignin, setAlertSignin] = useState("Sign up!");
 
   const handleSignUpFormSubmit = async e => {
     e.preventDefault();
-    setAlertSignin("Sign up!");
+    setAlertSignin("Loading...");
     if (/\S+@\S+\.\S+/.test(inputEmail) && inputPassword !== "") {
       try {
         await auth().createUserWithEmailAndPassword(inputEmail, inputPassword);

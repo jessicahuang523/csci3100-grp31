@@ -31,7 +31,7 @@ const LandingPage = () => {
 
   const handleEmailLoginFormSubmit = async e => {
     e.preventDefault();
-    setAlertSignin("Sign in!");
+    setAlertSignin("Loading...");
     if (/\S+@\S+\.\S+/.test(inputEmail) && inputPassword !== "") {
       try {
         await auth().signInWithEmailAndPassword(inputEmail, inputPassword);
