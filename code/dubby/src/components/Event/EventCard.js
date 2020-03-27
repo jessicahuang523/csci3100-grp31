@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { firestore } from "firebase";
+import { firestore, auth } from "firebase";
 import LoadingEventCard from "../Loading/LoadingEventCard";
 import { Link } from "react-router-dom";
 import { Card, CardTitle, CardSubtitle, CardText, Button } from "reactstrap";
@@ -48,21 +48,24 @@ const EventCard = ({ eid }) => {
   if (!eventData || !eventParticipants || !hostUserData) {
     return <LoadingEventCard />;
   } else {
+    const { eventName, location, startingTime, allowedPeople, eid } = eventData;
+    const { uid } = auth().currentUser;
     return (
       <Card body style={{ marginBottom: "1rem" }}>
-        <CardTitle>{eventData.eventName}</CardTitle>
-        <CardSubtitle>{eventData.location}</CardSubtitle>
+        <CardTitle>{eventName}</CardTitle>
+        <CardSubtitle>{location}</CardSubtitle>
         <CardText>
-          Starting at {new Date(eventData.startingTime).toLocaleString()}
+          Starting at {new Date(startingTime).toLocaleString()}
         </CardText>
         <CardText>
           Vacancy:{" "}
-          {eventData.allowedPeople -
+          {allowedPeople -
             (eventParticipants.length ? eventParticipants.length : 0)}
         </CardText>
         <CardText>Hosted by {hostUserData.username}</CardText>
-        <Button tag={Link} to={`/e/${eventData.eid}`}>
-          More/Join
+        <Button tag={Link} to={`/e/${eid}`}>
+          More
+          {eventParticipants.find(p => p.uid === uid) ? " (joined)" : "/Join"}
         </Button>
       </Card>
     );
