@@ -2,11 +2,11 @@
 
 @import url("all.min.css");
 
-/* ChatCard */
-.chat-card {
+.card {
   margin-bottom: 1rem;
 }
 
+/* ChatCard link */
 .chat-card a {
   color: currentColor;
   text-decoration: none;
