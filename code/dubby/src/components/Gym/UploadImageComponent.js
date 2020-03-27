@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Button, Input } from "antd";
+import { Button, Input, Form, Media } from "reactstrap";
 import { storage } from "firebase";
-import "./UploadImageComponent.css";
 
 const UploadImageComponent = ({ imageName }) => {
   const [image, setImage] = useState(null);
@@ -45,17 +44,19 @@ const UploadImageComponent = ({ imageName }) => {
   };
 
   return (
-    <div id="uploadDiv">
-      <Input
-        type="file"
-        accept="image/x-png,image/gif,image/jpeg"
-        onChange={addImage}
-      />
-      <Button type="primary" shape="round" onClick={uploadImage}>
-        Upload
-      </Button>
+    <div>
+      <Form onSubmit={uploadImage}>
+        <Input
+          type="file"
+          accept="image/x-png,image/gif,image/jpeg"
+          onChange={addImage}
+        />
+        <Button color="primary" type="submit" onClick={uploadImage}>
+          Upload
+        </Button>
+      </Form>
       {url ? (
-        <img className="displayImage-container" src={url} alt={imageName} />
+        <Media src={url} alt={imageName} style={{ width: "10rem" }} />
       ) : null}
     </div>
   );

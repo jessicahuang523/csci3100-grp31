@@ -11,11 +11,21 @@ import {
   Card,
   Button,
   CardTitle,
-  CardText
+  CardHeader,
+  CardBody,
+  CardText,
+  CardFooter
 } from "reactstrap";
 import classnames from "classnames";
 import NavBar from "../Navbar/Navbar";
 import UploadImageComponent from "./UploadImageComponent";
+
+const GymData = [
+  { gymName: "University Gym", imageName: "University Gym" },
+  { gymName: "New Asia College", imageName: "New Asia College" },
+  { gymName: "Shaw College", imageName: "Shaw College" },
+  { gymName: "United College", imageName: "United College" }
+];
 
 const GymPage = () => {
   const [activeTab, setActiveTab] = useState("1");
@@ -58,20 +68,19 @@ const GymPage = () => {
           <TabPane tabId="1">
             <Row>
               <Col sm={12}>
-                <UploadImageComponent key={1} imageName="University Gym" />
-                <GymListItem gymName="University Gym" />
-                <UploadImageComponent key={2} imageName="New Asia College" />
-                <GymListItem gymName="New Asia College" />
-                <UploadImageComponent key={3} imageName="Shaw College" />
-                <GymListItem gymName="Shaw College" />
-                <UploadImageComponent key={4} imageName="United College" />
-                <GymListItem gymName="United College" />
+                {GymData.map(({ gymName, imageName }) => (
+                  <GymListItem
+                    key={gymName}
+                    gymName={gymName}
+                    imageName={imageName}
+                  />
+                ))}
               </Col>
             </Row>
           </TabPane>
           <TabPane tabId="2">
             <Row>
-              <Col sm={6}>
+              <Col sm={12}>
                 <Card body>
                   <CardTitle>Special Title Treatment</CardTitle>
                   <CardText>
@@ -98,36 +107,16 @@ const GymPage = () => {
     </div>
   );
 };
-const GymListItem = ({ gymName }) => (
-  <li className="gym-list-item">
-    <span className="gym-list-title">
-      <h3>{gymName}</h3>
-    </span>
-    <span className="gym-detail">
-      <div className="gym-detail-card">
-        <u>Gym</u>
-        <div className="gym-detail-timetable">
-          <ul>
-            <li>Mon-Fri</li>
-            <li>Sat-Sun</li>
-          </ul>
-          <ul>
-            <li>10:00-22:00</li>
-            <li>Closed</li>
-          </ul>
-        </div>
-        <u>Basketball Court</u>
-        <div className="gym-detail-timetable">
-          <ul>
-            <li>Mon-Sun</li>
-          </ul>
-          <ul>
-            <li>7:00-22:00</li>
-          </ul>
-        </div>
-      </div>
-    </span>
-  </li>
-);
+const GymListItem = ({ gymName, imageName }) => {
+  return (
+    <Card>
+      <CardHeader>{gymName}</CardHeader>
+      <CardBody>should pull data from firebase</CardBody>
+      <CardFooter>
+        <UploadImageComponent imageName={imageName} />
+      </CardFooter>
+    </Card>
+  );
+};
 
 export default GymPage;

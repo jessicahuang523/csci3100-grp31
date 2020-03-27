@@ -5,8 +5,7 @@ import * as serviceWorker from "./serviceWorker";
 import firebase from "firebase";
 import { firebaseConfig } from "./firebase-config";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "antd/dist/antd.css";
-import "./css/index.css";
+import "../src/css/all.min.css";
 
 firebase.initializeApp(firebaseConfig);
 
