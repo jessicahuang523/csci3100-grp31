@@ -1,0 +1,48 @@
+/* css/index.css */
+
+@import url("all.min.css");
+
+/* ChatCard */
+.chat-card {
+  margin-bottom: 1rem;
+}
+
+.chat-card a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+/* ChatMessages */
+.chat-bubble {
+  position: relative;
+  height: auto;
+  max-width: 400px;
+  border-radius: 0.4em;
+}
+
+.chat-text {
+  border-radius: 15px;
+  background-color: lightblue;
+  display: inline-block;
+  padding-top: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  text-align: left;
+  line-height: 1.5em;
+}
+
+.left:after {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 0;
+  top: 50%;
+  bottom: auto;
+  border: 20px solid transparent;
+  border-right-color: lightblue;
+  border-left: 0;
+  border-top: 0;
+  margin-top: -10px;
+  margin-left: -20px;
+}

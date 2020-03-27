@@ -6,7 +6,7 @@ import { Card, CardHeader, CardText, CardBody } from "reactstrap";
 
 const ChatCard = ({ cid }) => {
   const [chatData, setChatData] = useState();
-  const [chatMessages, setChatMessages] = useState();
+  const [chatMessage, setChatMessage] = useState();
 
   useEffect(() => {
     const chatRef = firestore()
@@ -15,34 +15,36 @@ const ChatCard = ({ cid }) => {
     const unsubscribeChatData = chatRef.onSnapshot(snap =>
       setChatData(snap.data())
     );
-    const unsubscribeChatMessages = chatRef
+    const unsubscribeChatMessage = chatRef
       .collection("messages")
       .orderBy("created_at")
       .limitToLast(1)
-      .onSnapshot(snap => snap.forEach(doc => setChatMessages(doc.data())));
+      .onSnapshot(snap => snap.forEach(doc => setChatMessage(doc.data())));
     return () => {
       unsubscribeChatData();
-      unsubscribeChatMessages();
+      unsubscribeChatMessage();
     };
   }, [cid]);
 
   if (!chatData) {
     return <LoadingChatCard />;
   } else {
+    const { icon, title } = chatData;
     return (
-      <Card tag={Link} to={`/c/${cid}`} style={{ marginBottom: "1rem" }}>
-        <CardHeader>
-          <i className={chatData.icon}></i>
-          {chatData.title}
-        </CardHeader>
-        <CardBody>
-          <CardText>
-            {chatMessages
-              ? `${chatMessages.sender.username}: ${chatMessages.text}`
-              : "Wow, such empty"}
-          </CardText>
-        </CardBody>
-      </Card>
+      <div className="chat-card">
+        <Card tag={Link} to={`/c/${cid}`}>
+          <CardHeader>
+            <i className={icon}></i> {title}
+          </CardHeader>
+          <CardBody>
+            <CardText>
+              {chatMessage
+                ? `${chatMessage.sender.username}: ${chatMessage.text}`
+                : "Wow, such empty"}
+            </CardText>
+          </CardBody>
+        </Card>
+      </div>
     );
   }
 };

@@ -12,7 +12,8 @@ import {
   DropdownMenu,
   DropdownItem,
   Media,
-  NavbarBrand
+  NavbarBrand,
+  NavLink
 } from "reactstrap";
 import logo from "../../image/Dubby_logo.png";
 
@@ -30,14 +31,20 @@ const NavBar = () => {
       <NavbarToggler onClick={toggle} />
       <Collapse isOpen={isOpen} navbar>
         <Nav className="mr-auto" navbar>
-          <NavItem tag={Link} to="/e">
-            Events
+          <NavItem>
+            <NavLink tag={Link} to="/e">
+              Events
+            </NavLink>
           </NavItem>
-          <NavItem tag={Link} to="/c">
-            Chat
+          <NavItem>
+            <NavLink tag={Link} to="/c">
+              Chat
+            </NavLink>
           </NavItem>
-          <NavItem tag={Link} to="/g">
-            Gym
+          <NavItem>
+            <NavLink tag={Link} to="/g">
+              Gym
+            </NavLink>
           </NavItem>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>

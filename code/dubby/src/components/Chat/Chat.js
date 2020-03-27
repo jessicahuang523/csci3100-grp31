@@ -14,7 +14,6 @@ import {
   Button,
   Jumbotron
 } from "reactstrap";
-import "./ChatMessages.css";
 
 export const Chat = () => {
   const { cid } = useParams();
