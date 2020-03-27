@@ -5,18 +5,12 @@ import { useParams, Redirect } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
-import { Input, Select, Tooltip, Button } from "antd";
-import { InfoCircleOutlined, UserOutlined } from "@ant-design/icons";
-
-import "./ProfilePage.css";
 import {
   sendFriendRequest,
   updateProfileData
 } from "../../utilityfunctions/Utilities";
 import EditProfileImage from "./EditProfileImage";
-
-const { Option } = Select;
-const { TextArea } = Input;
+import { Button, Input, Form, Row, Col } from "reactstrap";
 
 const ProfilePage = () => {
   const { uid } = useParams();
@@ -73,7 +67,7 @@ const ProfilePage = () => {
     return (
       <div>
         <NavBar />
-        <div className="profile">
+        <div>
           <div style={{ textAlign: "center" }}>
             <img
               src={profileImageSrc || self}
@@ -86,48 +80,54 @@ const ProfilePage = () => {
               }}
             />
           </div>
-          <EditProfileImage />
-          <Button type="primary" onClick={() => handleProfileDataSubmit()}>
-            Save
-          </Button>
-          <h2 style={{ marginTop: "50px" }}>Username</h2>
-          <hr />
-          <Input
-            onChange={e => handleProfileDataEdit("username", e.target.value)}
-            value={username}
-            prefix={<UserOutlined className="site-form-item-icon" />}
-            suffix={
-              <Tooltip title="Username Input">
-                <InfoCircleOutlined style={{ color: "rgba(0,0,0,.45)" }} />
-              </Tooltip>
-            }
-          />
-          <h2 style={{ marginTop: "50px" }}>Personal Description</h2>
-          <hr />
-          <TextArea
-            onChange={e => handleProfileDataEdit("description", e.target.value)}
-            value={description}
-          />
-          <h2 style={{ marginTop: "50px" }}>University</h2>
-          <hr />
-          <Input
-            onChange={e => handleProfileDataEdit("university", e.target.value)}
-            value={university}
-          />
-          <h2 style={{ marginTop: "50px" }}>Sports</h2>
-          <hr />
-          <Input.Group compact>
-            <Select
-              defaultValue={interested_sports || "Select your sport..."}
-              onChange={value =>
-                handleProfileDataEdit("interested_sports", value)
-              }
-            >
-              <Option value="Football">Football</Option>
-              <Option value="Waterpolo">Waterpolo</Option>
-            </Select>
-          </Input.Group>
           <br />
+          <Row>
+            <Col sm={{ size: 8, offset: 2 }}>
+              <EditProfileImage />
+              <hr />
+              <Form onSubmit={handleProfileDataSubmit}>
+                <Button block type="submit">
+                  Save
+                </Button>
+                <h2 style={{ marginTop: "50px" }}>Username</h2>
+                <hr />
+                <Input
+                  onChange={e =>
+                    handleProfileDataEdit("username", e.target.value)
+                  }
+                  value={username}
+                />
+                <h2 style={{ marginTop: "50px" }}>Personal Description</h2>
+                <hr />
+                <Input
+                  onChange={e =>
+                    handleProfileDataEdit("description", e.target.value)
+                  }
+                  value={description}
+                />
+                <h2 style={{ marginTop: "50px" }}>University</h2>
+                <hr />
+                <Input
+                  onChange={e =>
+                    handleProfileDataEdit("university", e.target.value)
+                  }
+                  value={university}
+                />
+                <h2 style={{ marginTop: "50px" }}>Sports</h2>
+                <hr />
+                <Input
+                  type="select"
+                  defaultValue={interested_sports || "Select your sport..."}
+                  onChange={value =>
+                    handleProfileDataEdit("interested_sports", value)
+                  }
+                >
+                  <option value="Football">Football</option>
+                  <option value="Waterpolo">Waterpolo</option>
+                </Input>
+              </Form>
+            </Col>
+          </Row>
         </div>
       </div>
     );
@@ -144,7 +144,7 @@ const ProfilePage = () => {
     return (
       <div>
         <NavBar />
-        <div className="profile">
+        <div>
           <div style={{ textAlign: "center" }}>
             <img
               src={profileImageSrc || self}
@@ -157,28 +157,35 @@ const ProfilePage = () => {
               }}
             />
           </div>
-          {uid && uid !== auth().currentUser.uid ? (
-            <Button onClick={() => sendFriendRequest({ targetUid: uid })}>
-              add friend
-            </Button>
-          ) : (
-            <Button type="dashed" onClick={() => toggleIsEditable()}>
-              Edit
-            </Button>
-          )}
-          <h2 style={{ marginTop: "50px" }}>Username</h2>
-          <hr />
-          <p>{username}</p>
-          <h2 style={{ marginTop: "50px" }}>Personal Description</h2>
-          <hr />
-          <p>{description}</p>
-          <h2 style={{ marginTop: "50px" }}>University</h2>
-          <hr />
-          <p>{university}</p>
-          <h2 style={{ marginTop: "50px" }}>Sports</h2>
-          <hr />
-          <p>{interested_sports}</p>
           <br />
+          <Row>
+            <Col sm={{ size: 8, offset: 2 }}>
+              {uid && uid !== auth().currentUser.uid ? (
+                <Button
+                  block
+                  onClick={() => sendFriendRequest({ targetUid: uid })}
+                >
+                  Add friend
+                </Button>
+              ) : (
+                <Button block onClick={() => toggleIsEditable()}>
+                  Edit
+                </Button>
+              )}
+              <h2 style={{ marginTop: "50px" }}>Username</h2>
+              <hr />
+              <p>{username}</p>
+              <h2 style={{ marginTop: "50px" }}>Personal Description</h2>
+              <hr />
+              <p>{description}</p>
+              <h2 style={{ marginTop: "50px" }}>University</h2>
+              <hr />
+              <p>{university}</p>
+              <h2 style={{ marginTop: "50px" }}>Sports</h2>
+              <hr />
+              <p>{interested_sports}</p>
+            </Col>
+          </Row>
         </div>
       </div>
     );

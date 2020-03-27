@@ -21,7 +21,9 @@ const EditProfileImage = () => {
         onChange={handleProfileImageInputChange}
       />
       <Progress value={uploadProgress} />
-      <Button onClick={handleProfileImageUpload}>Submit</Button>
+      <Button block color="primary" onClick={handleProfileImageUpload}>
+        Upload
+      </Button>
     </div>
   );
 };
