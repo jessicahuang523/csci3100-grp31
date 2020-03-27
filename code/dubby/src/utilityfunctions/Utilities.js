@@ -282,3 +282,26 @@ export const uploadProfileImage = async ({ imageFile, setUploadProgress }) => {
     uploadTask.on("state_changed", progress, error, complete);
   }
 };
+
+export const sendChatMessage = async ({
+  cid,
+  inputMessage,
+  chatParticipants
+}) => {
+  if (inputMessage.length > 0 && auth().currentUser) {
+    const { uid } = auth().currentUser;
+    const storedUserData = chatParticipants.find(p => p.uid === uid);
+    if (storedUserData) {
+      const toSend = {
+        text: inputMessage.trim(),
+        created_at: Date.now(),
+        sender: { uid }
+      };
+      firestore()
+        .collection("chat")
+        .doc(cid)
+        .collection("messages")
+        .add(toSend);
+    }
+  }
+};

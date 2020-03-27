@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, Redirect } from "react-router-dom";
-import { firestore, auth } from "firebase";
+import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -14,6 +14,7 @@ import {
   Button,
   Jumbotron
 } from "reactstrap";
+import { sendChatMessage } from "../../utilityfunctions/Utilities";
 
 export const Chat = () => {
   const { cid } = useParams();
@@ -73,29 +74,9 @@ export const Chat = () => {
     }
   }, [userData, cid]);
 
-  const firebasePushMessage = text => {
-    if (text.length > 0 && userData) {
-      const { uid } = auth().currentUser;
-      const storedUserData = chatParticipants.find(p => p.uid === uid);
-      if (storedUserData) {
-        const { username } = storedUserData;
-        const toSend = {
-          text: text.trim(),
-          created_at: Date.now(),
-          sender: { username, uid }
-        };
-        firestore()
-          .collection("chat")
-          .doc(cid)
-          .collection("messages")
-          .add(toSend);
-      }
-    }
-  };
-
   const handleSendMessage = e => {
     e.preventDefault();
-    firebasePushMessage(inputMessage);
+    sendChatMessage({ cid, inputMessage, chatParticipants });
     setInputMessage("");
   };
 
@@ -140,7 +121,10 @@ export const Chat = () => {
                   chatMessages.map(message => (
                     <Message
                       key={message.created_at}
-                      name={message.sender.username}
+                      name={
+                        chatParticipants.find(p => p.uid === message.sender.uid)
+                          .username
+                      }
                       time={[new Date(message.created_at).toLocaleTimeString()]}
                       mes={message.text}
                     />
