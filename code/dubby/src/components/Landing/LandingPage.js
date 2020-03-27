@@ -16,10 +16,8 @@ import {
   Media
 } from "reactstrap";
 import logo from "../../image/Dubby_logo.png";
-import { devSetupAccount } from "../../devutil";
 import { UserContext } from "../../contexts/UserContext";
 import Loading from "../Loading/Loading";
-import { setupFirestoreForNewEvent } from "../../utilityfunctions/Utilities";
 
 const LandingPage = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -42,21 +40,6 @@ const LandingPage = () => {
       setAlertSignin("Input must match email and password!");
     }
   };
-
-  const handleDevLogin = () =>
-    auth()
-      .signInAnonymously()
-      .then(() => {
-        devSetupAccount();
-        setupFirestoreForNewEvent({
-          allowedPeople: 10,
-          eventName: "Let's play!",
-          eventType: "Tennis",
-          isPublic: true,
-          location: "University Gym (CUHK)",
-          startingTime: Date.now()
-        });
-      });
 
   if (userLoading) {
     return <Loading />;
@@ -101,10 +84,6 @@ const LandingPage = () => {
                   </Button>
                   <Button block color="secondary" tag={Link} to="/signup">
                     Sign Up
-                  </Button>
-                  <hr />
-                  <Button color="danger" size="sm" onClick={handleDevLogin}>
-                    Dev
                   </Button>
                 </Form>
               </CardBody>
