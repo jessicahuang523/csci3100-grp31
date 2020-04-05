@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import Navbar from "../Navbar/Navbar";
+import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
-import { setupFirestoreForNewEvent } from "../../utilityfunctions/Utilities";
 import {
   Jumbotron,
   Alert,
@@ -11,19 +10,11 @@ import {
   Input,
   Col,
   Row,
-  Button
+  Button,
 } from "reactstrap";
-
-const eventTypeChoices = [
-  { value: "basketball", display: "Basketball" },
-  { value: "tennis", display: "Tennis" }
-];
-
-const eventLocationChoices = [
-  { value: "cuhk_nagym", display: "NA Gym (CUHK)" },
-  { value: "cuhk_ugym", display: "University Gym (CUHK)" },
-  { value: "cuhk_ucgym", display: "UC Gym (CUHK)" }
-];
+import Navbar from "../Navbar/Navbar";
+import Loading from "../Loading/Loading";
+import { setupFirestoreForNewEvent } from "../../utilityfunctions/Utilities";
 
 const calculateMinStartingDate = () => {
   const date = new Date(Date.now());
@@ -44,11 +35,13 @@ const calculateMinStartingTime = () => {
 const AddEvent = () => {
   const { userData } = useContext(UserContext);
 
+  const [eventTypeChoices, setEventTypeChoices] = useState();
+  const [eventLocationChoices, setEventLocationChoices] = useState();
   const [allowedPeople, setAllowedPeople] = useState();
   const [eventName, setEventName] = useState();
-  const [eventType, setEventType] = useState(eventTypeChoices[0].value);
+  const [eventType, setEventType] = useState();
   const [isPublic, setIsPublic] = useState(true);
-  const [location, setLocation] = useState(eventLocationChoices[0].value);
+  const [location, setLocation] = useState();
   const [startingTime, setStartingTime] = useState();
   const [eventStartingDate, setEventStartingDate] = useState(
     calculateMinStartingDate()
@@ -60,12 +53,34 @@ const AddEvent = () => {
   const [errorMessage, setErrorMessage] = useState();
 
   useEffect(() => {
+    firestore()
+      .collection("event_types")
+      .get()
+      .then((snap) => {
+        let tmp = [];
+        snap.forEach((d) => tmp.push(d.data()));
+        setEventTypeChoices(tmp);
+      });
+  }, []);
+
+  useEffect(() => {
+    firestore()
+      .collection("event_location")
+      .get()
+      .then((snap) => {
+        let tmp = [];
+        snap.forEach((d) => tmp.push(d.data()));
+        setEventLocationChoices(tmp);
+      });
+  }, []);
+
+  useEffect(() => {
     setStartingTime(
       new Date(eventStartingDate + "T" + eventStartingTime + ":00").getTime()
     );
   }, [eventStartingDate, eventStartingTime]);
 
-  const handleEventSubmit = async e => {
+  const handleEventSubmit = async (e) => {
     e.preventDefault();
     if (
       userData &&
@@ -83,7 +98,7 @@ const AddEvent = () => {
         eventType,
         isPublic,
         location,
-        startingTime
+        startingTime,
       };
       await setupFirestoreForNewEvent(eventData);
       setSubmittingEventData(false);
@@ -92,7 +107,9 @@ const AddEvent = () => {
     }
   };
 
-  if (submittingEventData) {
+  if (!eventTypeChoices || !eventLocationChoices) {
+    return <Loading />;
+  } else if (submittingEventData) {
     return (
       <div>
         <header>
@@ -115,7 +132,7 @@ const AddEvent = () => {
               required
               type="text"
               id="eventName"
-              onChange={e => setEventName(e.target.value)}
+              onChange={(e) => setEventName(e.target.value)}
             />
           </FormGroup>
           <Row form>
@@ -126,7 +143,7 @@ const AddEvent = () => {
                   required
                   type="number"
                   id="allowedPeople"
-                  onChange={e => setAllowedPeople(e.target.value)}
+                  onChange={(e) => setAllowedPeople(e.target.value)}
                 ></Input>
               </FormGroup>
             </Col>
@@ -137,7 +154,7 @@ const AddEvent = () => {
                   required
                   type="select"
                   id="eventType"
-                  onChange={e => setEventType(e.target.value)}
+                  onChange={(e) => setEventType(e.target.value)}
                 >
                   {eventTypeChoices.map(({ value, display }) => (
                     <option key={value} value={value}>
@@ -154,7 +171,7 @@ const AddEvent = () => {
                   required
                   type="select"
                   id="publicEvent"
-                  onChange={e =>
+                  onChange={(e) =>
                     setIsPublic(e.target.value === "true" ? true : false)
                   }
                 >
@@ -170,7 +187,7 @@ const AddEvent = () => {
                   required
                   type="select"
                   id="location"
-                  onChange={e => setLocation(e.target.value)}
+                  onChange={(e) => setLocation(e.target.value)}
                 >
                   {eventLocationChoices.map(({ value, display }) => (
                     <option key={value} value={value}>
@@ -189,7 +206,7 @@ const AddEvent = () => {
                   id="startingDate"
                   value={eventStartingDate}
                   min={calculateMinStartingDate()}
-                  onChange={e => setEventStartingDate(e.target.value)}
+                  onChange={(e) => setEventStartingDate(e.target.value)}
                 />
               </FormGroup>
             </Col>
@@ -202,7 +219,7 @@ const AddEvent = () => {
                   id="startingTime"
                   value={eventStartingTime}
                   min={calculateMinStartingTime()}
-                  onChange={e => setEventStartingTime(e.target.value)}
+                  onChange={(e) => setEventStartingTime(e.target.value)}
                 />
               </FormGroup>
             </Col>

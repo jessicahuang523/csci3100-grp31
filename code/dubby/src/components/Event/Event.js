@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link, Redirect } from "react-router-dom";
-import { UserContext } from "../../contexts/UserContext";
 import { firestore, auth } from "firebase";
-import { addParticipantToEvent } from "../../utilityfunctions/Utilities";
+import { UserContext } from "../../contexts/UserContext";
+import { Jumbotron, Button, Badge } from "reactstrap";
 import Loading from "../Loading/Loading";
 import NavBar from "../Navbar/Navbar";
-import { Jumbotron, Button, Badge } from "reactstrap";
+import { addParticipantToEvent } from "../../utilityfunctions/Utilities";
 
 const Event = () => {
   const { eid } = useParams();
@@ -19,17 +19,15 @@ const Event = () => {
 
   useEffect(() => {
     if (eid) {
-      const eventRef = firestore()
-        .collection("event")
-        .doc(eid);
-      const unsubscribeEventData = eventRef.onSnapshot(snap =>
+      const eventRef = firestore().collection("event").doc(eid);
+      const unsubscribeEventData = eventRef.onSnapshot((snap) =>
         setEventData(snap.data())
       );
       const unsubscribeEventParticipantData = eventRef
         .collection("participants")
-        .onSnapshot(snap => {
+        .onSnapshot((snap) => {
           let tmp = [];
-          snap.forEach(doc => tmp.push(doc.data()));
+          snap.forEach((doc) => tmp.push(doc.data()));
           setEventParticipants(tmp);
         });
       return () => {
@@ -44,7 +42,7 @@ const Event = () => {
       const userRef = firestore()
         .collection("user_profile")
         .doc(eventData.hostUid);
-      const unsubscribeUserData = userRef.onSnapshot(snap =>
+      const unsubscribeUserData = userRef.onSnapshot((snap) =>
         setHostUserData(snap.data())
       );
       return () => {
@@ -55,7 +53,7 @@ const Event = () => {
 
   useEffect(() => console.log({ eventData, eventParticipants }), [
     eventData,
-    eventParticipants
+    eventParticipants,
   ]);
 
   const handleJoinButtonClick = async () => {
@@ -63,7 +61,7 @@ const Event = () => {
     await addParticipantToEvent({
       eid: eventData.eid,
       uid: auth().currentUser.uid,
-      status: "joined"
+      status: "joined",
     });
     setJoinLoading(false);
   };
@@ -82,11 +80,11 @@ const Event = () => {
         <Jumbotron fluid>
           <h1>
             {eventData.eventName}{" "}
-            {eventParticipants.find(x => x.uid === uid) && (
+            {eventParticipants.find((x) => x.uid === uid) && (
               <Badge>Joined</Badge>
             )}
           </h1>
-          {eventParticipants.find(x => x.uid === uid) ? (
+          {eventParticipants.find((x) => x.uid === uid) ? (
             <Button tag={Link} to={`/c/${eventData.cid}`}>
               Talk with participants!
             </Button>

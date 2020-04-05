@@ -2,8 +2,6 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, Redirect } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
-import Navbar from "../Navbar/Navbar";
-import Loading from "../Loading/Loading";
 import {
   Container,
   Row,
@@ -12,8 +10,10 @@ import {
   FormGroup,
   Input,
   Button,
-  Jumbotron
+  Jumbotron,
 } from "reactstrap";
+import Navbar from "../Navbar/Navbar";
+import Loading from "../Loading/Loading";
 import { sendChatMessage } from "../../utilityfunctions/Utilities";
 
 export const Chat = () => {
@@ -29,18 +29,16 @@ export const Chat = () => {
 
   useEffect(() => {
     if (chatAuthorized) {
-      const chatDataRef = firestore()
-        .collection("chat")
-        .doc(cid);
+      const chatDataRef = firestore().collection("chat").doc(cid);
       const chatMessagesRef = chatDataRef.collection("messages");
-      const unsubscribeChatData = chatDataRef.onSnapshot(snap => {
+      const unsubscribeChatData = chatDataRef.onSnapshot((snap) => {
         setChatData(snap.data());
       });
       const unsubscribeChatMessages = chatMessagesRef
         .orderBy("created_at", "asc")
-        .onSnapshot(snap => {
+        .onSnapshot((snap) => {
           let tmp = [];
-          snap.forEach(doc => tmp.push(doc.data()));
+          snap.forEach((doc) => tmp.push(doc.data()));
           setChatMessages(tmp);
         });
       return () => {
@@ -52,14 +50,12 @@ export const Chat = () => {
 
   useEffect(() => {
     if (userData) {
-      const chatDataRef = firestore()
-        .collection("chat")
-        .doc(cid);
+      const chatDataRef = firestore().collection("chat").doc(cid);
       const chatParticipantsRef = chatDataRef.collection("participants");
       const unsubscribeChatParticipants = chatParticipantsRef.onSnapshot(
-        snap => {
+        (snap) => {
           let tmp = [];
-          snap.forEach(doc => {
+          snap.forEach((doc) => {
             tmp.push(doc.data());
             if (userData.uid === doc.data().uid) {
               setChatAuthorized(true);
@@ -74,13 +70,13 @@ export const Chat = () => {
     }
   }, [userData, cid]);
 
-  const handleSendMessage = e => {
+  const handleSendMessage = (e) => {
     e.preventDefault();
     sendChatMessage({ cid, inputMessage, chatParticipants });
     setInputMessage("");
   };
 
-  const handleInputChange = e => {
+  const handleInputChange = (e) => {
     setInputMessage(e.target.value);
   };
 
@@ -118,12 +114,13 @@ export const Chat = () => {
               <ul>
                 {chatMessages &&
                   chatMessages.length > 0 &&
-                  chatMessages.map(message => (
+                  chatMessages.map((message) => (
                     <Message
                       key={message.created_at}
                       name={
-                        chatParticipants.find(p => p.uid === message.sender.uid)
-                          .username
+                        chatParticipants.find(
+                          (p) => p.uid === message.sender.uid
+                        ).username
                       }
                       time={[new Date(message.created_at).toLocaleTimeString()]}
                       mes={message.text}

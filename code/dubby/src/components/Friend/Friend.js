@@ -1,16 +1,16 @@
 import React, { useContext, useState, useEffect } from "react";
-import NavBar from "../Navbar/Navbar";
+import { Redirect, Link } from "react-router-dom";
+import { firestore, auth } from "firebase";
+import { UserContext } from "../../contexts/UserContext";
 import {
   Jumbotron,
   ListGroup,
   ListGroupItem,
   ListGroupItemHeading,
-  Button
+  Button,
 } from "reactstrap";
-import { UserContext } from "../../contexts/UserContext";
+import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
-import { Redirect, Link } from "react-router-dom";
-import { firestore, auth } from "firebase";
 import { acceptFriendRequest } from "../../utilityfunctions/Utilities";
 
 const Friend = () => {
@@ -28,9 +28,9 @@ const Friend = () => {
         .doc(uid)
         .collection("sent_friend_requests");
       const unsubscribeSentRequestsRefData = sentRequestsRef.onSnapshot(
-        snap => {
+        (snap) => {
           let tmp = [];
-          snap.forEach(doc => tmp.push(doc.data()));
+          snap.forEach((doc) => tmp.push(doc.data()));
           setSentRequests(tmp);
         }
       );
@@ -48,9 +48,9 @@ const Friend = () => {
         .doc(uid)
         .collection("received_friend_requests");
       const unsubscribeReceivedRequestData = receivedRequestsRef.onSnapshot(
-        snap => {
+        (snap) => {
           let tmp = [];
-          snap.forEach(doc => tmp.push(doc.data()));
+          snap.forEach((doc) => tmp.push(doc.data()));
           setReceivedRequests(tmp);
         }
       );
@@ -67,9 +67,9 @@ const Friend = () => {
         .collection("user_profile")
         .doc(uid)
         .collection("friend_list");
-      const unsubscribeFriendListData = friendListRef.onSnapshot(snap => {
+      const unsubscribeFriendListData = friendListRef.onSnapshot((snap) => {
         let tmp = [];
-        snap.forEach(doc => tmp.push(doc.data()));
+        snap.forEach((doc) => tmp.push(doc.data()));
         setFriendList(tmp);
       });
       return () => {
@@ -92,7 +92,7 @@ const Friend = () => {
       <ListGroup>
         <ListGroupItemHeading>Friends</ListGroupItemHeading>
         {friendList && friendList.length > 0 ? (
-          friendList.map(u => (
+          friendList.map((u) => (
             <ListGroupItem key={u.uid}>
               <Link to={`/u/${u.uid}`}>{u.username}</Link>
             </ListGroupItem>
@@ -104,7 +104,7 @@ const Friend = () => {
       <ListGroup>
         <ListGroupItemHeading>Sent Requests</ListGroupItemHeading>
         {sentRequests && sentRequests.length > 0 ? (
-          sentRequests.map(u => (
+          sentRequests.map((u) => (
             <ListGroupItem key={u.uid}>
               <Link to={`/u/${u.uid}`}>{u.username}</Link>
             </ListGroupItem>
@@ -116,7 +116,7 @@ const Friend = () => {
       <ListGroup>
         <ListGroupItemHeading>Received Requests</ListGroupItemHeading>
         {receivedRequests && receivedRequests.length > 0 ? (
-          receivedRequests.map(u => (
+          receivedRequests.map((u) => (
             <ListGroupItem key={u.uid}>
               <Link to={`/u/${u.uid}`}>{u.username}</Link>
               <Button onClick={() => acceptFriendRequest({ targetUid: u.uid })}>

@@ -2,10 +2,10 @@ import React, { useState, useEffect, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
-import EventCard from "../Event/EventCard";
+import { Jumbotron } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
-import { Jumbotron } from "reactstrap";
+import EventCard from "../Event/EventCard";
 
 const MainFeed = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -17,9 +17,9 @@ const MainFeed = () => {
       .collection("event")
       .orderBy("startingTime")
       .limitToLast(20);
-    const unsubscribeEventList = eventRef.onSnapshot(snap => {
+    const unsubscribeEventList = eventRef.onSnapshot((snap) => {
       let tmp = [];
-      snap.forEach(doc => tmp.push(doc.id));
+      snap.forEach((doc) => tmp.push(doc.id));
       setEventList(tmp);
     });
     return () => {
@@ -40,7 +40,7 @@ const MainFeed = () => {
         </Jumbotron>
         {eventList &&
           eventList.length > 0 &&
-          eventList.map(eid => <EventCard key={eid} eid={eid} />)}
+          eventList.map((eid) => <EventCard key={eid} eid={eid} />)}
       </div>
     );
   }

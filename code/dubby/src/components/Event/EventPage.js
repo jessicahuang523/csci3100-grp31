@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import EventCard from "./EventCard";
-import { UserContext } from "../../contexts/UserContext";
-import { firestore, auth } from "firebase";
 import { Redirect, Link } from "react-router-dom";
+import { firestore, auth } from "firebase";
+import { UserContext } from "../../contexts/UserContext";
 import { CardColumns, Jumbotron, Button } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
+import EventCard from "./EventCard";
 
 const EventPage = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -20,9 +20,9 @@ const EventPage = () => {
         .doc(uid)
         .collection("events")
         .orderBy("startingTime")
-        .onSnapshot(snap => {
+        .onSnapshot((snap) => {
           let tmp = [];
-          snap.forEach(doc => tmp.push(doc.data()));
+          snap.forEach((doc) => tmp.push(doc.data()));
           setUserEventList(tmp);
         });
       return () => {
@@ -48,7 +48,7 @@ const EventPage = () => {
         </Jumbotron>
         {userEventList && userEventList.length > 0 && (
           <CardColumns>
-            {userEventList.map(event => (
+            {userEventList.map((event) => (
               <EventCard key={event.eid} eid={event.eid} />
             ))}
           </CardColumns>

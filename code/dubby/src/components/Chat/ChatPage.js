@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { firestore, auth } from "firebase";
-import ChatCard from "./ChatCard";
 import { UserContext } from "../../contexts/UserContext";
+import { Jumbotron } from "reactstrap";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
-import { Jumbotron } from "reactstrap";
+import ChatCard from "./ChatCard";
 
 const ChatPage = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -19,9 +19,9 @@ const ChatPage = () => {
         .collection("user_profile")
         .doc(uid)
         .collection("chats")
-        .onSnapshot(snap => {
+        .onSnapshot((snap) => {
           let tmp = [];
-          snap.forEach(doc => tmp.push(doc.data()));
+          snap.forEach((doc) => tmp.push(doc.data()));
           setChatList(tmp);
         });
       return () => {
@@ -43,7 +43,7 @@ const ChatPage = () => {
         </Jumbotron>
         {chatList &&
           chatList.length > 0 &&
-          chatList.map(chat => <ChatCard key={chat.cid} cid={chat.cid} />)}
+          chatList.map((chat) => <ChatCard key={chat.cid} cid={chat.cid} />)}
       </div>
     );
   }

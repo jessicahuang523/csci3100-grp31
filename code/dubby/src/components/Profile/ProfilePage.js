@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
-import self from "../../self.jpg";
 import { firestore, auth } from "firebase";
 import { useParams, Redirect } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
+import { Button, Input, Form, Row, Col } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
+import EditProfileImage from "./EditProfileImage";
 import {
   sendFriendRequest,
-  updateProfileData
+  updateProfileData,
 } from "../../utilityfunctions/Utilities";
-import EditProfileImage from "./EditProfileImage";
-import { Button, Input, Form, Row, Col } from "reactstrap";
+import self from "../../self.jpg";
 
 const ProfilePage = () => {
   const { uid } = useParams();
@@ -25,7 +25,7 @@ const ProfilePage = () => {
       const profileDataRef = firestore()
         .collection("user_profile")
         .doc(uid ? uid : auth().currentUser.uid);
-      const unsubscribeProfileData = profileDataRef.onSnapshot(snap =>
+      const unsubscribeProfileData = profileDataRef.onSnapshot((snap) =>
         setProfileData(snap.data())
       );
       return () => {
@@ -44,7 +44,7 @@ const ProfilePage = () => {
   const handleProfileDataEdit = (key, value) => {
     const newProfileData = {
       ...profileData,
-      [key]: value
+      [key]: value,
     };
     setProfileData(newProfileData);
   };
@@ -62,7 +62,7 @@ const ProfilePage = () => {
       description,
       interested_sports,
       university,
-      profileImageSrc
+      profileImageSrc,
     } = profileData;
     return (
       <div>
@@ -76,7 +76,7 @@ const ProfilePage = () => {
                 width: "300px",
                 height: "300px",
                 overflow: "hidden",
-                borderRadius: "150px"
+                borderRadius: "150px",
               }}
             />
           </div>
@@ -92,7 +92,7 @@ const ProfilePage = () => {
                 <h2 style={{ marginTop: "50px" }}>Username</h2>
                 <hr />
                 <Input
-                  onChange={e =>
+                  onChange={(e) =>
                     handleProfileDataEdit("username", e.target.value)
                   }
                   value={username}
@@ -100,7 +100,7 @@ const ProfilePage = () => {
                 <h2 style={{ marginTop: "50px" }}>Personal Description</h2>
                 <hr />
                 <Input
-                  onChange={e =>
+                  onChange={(e) =>
                     handleProfileDataEdit("description", e.target.value)
                   }
                   value={description}
@@ -108,7 +108,7 @@ const ProfilePage = () => {
                 <h2 style={{ marginTop: "50px" }}>University</h2>
                 <hr />
                 <Input
-                  onChange={e =>
+                  onChange={(e) =>
                     handleProfileDataEdit("university", e.target.value)
                   }
                   value={university}
@@ -118,7 +118,7 @@ const ProfilePage = () => {
                 <Input
                   type="select"
                   defaultValue={interested_sports || "Select your sport..."}
-                  onChange={value =>
+                  onChange={(value) =>
                     handleProfileDataEdit("interested_sports", value)
                   }
                 >
@@ -139,7 +139,7 @@ const ProfilePage = () => {
       description,
       interested_sports,
       university,
-      profileImageSrc
+      profileImageSrc,
     } = profileData;
     return (
       <div>
@@ -153,7 +153,7 @@ const ProfilePage = () => {
                 width: "300px",
                 height: "300px",
                 overflow: "hidden",
-                borderRadius: "150px"
+                borderRadius: "150px",
               }}
             />
           </div>

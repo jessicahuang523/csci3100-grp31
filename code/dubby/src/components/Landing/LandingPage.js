@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { auth } from "firebase";
+import { UserContext } from "../../contexts/UserContext";
 import {
   Button,
   Form,
@@ -13,21 +14,19 @@ import {
   CardBody,
   Row,
   Col,
-  Media
+  Media,
 } from "reactstrap";
-import logo from "../../image/Dubby_logo.png";
-import { UserContext } from "../../contexts/UserContext";
 import Loading from "../Loading/Loading";
+import logo from "../../image/Dubby_logo.png";
 
 const LandingPage = () => {
   const { userData, userLoading } = useContext(UserContext);
 
   const [inputEmail, setInputEmail] = useState();
   const [inputPassword, setInputPassword] = useState();
-
   const [alertSignin, setAlertSignin] = useState("Sign in!");
 
-  const handleEmailLoginFormSubmit = async e => {
+  const handleEmailLoginFormSubmit = async (e) => {
     e.preventDefault();
     setAlertSignin("Loading...");
     if (/\S+@\S+\.\S+/.test(inputEmail) && inputPassword !== "") {
@@ -66,7 +65,7 @@ const LandingPage = () => {
                       placeholder="account@example.com"
                       type="email"
                       required
-                      onChange={e => setInputEmail(e.target.value)}
+                      onChange={(e) => setInputEmail(e.target.value)}
                     />
                   </FormGroup>
                   <FormGroup>
@@ -76,7 +75,7 @@ const LandingPage = () => {
                       placeholder="password"
                       type="password"
                       required
-                      onChange={e => setInputPassword(e.target.value)}
+                      onChange={(e) => setInputPassword(e.target.value)}
                     />
                   </FormGroup>
                   <Button block color="primary" type="submit">

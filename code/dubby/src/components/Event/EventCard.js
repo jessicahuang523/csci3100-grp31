@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { firestore, auth } from "firebase";
-import LoadingEventCard from "../Loading/LoadingEventCard";
 import { Link } from "react-router-dom";
+import { firestore, auth } from "firebase";
 import { Card, CardTitle, CardSubtitle, CardText, Button } from "reactstrap";
+import LoadingEventCard from "../Loading/LoadingEventCard";
 
 const EventCard = ({ eid }) => {
   const [eventData, setEventData] = useState();
@@ -11,17 +11,15 @@ const EventCard = ({ eid }) => {
 
   useEffect(() => {
     if (eid) {
-      const eventRef = firestore()
-        .collection("event")
-        .doc(eid);
-      const unsubscribeEventData = eventRef.onSnapshot(snap =>
+      const eventRef = firestore().collection("event").doc(eid);
+      const unsubscribeEventData = eventRef.onSnapshot((snap) =>
         setEventData(snap.data())
       );
       const unsubscribeEventParticipantData = eventRef
         .collection("participants")
-        .onSnapshot(snap => {
+        .onSnapshot((snap) => {
           let tmp = [];
-          snap.forEach(doc => tmp.push(doc.data()));
+          snap.forEach((doc) => tmp.push(doc.data()));
           setEventParticipants(tmp);
         });
       return () => {
@@ -36,7 +34,7 @@ const EventCard = ({ eid }) => {
       const userRef = firestore()
         .collection("user_profile")
         .doc(eventData.hostUid);
-      const unsubscribeUserData = userRef.onSnapshot(snap =>
+      const unsubscribeUserData = userRef.onSnapshot((snap) =>
         setHostUserData(snap.data())
       );
       return () => {
@@ -65,7 +63,7 @@ const EventCard = ({ eid }) => {
         <CardText>Hosted by {hostUserData.username}</CardText>
         <Button tag={Link} to={`/e/${eid}`}>
           More
-          {eventParticipants.find(p => p.uid === uid) ? " (joined)" : "/Join"}
+          {eventParticipants.find((p) => p.uid === uid) ? " (joined)" : "/Join"}
         </Button>
       </Card>
     );
