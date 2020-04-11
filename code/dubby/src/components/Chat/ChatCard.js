@@ -7,6 +7,7 @@ import LoadingChatCard from "../Loading/LoadingChatCard";
 const ChatCard = ({ cid }) => {
   const [chatData, setChatData] = useState();
   const [chatMessage, setChatMessage] = useState();
+  const [chatSenderUsername, setChatSenderUsername] = useState();
 
   useEffect(() => {
     const chatRef = firestore().collection("chat").doc(cid);
@@ -24,7 +25,20 @@ const ChatCard = ({ cid }) => {
     };
   }, [cid]);
 
-  if (!chatData) {
+  useEffect(() => {
+    if (chatMessage && chatMessage.sender) {
+      const { uid } = chatMessage.sender;
+      const userDataRef = firestore().collection("user_profile").doc(uid);
+      const unsubscribeChatSenderUsername = userDataRef.onSnapshot((snap) =>
+        setChatSenderUsername(snap.data().username)
+      );
+      return () => {
+        unsubscribeChatSenderUsername();
+      };
+    }
+  }, [chatMessage]);
+
+  if (!chatData || !chatSenderUsername) {
     return <LoadingChatCard />;
   } else {
     const { icon, title } = chatData;
@@ -37,7 +51,7 @@ const ChatCard = ({ cid }) => {
           <CardBody>
             <CardText>
               {chatMessage
-                ? `${chatMessage.sender.username}: ${chatMessage.text}`
+                ? `${chatSenderUsername}: ${chatMessage.text}`
                 : "Wow, such empty"}
             </CardText>
           </CardBody>
