@@ -19,6 +19,18 @@ const ProfilePage = () => {
 
   const [profileData, setProfileData] = useState();
   const [isEditable, setIsEditable] = useState(false);
+  const [eventTypeChoices, setEventTypeChoices] = useState();
+
+  useEffect(() => {
+    firestore()
+      .collection("event_types")
+      .get()
+      .then((snap) => {
+        let tmp = [];
+        snap.forEach((d) => tmp.push(d.data()));
+        setEventTypeChoices(tmp);
+      });
+  }, []);
 
   useEffect(() => {
     if (userData) {
@@ -49,21 +61,21 @@ const ProfilePage = () => {
     setProfileData(newProfileData);
   };
 
+  const handleInterestedSportsEdit = (e) => {
+    const selected = e.target.querySelectorAll("option:checked");
+    const values = Array.from(selected).map((o) => o.label);
+    handleProfileDataEdit("interested_sports", values);
+  };
+
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
-  } else if (!profileData) {
+  } else if (!profileData || !eventTypeChoices) {
     return <Loading />;
   } else if (uid !== auth().currentUser.uid && isEditable) {
     // in editing mode
-    const {
-      username,
-      description,
-      interested_sports,
-      university,
-      profileImageSrc,
-    } = profileData;
+    const { username, description, university, profileImageSrc } = profileData;
     return (
       <div>
         <NavBar />
@@ -117,13 +129,14 @@ const ProfilePage = () => {
                 <hr />
                 <Input
                   type="select"
-                  defaultValue={interested_sports || "Select your sport..."}
-                  onChange={(value) =>
-                    handleProfileDataEdit("interested_sports", value)
-                  }
+                  multiple
+                  onChange={handleInterestedSportsEdit}
                 >
-                  <option value="Football">Football</option>
-                  <option value="Waterpolo">Waterpolo</option>
+                  {eventTypeChoices.map(({ value, display }) => (
+                    <option key={value} value={value}>
+                      {display}
+                    </option>
+                  ))}
                 </Input>
               </Form>
             </Col>
@@ -181,9 +194,20 @@ const ProfilePage = () => {
               <h2 style={{ marginTop: "50px" }}>University</h2>
               <hr />
               <p>{university}</p>
-              <h2 style={{ marginTop: "50px" }}>Sports</h2>
+              <h2 style={{ marginTop: "50px" }}>Interested In</h2>
               <hr />
-              <p>{interested_sports}</p>
+              {interested_sports.length && interested_sports.length > 0 ? (
+                <p>
+                  {interested_sports.map((s) =>
+                    interested_sports.indexOf(s) ===
+                    interested_sports.length - 1
+                      ? s
+                      : `${s}, `
+                  )}
+                </p>
+              ) : (
+                <p>{interested_sports}</p>
+              )}
             </Col>
           </Row>
         </div>
