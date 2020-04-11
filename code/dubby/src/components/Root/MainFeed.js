@@ -36,7 +36,8 @@ const MainFeed = () => {
       <div>
         <NavBar />
         <Jumbotron>
-          <h1>My Feed</h1>
+          <h1>Dubby</h1>
+          <p>Find an event to join!</p>
         </Jumbotron>
         {eventList &&
           eventList.length > 0 &&

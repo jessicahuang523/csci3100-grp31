@@ -41,6 +41,7 @@ const EventPage = () => {
         <NavBar />
         <Jumbotron>
           <h1>My Events</h1>
+          <p>Events I joined or hosted by me!</p>
           <hr />
           <Button tag={Link} to="/e/add">
             Add new Event
