@@ -51,11 +51,6 @@ const Event = () => {
     }
   }, [eventData]);
 
-  useEffect(() => console.log({ eventData, eventParticipants }), [
-    eventData,
-    eventParticipants,
-  ]);
-
   const handleJoinButtonClick = async () => {
     setJoinLoading(true);
     await addParticipantToEvent({

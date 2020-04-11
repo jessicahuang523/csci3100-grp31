@@ -196,7 +196,9 @@ const ProfilePage = () => {
               <p>{university}</p>
               <h2 style={{ marginTop: "50px" }}>Interested In</h2>
               <hr />
-              {interested_sports.length && interested_sports.length > 0 ? (
+              {interested_sports.length &&
+              interested_sports.length > 0 &&
+              interested_sports.map !== undefined ? (
                 <p>
                   {interested_sports.map((s) =>
                     interested_sports.indexOf(s) ===
