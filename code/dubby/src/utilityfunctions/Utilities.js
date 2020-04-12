@@ -71,12 +71,21 @@ export const setupFirestoreForNewEventChat = async ({ eid, eventName }) => {
     const { uid } = auth().currentUser;
     const userDataRef = firestore().collection("user_profile").doc(uid);
     const userDataSnap = await userDataRef.get();
+    const eventDataRef = firestore().collection("event").doc(eid);
+    const eventDataSnap = await eventDataRef.get();
+    const { eventType } = eventDataSnap.data();
+    const eventTypeRef = firestore()
+      .collection("event_types")
+      .where("value", "==", eventType);
+    const eventTypeSnap = await eventTypeRef.get();
+    let icon = "fab fa-dev";
+    eventTypeSnap.forEach((d) => (icon = d.data().icon));
     if (userDataSnap.exists) {
       const chatData = {
         type: "event",
-        icon: "fab fa-dev",
         title: eventName,
         eid,
+        icon,
       };
       const chatDataRef = await firestore().collection("chat").add(chatData);
       await chatDataRef.update({

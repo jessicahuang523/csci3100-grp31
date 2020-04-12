@@ -38,7 +38,7 @@ const ChatCard = ({ cid }) => {
     }
   }, [chatMessage]);
 
-  if (!chatData || !chatSenderUsername) {
+  if (!chatData || (chatMessage && !chatSenderUsername)) {
     return <LoadingChatCard />;
   } else {
     const { icon, title } = chatData;
