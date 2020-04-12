@@ -19,9 +19,9 @@ const Routes = () => {
         <Route exact path="/launch" children={<LandingPage />} />
         <Route exact path="/signup" children={<SignupPage />} />
         <Route exact path="/friends" children={<Friend />} />
-        <Route exact path="/" children={<MainFeed />} />
+        <Route exact path="/" children={<EventPage />} />
         <Route exact path="/g" children={<GymPage />} />
-        <Route exact path="/e" children={<EventPage />} />
+        <Route exact path="/e" children={<MainFeed />} />
         <Route exact path="/c" children={<ChatPage />} />
         <Route exact path="/u" children={<ProfilePage />} />
         <Route exact path="/e/add" children={<AddEvent />} />
