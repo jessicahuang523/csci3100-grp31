@@ -46,12 +46,12 @@ const GymPage = () => {
     return <Loading />;
   } else {
     return (
-      <div>
+      <div style = {{backgroundColor: "#d9d9d9"}}>
         <NavBar />
         <Container>
           <Nav tabs>
             <NavItem>
-              <NavLink
+              <NavLink style = {{backgroundColor: "#cc33ff"}}
                 className={classnames({ active: activeTab === "1" })}
                 onClick={() => toggle("1")}
               >
@@ -59,7 +59,7 @@ const GymPage = () => {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink
+              <NavLink style = {{backgroundColor: "#ffcc00",}}
                 className={classnames({ active: activeTab === "2" })}
                 onClick={() => toggle("2")}
               >
@@ -67,7 +67,7 @@ const GymPage = () => {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink
+              <NavLink style = {{backgroundColor: "#cccccc"}}
                 className={classnames({ active: activeTab === "3" })}
                 onClick={() => toggle("3")}
               >
@@ -121,7 +121,7 @@ const GymListItem = ({ data }) => {
     <Card>
       <CardHeader>{display}</CardHeader>
       <CardBody>{description}</CardBody>
-      <CardFooter>
+      <CardFooter style = {{boxShadow: "5px 10px #999999"}}>
         <EditGymImage image_main={image_main} />
       </CardFooter>
     </Card>

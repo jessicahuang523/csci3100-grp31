@@ -39,19 +39,19 @@ const EditGymImage = ({ image_main }) => {
   };
 
   return (
-    <div>
+    <div style = {{display: "flex"}}>
       <Form onSubmit={handleUploadImage}>
-        <Input
+        <Input style = {{margin: "15px", width: "300px"}}
           type="file"
           accept="image/x-png,image/gif,image/jpeg"
           onChange={handleImageInputChange}
         />
-        <Button color="primary" type="submit">
+        <Button color="primary" type="submit" style = {{margin: "25px", padding: "10 15 10 50px"}}>
           Upload
         </Button>
       </Form>
       {url ? (
-        <Media src={url} alt={image_main} style={{ width: "10rem" }} />
+        <Media src={url} alt={image_main} style={{ width: "15rem", position: "right", borderStyle: "outset",}} />
       ) : null}
     </div>
   );
