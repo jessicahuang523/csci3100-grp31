@@ -4,7 +4,7 @@ import { firestore, auth } from "firebase";
 import { Card, CardTitle, CardSubtitle, CardText, Button } from "reactstrap";
 import LoadingEventCard from "../Loading/LoadingEventCard";
 
-const EventCard = ({ eid }) => {
+const EventCard = ({ eid, searchString }) => {
   const [eventData, setEventData] = useState();
   const [eventParticipants, setEventParticipants] = useState();
   const [hostUserData, setHostUserData] = useState();
@@ -45,6 +45,13 @@ const EventCard = ({ eid }) => {
 
   if (!eventData || !eventParticipants || !hostUserData) {
     return <LoadingEventCard />;
+  } else if (
+    searchString &&
+    eventData.eventName.toLowerCase().search(searchString.toLowerCase()) < 0 &&
+    eventData.location.toLowerCase().search(searchString.toLowerCase()) < 0 &&
+    hostUserData.username.toLowerCase().search(searchString.toLowerCase()) < 0
+  ) {
+    return null;
   } else {
     const { eventName, location, startingTime, allowedPeople, eid } = eventData;
     const { uid } = auth().currentUser;
