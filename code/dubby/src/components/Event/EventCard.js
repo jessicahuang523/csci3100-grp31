@@ -92,7 +92,14 @@ const EventCard = ({ eid, searchString }) => {
         setSearchDisplay(false);
       }
     } catch (e) {}
-  }, [searchString, eventData, hostUserData, eid]);
+  }, [
+    searchString,
+    eventData,
+    hostUserData,
+    eid,
+    eventTypeData,
+    eventLocationData,
+  ]);
 
   if (
     !eventData ||
