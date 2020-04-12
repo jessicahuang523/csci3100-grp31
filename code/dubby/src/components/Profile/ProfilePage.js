@@ -202,9 +202,25 @@ const ProfilePage = () => {
                 <p>
                   {interested_sports.map((s) =>
                     interested_sports.indexOf(s) ===
-                    interested_sports.length - 1
-                      ? s
-                      : `${s}, `
+                    interested_sports.length - 1 ? (
+                      <span key={s}>
+                        <i
+                          className={
+                            eventTypeChoices.find((c) => c.display === s).icon
+                          }
+                        ></i>
+                        {s}
+                      </span>
+                    ) : (
+                      <span key={s}>
+                        <i
+                          className={
+                            eventTypeChoices.find((c) => c.display === s).icon
+                          }
+                        ></i>
+                        {s},{" "}
+                      </span>
+                    )
                   )}
                 </p>
               ) : (
