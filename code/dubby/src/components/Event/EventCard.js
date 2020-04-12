@@ -8,6 +8,8 @@ const EventCard = ({ eid, searchString }) => {
   const [eventData, setEventData] = useState();
   const [eventParticipants, setEventParticipants] = useState();
   const [hostUserData, setHostUserData] = useState();
+  const [eventTypeData, setEventTypeData] = useState();
+  const [eventLocationData, setEventLocationData] = useState();
   const [searchDisplay, setSearchDisplay] = useState(true);
 
   useEffect(() => {
@@ -38,8 +40,22 @@ const EventCard = ({ eid, searchString }) => {
       const unsubscribeUserData = userRef.onSnapshot((snap) =>
         setHostUserData(snap.data())
       );
+      const eventTypeRef = firestore()
+        .collection("event_types")
+        .where("value", "==", eventData.eventType);
+      const unsubscribeEventTypeData = eventTypeRef.onSnapshot((snap) =>
+        snap.forEach((d) => setEventTypeData(d.data()))
+      );
+      const eventLocationRef = firestore()
+        .collection("event_location")
+        .where("value", "==", eventData.location);
+      const unsubscribeEventLocationData = eventLocationRef.onSnapshot((snap) =>
+        snap.forEach((d) => setEventLocationData(d.data()))
+      );
       return () => {
         unsubscribeUserData();
+        unsubscribeEventTypeData();
+        unsubscribeEventLocationData();
       };
     }
   }, [eventData]);
@@ -64,17 +80,26 @@ const EventCard = ({ eid, searchString }) => {
     } catch (e) {}
   }, [searchString, eventData, hostUserData, eid]);
 
-  if (!eventData || !eventParticipants || !hostUserData) {
+  if (
+    !eventData ||
+    !eventParticipants ||
+    !hostUserData ||
+    !eventTypeData ||
+    !eventLocationData
+  ) {
     return <LoadingEventCard />;
   } else if (!searchDisplay) {
     return null;
   } else {
-    const { eventName, location, startingTime, allowedPeople, eid } = eventData;
+    const { eventName, startingTime, allowedPeople, eid } = eventData;
     const { uid } = auth().currentUser;
     return (
       <Card body style={{ marginBottom: "1rem" }}>
-        <CardTitle>{eventName}</CardTitle>
-        <CardSubtitle>{location}</CardSubtitle>
+        <CardTitle>
+          <i className={eventTypeData.icon}></i> [{eventTypeData.display}]{" "}
+          {eventName}
+        </CardTitle>
+        <CardSubtitle>{eventLocationData.display}</CardSubtitle>
         <CardText>
           Starting at {new Date(startingTime).toLocaleString()}
         </CardText>
