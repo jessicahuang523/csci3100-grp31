@@ -40,13 +40,13 @@ const MainFeed = () => {
         <Jumbotron>
           <h1>Dubby</h1>
           <p>Find an event to join!</p>
+          <Form onSubmit={(e) => e.preventDefault()}>
+            <Input
+              placeholder="search for an event..."
+              onChange={(e) => setSearchEvent(e.target.value)}
+            />
+          </Form>
         </Jumbotron>
-        <Form>
-          <Input
-            placeholder="search for an event..."
-            onChange={(e) => setSearchEvent(e.target.value)}
-          />
-        </Form>
         {eventList &&
           eventList.length > 0 &&
           eventList.map((eid) => (

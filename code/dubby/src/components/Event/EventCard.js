@@ -55,13 +55,14 @@ const EventCard = ({ eid, searchString }) => {
           0 &&
         eventData.location.toLowerCase().search(searchString.toLowerCase()) <
           0 &&
+        eid.toLowerCase().search(searchString.toLowerCase()) < 0 &&
         hostUserData.username.toLowerCase().search(searchString.toLowerCase()) <
           0
       ) {
         setSearchDisplay(false);
       }
     } catch (e) {}
-  }, [searchString, eventData, hostUserData]);
+  }, [searchString, eventData, hostUserData, eid]);
 
   if (!eventData || !eventParticipants || !hostUserData) {
     return <LoadingEventCard />;
