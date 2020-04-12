@@ -9,6 +9,9 @@ import EditProfileImage from "./EditProfileImage";
 import {
   sendFriendRequest,
   updateProfileData,
+  acceptFriendRequest,
+  unfriendFriend,
+  removeFriendRequest,
 } from "../../utilityfunctions/Utilities";
 import self from "../../self.jpg";
 
@@ -244,19 +247,13 @@ const ProfilePage = () => {
           <br />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
-              {((uid && uid === auth().currentUser.uid) || !uid) && (
-                <Button block onClick={() => toggleIsEditable()}>
-                  Edit
-                </Button>
-              )}
-              {uid && uid !== auth().currentUser.uid && (
-                <Button
-                  block
-                  onClick={() => sendFriendRequest({ targetUid: uid })}
-                >
-                  Add friend
-                </Button>
-              )}
+              <ProfileActionButton
+                uid={uid}
+                toggleIsEditable={toggleIsEditable}
+                friendList={friendList}
+                sentRequests={sentRequests}
+                receivedRequests={receivedRequests}
+              />
               <h2 style={{ marginTop: "50px" }}>Username</h2>
               <hr />
               <p>{username}</p>
@@ -280,7 +277,7 @@ const ProfilePage = () => {
                           className={
                             eventTypeChoices.find((c) => c.display === s).icon
                           }
-                        ></i>
+                        ></i>{" "}
                         {s}
                       </span>
                     ) : (
@@ -304,6 +301,51 @@ const ProfilePage = () => {
       </div>
     );
   }
+};
+
+const ProfileActionButton = ({
+  uid,
+  toggleIsEditable,
+  friendList,
+  sentRequests,
+  receivedRequests,
+}) => {
+  if (uid && uid !== auth().currentUser.uid) {
+    if (friendList.find((p) => p.uid === uid)) {
+      return (
+        <Button
+          block
+          color="danger"
+          onClick={() => unfriendFriend({ targetUid: uid })}
+        >
+          Unfriend
+        </Button>
+      );
+    } else if (sentRequests.find((p) => p.uid === uid)) {
+      return (
+        <Button block onClick={() => removeFriendRequest({ targetUid: uid })}>
+          Unrequest friend
+        </Button>
+      );
+    } else if (receivedRequests.find((p) => p.uid === uid)) {
+      return (
+        <Button block onClick={() => acceptFriendRequest({ targetUid: uid })}>
+          Confirm Friend
+        </Button>
+      );
+    } else {
+      return (
+        <Button block onClick={() => sendFriendRequest({ targetUid: uid })}>
+          Add friend
+        </Button>
+      );
+    }
+  } else
+    return (
+      <Button block onClick={() => toggleIsEditable()}>
+        Edit
+      </Button>
+    );
 };
 
 export default ProfilePage;
