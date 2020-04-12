@@ -72,6 +72,20 @@ const EventCard = ({ eid, searchString }) => {
         eventData.location.toLowerCase().search(searchString.toLowerCase()) <
           0 &&
         eid.toLowerCase().search(searchString.toLowerCase()) < 0 &&
+        eventTypeData.display.toLowerCase().search(searchString.toLowerCase()) <
+          0 &&
+        eventTypeData.value.toLowerCase().search(searchString.toLowerCase()) <
+          0 &&
+        eventLocationData.display
+          .toLowerCase()
+          .search(searchString.toLowerCase()) < 0 &&
+        eventLocationData.display_short
+          .toLowerCase()
+          .search(searchString.toLowerCase()) < 0 &&
+        eventLocationData.value
+          .toLowerCase()
+          .search(searchString.toLowerCase()) < 0 &&
+        eid.toLowerCase().search(searchString.toLowerCase()) < 0 &&
         hostUserData.username.toLowerCase().search(searchString.toLowerCase()) <
           0
       ) {
