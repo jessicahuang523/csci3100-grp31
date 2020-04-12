@@ -8,6 +8,7 @@ const EventCard = ({ eid, searchString }) => {
   const [eventData, setEventData] = useState();
   const [eventParticipants, setEventParticipants] = useState();
   const [hostUserData, setHostUserData] = useState();
+  const [searchDisplay, setSearchDisplay] = useState(true);
 
   useEffect(() => {
     if (eid) {
@@ -43,14 +44,28 @@ const EventCard = ({ eid, searchString }) => {
     }
   }, [eventData]);
 
+  useEffect(() => {
+    setSearchDisplay(true);
+    try {
+      if (
+        eventData &&
+        hostUserData &&
+        searchString &&
+        eventData.eventName.toLowerCase().search(searchString.toLowerCase()) <
+          0 &&
+        eventData.location.toLowerCase().search(searchString.toLowerCase()) <
+          0 &&
+        hostUserData.username.toLowerCase().search(searchString.toLowerCase()) <
+          0
+      ) {
+        setSearchDisplay(false);
+      }
+    } catch (e) {}
+  }, [searchString, eventData, hostUserData]);
+
   if (!eventData || !eventParticipants || !hostUserData) {
     return <LoadingEventCard />;
-  } else if (
-    searchString &&
-    eventData.eventName.toLowerCase().search(searchString.toLowerCase()) < 0 &&
-    eventData.location.toLowerCase().search(searchString.toLowerCase()) < 0 &&
-    hostUserData.username.toLowerCase().search(searchString.toLowerCase()) < 0
-  ) {
+  } else if (!searchDisplay) {
     return null;
   } else {
     const { eventName, location, startingTime, allowedPeople, eid } = eventData;
