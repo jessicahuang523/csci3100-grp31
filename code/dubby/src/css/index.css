@@ -16,11 +16,11 @@
 .chat-bubble {
   position: relative;
   height: auto;
-  max-width: 400px;
   border-radius: 0.4em;
 }
 
 .chat-text {
+  max-width: 400px;
   border-radius: 15px;
   background-color: lightblue;
   display: inline-block;
@@ -45,4 +45,20 @@
   border-top: 0;
   margin-top: -10px;
   margin-left: -20px;
+}
+
+.right:before {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  right: 0;
+  top: 50%;
+  bottom: auto;
+  border: 20px solid transparent;
+  border-left-color: lightblue;
+  border-right: 0;
+  border-top: 0;
+  margin-top: -10px;
+  margin-right: -20px;
 }
