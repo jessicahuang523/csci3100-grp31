@@ -53,10 +53,6 @@ const ProfilePage = () => {
   }, [userData, uid]);
 
   useEffect(() => {
-    console.log({ sentRequests, receivedRequests, friendList });
-  }, [sentRequests, receivedRequests, friendList]);
-
-  useEffect(() => {
     if (userData) {
       const { uid } = auth().currentUser;
       const sentRequestsRef = firestore()
