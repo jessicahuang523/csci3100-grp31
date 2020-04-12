@@ -20,6 +20,9 @@ const ProfilePage = () => {
   const [profileData, setProfileData] = useState();
   const [isEditable, setIsEditable] = useState(false);
   const [eventTypeChoices, setEventTypeChoices] = useState();
+  const [sentRequests, setSentRequests] = useState();
+  const [receivedRequests, setReceivedRequests] = useState();
+  const [friendList, setFriendList] = useState();
 
   useEffect(() => {
     firestore()
@@ -46,6 +49,68 @@ const ProfilePage = () => {
     }
   }, [userData, uid]);
 
+  useEffect(() => {
+    console.log({ sentRequests, receivedRequests, friendList });
+  }, [sentRequests, receivedRequests, friendList]);
+
+  useEffect(() => {
+    if (userData) {
+      const { uid } = auth().currentUser;
+      const sentRequestsRef = firestore()
+        .collection("user_profile")
+        .doc(uid)
+        .collection("sent_friend_requests");
+      const unsubscribeSentRequestsRefData = sentRequestsRef.onSnapshot(
+        (snap) => {
+          let tmp = [];
+          snap.forEach((doc) => tmp.push(doc.data()));
+          setSentRequests(tmp);
+        }
+      );
+      return () => {
+        unsubscribeSentRequestsRefData();
+      };
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    if (userData) {
+      const { uid } = auth().currentUser;
+      const receivedRequestsRef = firestore()
+        .collection("user_profile")
+        .doc(uid)
+        .collection("received_friend_requests");
+      const unsubscribeReceivedRequestData = receivedRequestsRef.onSnapshot(
+        (snap) => {
+          let tmp = [];
+          snap.forEach((doc) => tmp.push(doc.data()));
+          setReceivedRequests(tmp);
+        }
+      );
+      return () => {
+        unsubscribeReceivedRequestData();
+      };
+    }
+  }, [userData]);
+
+  useEffect(() => {
+    if (userData) {
+      const { uid } = auth().currentUser;
+      const friendListRef = firestore()
+        .collection("user_profile")
+        .doc(uid)
+        .collection("friend_list");
+      const unsubscribeFriendListData = friendListRef.onSnapshot((snap) => {
+        let tmp = [];
+        snap.forEach((doc) => tmp.push(doc.data()));
+        setFriendList(tmp);
+      });
+      return () => {
+        unsubscribeFriendListData();
+      };
+    }
+  }, [userData]);
+
   const toggleIsEditable = () => setIsEditable(!isEditable);
 
   const handleProfileDataSubmit = async () => {
@@ -71,7 +136,13 @@ const ProfilePage = () => {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
-  } else if (!profileData || !eventTypeChoices) {
+  } else if (
+    !profileData ||
+    !eventTypeChoices ||
+    !sentRequests ||
+    !receivedRequests ||
+    !friendList
+  ) {
     return <Loading />;
   } else if (uid !== auth().currentUser.uid && isEditable) {
     // in editing mode
@@ -173,16 +244,17 @@ const ProfilePage = () => {
           <br />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
-              {uid && uid !== auth().currentUser.uid ? (
+              {((uid && uid === auth().currentUser.uid) || !uid) && (
+                <Button block onClick={() => toggleIsEditable()}>
+                  Edit
+                </Button>
+              )}
+              {uid && uid !== auth().currentUser.uid && (
                 <Button
                   block
                   onClick={() => sendFriendRequest({ targetUid: uid })}
                 >
                   Add friend
-                </Button>
-              ) : (
-                <Button block onClick={() => toggleIsEditable()}>
-                  Edit
                 </Button>
               )}
               <h2 style={{ marginTop: "50px" }}>Username</h2>
