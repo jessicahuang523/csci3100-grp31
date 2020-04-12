@@ -124,6 +124,7 @@ export const Chat = () => {
                       }
                       time={[new Date(message.created_at).toLocaleTimeString()]}
                       mes={message.text}
+                      send={message.sender.uid}
                     />
                   ))}
               </ul>
@@ -152,18 +153,36 @@ export const Chat = () => {
   }
 };
 
-const Message = ({ name, time, mes }) => {
-  return (
-    <div style={{ margin: "40px" }}>
+const Message = ({ name, time, mes ,send}) => {
+
+  const { userData } = useContext(UserContext);
+
+  if (userData.uid === send) {
+    return (
+      <div style={{ margin: "40px", textAlign: "right" }}>
+        <p>{name}</p>
+        <div className="chat-bubble right">
+          <div className="chat-text-right">
+            <p>{mes}</p>
+          </div>
+        </div>
+        <p>{time}</p>
+      </div>
+    );
+  }
+  else {
+    return (
+    <div style={{ margin: "40px", textAlign: "left" }}>
       <p>{name}</p>
       <div className="chat-bubble left">
-        <div className="chat-text">
+        <div className="chat-text-left">
           <p>{mes}</p>
         </div>
       </div>
       <p>{time}</p>
     </div>
-  );
+    );
+  }
 };
 
 export default Chat;
