@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link, Redirect } from "react-router-dom";
 import { firestore, auth } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
+import { GymContext } from "../../contexts/GymContext";
+import { EventTypeContext } from "../../contexts/EventTypeContext";
 import { Jumbotron, Button, Badge } from "reactstrap";
 import Loading from "../Loading/Loading";
 import NavBar from "../Navbar/Navbar";
@@ -11,10 +13,14 @@ const Event = () => {
   const { eid } = useParams();
 
   const { userData, userLoading } = useContext(UserContext);
+  const { gymData } = useContext(GymContext);
+  const { eventTypeData } = useContext(EventTypeContext);
 
   const [eventData, setEventData] = useState();
   const [eventParticipants, setEventParticipants] = useState();
   const [hostUserData, setHostUserData] = useState();
+  const [foundTypeData, setFoundTypeData] = useState();
+  const [foundLocationData, setFoundLocationData] = useState();
   const [joinLoading, setJoinLoading] = useState(false);
 
   useEffect(() => {
@@ -51,6 +57,15 @@ const Event = () => {
     }
   }, [eventData]);
 
+  useEffect(() => {
+    if (eventData && eventTypeData && gymData) {
+      setFoundTypeData(
+        eventTypeData.find((t) => t.value === eventData.eventType)
+      );
+      setFoundLocationData(gymData.find((g) => g.value === eventData.location));
+    }
+  }, [eventData, eventTypeData, gymData]);
+
   const handleJoinButtonClick = async () => {
     setJoinLoading(true);
     await addParticipantToEvent({
@@ -74,6 +89,7 @@ const Event = () => {
         <NavBar />
         <Jumbotron fluid>
           <h1>
+            <i className={foundTypeData.icon}></i> [{foundTypeData.display}]{" "}
             {eventData.eventName}{" "}
             {eventParticipants.find((x) => x.uid === uid) && (
               <Badge>Joined</Badge>
@@ -87,7 +103,7 @@ const Event = () => {
             <Button onClick={handleJoinButtonClick}>Join</Button>
           )}
         </Jumbotron>
-        <p>Location: {eventData.location}</p>
+        <p>Location: {foundLocationData.display}</p>
         <p>Starting at {new Date(eventData.startingTime).toLocaleString()}</p>
         <p>
           Vacancy:{" "}
