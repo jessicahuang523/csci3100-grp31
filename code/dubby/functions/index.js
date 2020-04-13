@@ -18,19 +18,81 @@ exports.chatParticipantRename = functions.firestore
     const previousValue = change.before.data();
     const { uid, username } = newValue;
     if (username == previousValue.username) return null;
-    const userChatCollectionRef = db
-      .collection("user_profile")
-      .doc(uid)
-      .collection("chats");
-    userChatCollectionRef.get().then(function (snap) {
-      snap.forEach(function (doc) {
-        const { cid } = doc.data();
-        const chatParticipantDataRef = db
-          .collection("chat")
-          .doc(cid)
-          .collection("participants")
-          .doc(uid);
-        chatParticipantDataRef.update({ uid, username });
+
+    const userDataRef = db.collection("user_profile").doc(uid);
+
+    userDataRef
+      .collection("chats")
+      .get()
+      .then(function (snap) {
+        snap.forEach(function (doc) {
+          const { cid } = doc.data();
+          const chatParticipantDataRef = db
+            .collection("chat")
+            .doc(cid)
+            .collection("participants")
+            .doc(uid);
+          chatParticipantDataRef.update({ username });
+        });
       });
-    });
+
+    userDataRef
+      .collection("events")
+      .get()
+      .then(function (snap) {
+        snap.forEach(function (doc) {
+          const { eid } = doc.data();
+          const eventParticipantDataRef = db
+            .collection("event")
+            .doc(eid)
+            .collection("participants")
+            .doc(uid);
+          eventParticipantDataRef.update({ username });
+        });
+      });
+
+    userDataRef
+      .collection("friend_list")
+      .get()
+      .then(function (snap) {
+        snap.forEach(function (doc) {
+          const targetUid = doc.data().uid;
+          const targetUserDataRef = db
+            .collection("user_profile")
+            .doc(targetUid)
+            .collection("friend_list")
+            .doc(uid);
+          targetUserDataRef.update({ username });
+        });
+      });
+
+    userDataRef
+      .collection("sent_friend_requests")
+      .get()
+      .then(function (snap) {
+        snap.forEach(function (doc) {
+          const targetUid = doc.data().uid;
+          const targetUserDataRef = db
+            .collection("user_profile")
+            .doc(targetUid)
+            .collection("received_friend_requests")
+            .doc(uid);
+          targetUserDataRef.update({ username });
+        });
+      });
+
+    userDataRef
+      .collection("received_friend_requests")
+      .get()
+      .then(function (snap) {
+        snap.forEach(function (doc) {
+          const targetUid = doc.data().uid;
+          const targetUserDataRef = db
+            .collection("user_profile")
+            .doc(targetUid)
+            .collection("sent_friend_requests")
+            .doc(uid);
+          targetUserDataRef.update({ username });
+        });
+      });
   });
