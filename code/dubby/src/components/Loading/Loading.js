@@ -15,12 +15,14 @@ const Loading = () => {
         <div
           style={{
             width: "100vw",
+            height: "80vh",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            justifyContent: "space-around",
           }}
         >
-          <Spinner />
+          <Spinner color="warning" />
         </div>
       </div>
     );

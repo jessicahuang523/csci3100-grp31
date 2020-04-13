@@ -29,10 +29,12 @@ const MainFeed = () => {
     };
   }, []);
 
-  if (userLoading || !eventList) {
+  if (userLoading) {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
+  } else if (!eventList) {
+    return <Loading />;
   } else {
     return (
       <div>

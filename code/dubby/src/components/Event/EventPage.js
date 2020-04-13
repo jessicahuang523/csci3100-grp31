@@ -31,10 +31,12 @@ const EventPage = () => {
     }
   }, [userData]);
 
-  if (userLoading || !userEventList) {
+  if (userLoading) {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
+  } else if (!userEventList) {
+    return <Loading />;
   } else {
     return (
       <div>

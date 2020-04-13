@@ -251,19 +251,31 @@ const ProfileActionButton = ({
       );
     } else if (sentRequests.find((p) => p.uid === uid)) {
       return (
-        <Button block onClick={() => removeFriendRequest({ targetUid: uid })}>
+        <Button
+          block
+          color="warning"
+          onClick={() => removeFriendRequest({ targetUid: uid })}
+        >
           Take Back Request
         </Button>
       );
     } else if (receivedRequests.find((p) => p.uid === uid)) {
       return (
-        <Button block onClick={() => acceptFriendRequest({ targetUid: uid })}>
+        <Button
+          block
+          color="primary"
+          onClick={() => acceptFriendRequest({ targetUid: uid })}
+        >
           Confirm Friend
         </Button>
       );
     } else {
       return (
-        <Button block onClick={() => sendFriendRequest({ targetUid: uid })}>
+        <Button
+          block
+          color="primary"
+          onClick={() => sendFriendRequest({ targetUid: uid })}
+        >
           Add friend
         </Button>
       );
