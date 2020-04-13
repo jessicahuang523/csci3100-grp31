@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { firestore, auth } from "firebase";
+import { FriendContext } from "../../contexts/FriendContext";
 import { UserContext } from "../../contexts/UserContext";
 import { 
   Jumbotron, 
@@ -24,6 +25,7 @@ import ChatCard from "./ChatCard";
 
 const ChatPage = () => {
   const { userData, userLoading } = useContext(UserContext);
+  const { friendList } = useContext(FriendContext);
   const [chatList, setChatList] = useState();
   const [dropdownOpen, setOpen] = useState(false);
   const [modal_private, setModalP] = useState(false);
@@ -73,7 +75,13 @@ const ChatPage = () => {
               <ModalHeader toggle={toggle_modal_private}>Private Chat</ModalHeader>
               <ModalBody>
                 <h4>To:</h4>
-                friends list
+                {friendList && friendList.length>0 ? (
+                  friendList.map((f) => (
+                    <ul>{f.username}</ul>
+                  ))
+                ):(
+                    <p>you have no friend</p>
+                )}
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" onClick={toggle_modal_private}>Done</Button> {' '}
@@ -90,7 +98,13 @@ const ChatPage = () => {
                   </FormGroup>
                 </Form>
                 <h4>Participants:</h4>
-                friends list
+                {friendList && friendList.length>0 ? (
+                  friendList.map((f) => (
+                    <ul>{f.username}</ul>
+                  ))
+                ):(
+                    <p>you have no friend</p>
+                )}
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" onClick={toggle_modal_group}>Done</Button> {' '}
