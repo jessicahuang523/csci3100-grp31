@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { GymContext } from "../../contexts/GymContext";
+import { EventTypeContext } from "../../contexts/EventTypeContext";
 import { Link } from "react-router-dom";
 import { firestore, auth } from "firebase";
 import { Card, CardTitle, CardSubtitle, CardText, Button } from "reactstrap";
 import LoadingEventCard from "../Loading/LoadingEventCard";
 
 const EventCard = ({ eid, searchString }) => {
+  const { gymData } = useContext(GymContext);
+  const { eventTypeData } = useContext(EventTypeContext);
+
   const [eventData, setEventData] = useState();
   const [eventParticipants, setEventParticipants] = useState();
   const [hostUserData, setHostUserData] = useState();
-  const [eventTypeData, setEventTypeData] = useState();
-  const [eventLocationData, setEventLocationData] = useState();
-  const [searchDisplay, setSearchDisplay] = useState(true);
+  const [foundTypeData, setFoundTypeData] = useState();
+  const [foundLocationData, setFoundLocationData] = useState();
+  const [matchSearchResult, setMatchSearchResult] = useState(true);
 
   useEffect(() => {
     if (eid) {
@@ -33,6 +38,15 @@ const EventCard = ({ eid, searchString }) => {
   }, [eid]);
 
   useEffect(() => {
+    if (eventData && eventTypeData && gymData) {
+      setFoundTypeData(
+        eventTypeData.find((t) => t.value === eventData.eventType)
+      );
+      setFoundLocationData(gymData.find((g) => g.value === eventData.location));
+    }
+  }, [eventData, eventTypeData, gymData]);
+
+  useEffect(() => {
     if (eventData) {
       const userRef = firestore()
         .collection("user_profile")
@@ -40,28 +54,14 @@ const EventCard = ({ eid, searchString }) => {
       const unsubscribeUserData = userRef.onSnapshot((snap) =>
         setHostUserData(snap.data())
       );
-      const eventTypeRef = firestore()
-        .collection("event_types")
-        .where("value", "==", eventData.eventType);
-      const unsubscribeEventTypeData = eventTypeRef.onSnapshot((snap) =>
-        snap.forEach((d) => setEventTypeData(d.data()))
-      );
-      const eventLocationRef = firestore()
-        .collection("event_location")
-        .where("value", "==", eventData.location);
-      const unsubscribeEventLocationData = eventLocationRef.onSnapshot((snap) =>
-        snap.forEach((d) => setEventLocationData(d.data()))
-      );
       return () => {
         unsubscribeUserData();
-        unsubscribeEventTypeData();
-        unsubscribeEventLocationData();
       };
     }
   }, [eventData]);
 
   useEffect(() => {
-    setSearchDisplay(true);
+    setMatchSearchResult(true);
     try {
       if (
         eventData &&
@@ -72,24 +72,24 @@ const EventCard = ({ eid, searchString }) => {
         eventData.location.toLowerCase().search(searchString.toLowerCase()) <
           0 &&
         eid.toLowerCase().search(searchString.toLowerCase()) < 0 &&
-        eventTypeData.display.toLowerCase().search(searchString.toLowerCase()) <
+        foundTypeData.display.toLowerCase().search(searchString.toLowerCase()) <
           0 &&
-        eventTypeData.value.toLowerCase().search(searchString.toLowerCase()) <
+        foundTypeData.value.toLowerCase().search(searchString.toLowerCase()) <
           0 &&
-        eventLocationData.display
+        foundLocationData.display
           .toLowerCase()
           .search(searchString.toLowerCase()) < 0 &&
-        eventLocationData.display_short
+        foundLocationData.display_short
           .toLowerCase()
           .search(searchString.toLowerCase()) < 0 &&
-        eventLocationData.value
+        foundLocationData.value
           .toLowerCase()
           .search(searchString.toLowerCase()) < 0 &&
         eid.toLowerCase().search(searchString.toLowerCase()) < 0 &&
         hostUserData.username.toLowerCase().search(searchString.toLowerCase()) <
           0
       ) {
-        setSearchDisplay(false);
+        setMatchSearchResult(false);
       }
     } catch (e) {}
   }, [
@@ -97,19 +97,19 @@ const EventCard = ({ eid, searchString }) => {
     eventData,
     hostUserData,
     eid,
-    eventTypeData,
-    eventLocationData,
+    foundTypeData,
+    foundLocationData,
   ]);
 
   if (
     !eventData ||
     !eventParticipants ||
     !hostUserData ||
-    !eventTypeData ||
-    !eventLocationData
+    !foundTypeData ||
+    !foundLocationData
   ) {
     return <LoadingEventCard />;
-  } else if (!searchDisplay) {
+  } else if (!matchSearchResult) {
     return null;
   } else {
     const { eventName, startingTime, allowedPeople, eid } = eventData;
@@ -117,10 +117,10 @@ const EventCard = ({ eid, searchString }) => {
     return (
       <Card body style={{ marginBottom: "1rem" }}>
         <CardTitle>
-          <i className={eventTypeData.icon}></i> [{eventTypeData.display}]{" "}
+          <i className={foundTypeData.icon}></i> [{foundTypeData.display}]{" "}
           {eventName}
         </CardTitle>
-        <CardSubtitle>{eventLocationData.display}</CardSubtitle>
+        <CardSubtitle>{foundLocationData.display}</CardSubtitle>
         <CardText>
           Starting at {new Date(startingTime).toLocaleString()}
         </CardText>

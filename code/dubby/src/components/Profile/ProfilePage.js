@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { firestore, auth } from "firebase";
 import { useParams, Redirect } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
+import { EventTypeContext } from "../../contexts/EventTypeContext";
+import { FriendContext } from "../../contexts/FriendContext";
 import { Button, Input, Form, Row, Col } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -19,24 +21,13 @@ const ProfilePage = () => {
   const { uid } = useParams();
 
   const { userData, userLoading } = useContext(UserContext);
+  const { eventTypeData } = useContext(EventTypeContext);
+  const { sentRequests, receivedRequests, friendList } = useContext(
+    FriendContext
+  );
 
   const [profileData, setProfileData] = useState();
   const [isEditable, setIsEditable] = useState(false);
-  const [eventTypeChoices, setEventTypeChoices] = useState();
-  const [sentRequests, setSentRequests] = useState();
-  const [receivedRequests, setReceivedRequests] = useState();
-  const [friendList, setFriendList] = useState();
-
-  useEffect(() => {
-    firestore()
-      .collection("event_types")
-      .get()
-      .then((snap) => {
-        let tmp = [];
-        snap.forEach((d) => tmp.push(d.data()));
-        setEventTypeChoices(tmp);
-      });
-  }, []);
 
   useEffect(() => {
     if (userData) {
@@ -51,64 +42,6 @@ const ProfilePage = () => {
       };
     }
   }, [userData, uid]);
-
-  useEffect(() => {
-    if (userData) {
-      const { uid } = auth().currentUser;
-      const sentRequestsRef = firestore()
-        .collection("user_profile")
-        .doc(uid)
-        .collection("sent_friend_requests");
-      const unsubscribeSentRequestsRefData = sentRequestsRef.onSnapshot(
-        (snap) => {
-          let tmp = [];
-          snap.forEach((doc) => tmp.push(doc.data()));
-          setSentRequests(tmp);
-        }
-      );
-      return () => {
-        unsubscribeSentRequestsRefData();
-      };
-    }
-  }, [userData]);
-
-  useEffect(() => {
-    if (userData) {
-      const { uid } = auth().currentUser;
-      const receivedRequestsRef = firestore()
-        .collection("user_profile")
-        .doc(uid)
-        .collection("received_friend_requests");
-      const unsubscribeReceivedRequestData = receivedRequestsRef.onSnapshot(
-        (snap) => {
-          let tmp = [];
-          snap.forEach((doc) => tmp.push(doc.data()));
-          setReceivedRequests(tmp);
-        }
-      );
-      return () => {
-        unsubscribeReceivedRequestData();
-      };
-    }
-  }, [userData]);
-
-  useEffect(() => {
-    if (userData) {
-      const { uid } = auth().currentUser;
-      const friendListRef = firestore()
-        .collection("user_profile")
-        .doc(uid)
-        .collection("friend_list");
-      const unsubscribeFriendListData = friendListRef.onSnapshot((snap) => {
-        let tmp = [];
-        snap.forEach((doc) => tmp.push(doc.data()));
-        setFriendList(tmp);
-      });
-      return () => {
-        unsubscribeFriendListData();
-      };
-    }
-  }, [userData]);
 
   const toggleIsEditable = () => setIsEditable(!isEditable);
 
@@ -137,7 +70,7 @@ const ProfilePage = () => {
     return <Redirect to="/launch" />;
   } else if (
     !profileData ||
-    !eventTypeChoices ||
+    !eventTypeData ||
     !sentRequests ||
     !receivedRequests ||
     !friendList
@@ -202,7 +135,7 @@ const ProfilePage = () => {
                   multiple
                   onChange={handleInterestedSportsEdit}
                 >
-                  {eventTypeChoices.map(({ value, display }) => (
+                  {eventTypeData.map(({ value, display }) => (
                     <option key={value} value={value}>
                       {display}
                     </option>
@@ -271,7 +204,7 @@ const ProfilePage = () => {
                       <span key={s}>
                         <i
                           className={
-                            eventTypeChoices.find((c) => c.display === s).icon
+                            eventTypeData.find((c) => c.display === s).icon
                           }
                         ></i>{" "}
                         {s}
@@ -280,7 +213,7 @@ const ProfilePage = () => {
                       <span key={s}>
                         <i
                           className={
-                            eventTypeChoices.find((c) => c.display === s).icon
+                            eventTypeData.find((c) => c.display === s).icon
                           }
                         ></i>
                         {s},{" "}
