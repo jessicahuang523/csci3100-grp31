@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import { firestore } from "firebase";
+import { Redirect } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
+import { GymContext } from "../../contexts/GymContext";
+import { EventTypeContext } from "../../contexts/EventTypeContext";
 import {
   Jumbotron,
   Alert,
@@ -33,10 +35,10 @@ const calculateMinStartingTime = () => {
 };
 
 const AddEvent = () => {
-  const { userData } = useContext(UserContext);
+  const { userData, userLoading } = useContext(UserContext);
+  const { gymData } = useContext(GymContext);
+  const { eventTypeData } = useContext(EventTypeContext);
 
-  const [eventTypeChoices, setEventTypeChoices] = useState();
-  const [eventLocationChoices, setEventLocationChoices] = useState();
   const [allowedPeople, setAllowedPeople] = useState();
   const [eventName, setEventName] = useState();
   const [eventType, setEventType] = useState();
@@ -51,28 +53,6 @@ const AddEvent = () => {
   );
   const [submittingEventData, setSubmittingEventData] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
-
-  useEffect(() => {
-    firestore()
-      .collection("event_types")
-      .get()
-      .then((snap) => {
-        let tmp = [];
-        snap.forEach((d) => tmp.push(d.data()));
-        setEventTypeChoices(tmp);
-      });
-  }, []);
-
-  useEffect(() => {
-    firestore()
-      .collection("event_location")
-      .get()
-      .then((snap) => {
-        let tmp = [];
-        snap.forEach((d) => tmp.push(d.data()));
-        setEventLocationChoices(tmp);
-      });
-  }, []);
 
   useEffect(() => {
     setStartingTime(
@@ -107,7 +87,11 @@ const AddEvent = () => {
     }
   };
 
-  if (!eventTypeChoices || !eventLocationChoices) {
+  if (userLoading) {
+    return <Loading />;
+  } else if (!userData) {
+    return <Redirect to="/launch" />;
+  } else if (!gymData || !eventTypeData) {
     return <Loading />;
   } else if (submittingEventData) {
     return (
@@ -156,7 +140,7 @@ const AddEvent = () => {
                   id="eventType"
                   onChange={(e) => setEventType(e.target.value)}
                 >
-                  {eventTypeChoices.map(({ value, display }) => (
+                  {eventTypeData.map(({ value, display }) => (
                     <option key={value} value={value}>
                       {display}
                     </option>
@@ -189,7 +173,7 @@ const AddEvent = () => {
                   id="location"
                   onChange={(e) => setLocation(e.target.value)}
                 >
-                  {eventLocationChoices.map(({ value, display }) => (
+                  {gymData.map(({ value, display }) => (
                     <option key={value} value={value}>
                       {display}
                     </option>
