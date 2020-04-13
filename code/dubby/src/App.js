@@ -3,17 +3,20 @@ import Routes from "./Routes";
 import UserContextProvider from "./contexts/UserContext";
 import EventTypeContextProvider from "./contexts/EventTypeContext";
 import GymContextProvider from "./contexts/GymContext";
+import FriendContextProvider from "./contexts/FriendContext";
 
 function App() {
   return (
     <div className="App">
-      <GymContextProvider>
-        <EventTypeContextProvider>
-          <UserContextProvider>
-            <Routes />
-          </UserContextProvider>
-        </EventTypeContextProvider>
-      </GymContextProvider>
+      <UserContextProvider>
+        <GymContextProvider>
+          <EventTypeContextProvider>
+            <FriendContextProvider>
+              <Routes />
+            </FriendContextProvider>
+          </EventTypeContextProvider>
+        </GymContextProvider>
+      </UserContextProvider>
     </div>
   );
 }
