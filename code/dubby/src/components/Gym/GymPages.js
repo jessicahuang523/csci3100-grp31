@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import { GymContext } from "../../contexts/GymContext";
 import {
   Row,
   Col,
@@ -20,10 +21,9 @@ import classnames from "classnames";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import EditGymImage from "./EditGymImage";
-import { GymContext } from "../../contexts/GymContext";
 
 const GymPage = () => {
-  const { gymData, gymLoading } = useContext(GymContext);
+  const { gymData } = useContext(GymContext);
 
   const [activeTab, setActiveTab] = useState("1");
 
@@ -31,7 +31,7 @@ const GymPage = () => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  if (gymLoading) {
+  if (!gymData) {
     return <Loading />;
   } else {
     return (
