@@ -11,7 +11,11 @@ import {
 } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
-import { acceptFriendRequest } from "../../utilityfunctions/Utilities";
+import {
+  acceptFriendRequest,
+  removeFriendRequest,
+  unfriendFriend,
+} from "../../utilityfunctions/Utilities";
 
 const Friend = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -30,47 +34,54 @@ const Friend = () => {
       <Jumbotron>
         <h1>Friends</h1>
       </Jumbotron>
-      <ListGroup>
-        <ListGroupItemHeading>Friends</ListGroupItemHeading>
-        {friendList && friendList.length > 0 ? (
-          friendList.map((u) => (
-            <ListGroupItem key={u.uid}>
-              <Link to={`/u/${u.uid}`}>{u.username}</Link>
-            </ListGroupItem>
-          ))
-        ) : (
-          <ListGroupItem>Wow, such empty</ListGroupItem>
-        )}
-      </ListGroup>
-      <ListGroup>
-        <ListGroupItemHeading>Sent Requests</ListGroupItemHeading>
-        {sentRequests && sentRequests.length > 0 ? (
-          sentRequests.map((u) => (
-            <ListGroupItem key={u.uid}>
-              <Link to={`/u/${u.uid}`}>{u.username}</Link>
-            </ListGroupItem>
-          ))
-        ) : (
-          <ListGroupItem>Wow, such empty</ListGroupItem>
-        )}
-      </ListGroup>
-      <ListGroup>
-        <ListGroupItemHeading>Received Requests</ListGroupItemHeading>
-        {receivedRequests && receivedRequests.length > 0 ? (
-          receivedRequests.map((u) => (
-            <ListGroupItem key={u.uid}>
-              <Link to={`/u/${u.uid}`}>{u.username}</Link>
-              <Button onClick={() => acceptFriendRequest({ targetUid: u.uid })}>
-                Accept
-              </Button>
-            </ListGroupItem>
-          ))
-        ) : (
-          <ListGroupItem>Wow, such empty</ListGroupItem>
-        )}
-      </ListGroup>
+      <UserList
+        users={friendList}
+        heading="Friends"
+        action={unfriendFriend}
+        actionText="Unfriend"
+        actionColor="danger"
+      />
+      <UserList
+        users={sentRequests}
+        heading="Sent Requests"
+        action={removeFriendRequest}
+        actionText="Take Back Request"
+        actionColor="warning"
+      />
+      <UserList
+        users={receivedRequests}
+        heading="Received Requests"
+        action={acceptFriendRequest}
+        actionText="Accept"
+        actionColor="primary"
+      />
     </div>
   );
 };
+
+const UserList = ({ users, heading, action, actionText, actionColor }) => (
+  <ListGroup>
+    <ListGroupItemHeading>{heading}</ListGroupItemHeading>
+    {users && users.length > 0 ? (
+      users.map((u) => (
+        <ListGroupItem key={u.uid}>
+          <Link to={`/u/${u.uid}`}>{u.username}</Link>
+          {"  "}
+          {action && (
+            <Button
+              size="sm"
+              color={actionColor}
+              onClick={() => action({ targetUid: u.uid })}
+            >
+              {actionText}
+            </Button>
+          )}
+        </ListGroupItem>
+      ))
+    ) : (
+      <ListGroupItem>Wow, such empty</ListGroupItem>
+    )}
+  </ListGroup>
+);
 
 export default Friend;

@@ -253,7 +253,7 @@ const ProfileActionButton = ({
     } else if (sentRequests.find((p) => p.uid === uid)) {
       return (
         <Button block onClick={() => removeFriendRequest({ targetUid: uid })}>
-          Unrequest friend
+          Take Back Request
         </Button>
       );
     } else if (receivedRequests.find((p) => p.uid === uid)) {
