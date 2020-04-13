@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { firestore } from "firebase";
+import React, { useState, useContext } from "react";
 import {
   Row,
   Col,
@@ -21,37 +20,28 @@ import classnames from "classnames";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import EditGymImage from "./EditGymImage";
+import { GymContext } from "../../contexts/GymContext";
 
 const GymPage = () => {
-  const [activeTab, setActiveTab] = useState("1");
-  const [gymData, setGymData] = useState();
+  const { gymData, gymLoading } = useContext(GymContext);
 
-  useEffect(() => {
-    const fetchEventLocation = async () => {
-      const eventLocationSnap = await firestore()
-        .collection("event_location")
-        .get();
-      let tmp = [];
-      eventLocationSnap.forEach((d) => tmp.push(d.data()));
-      setGymData(tmp);
-    };
-    fetchEventLocation();
-  }, []);
+  const [activeTab, setActiveTab] = useState("1");
 
   const toggle = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
-  if (!gymData) {
+  if (gymLoading) {
     return <Loading />;
   } else {
     return (
-      <div style = {{backgroundColor: "#d9d9d9"}}>
+      <div style={{ backgroundColor: "#d9d9d9" }}>
         <NavBar />
         <Container>
           <Nav tabs>
             <NavItem>
-              <NavLink style = {{backgroundColor: "#cc33ff"}}
+              <NavLink
+                style={{ backgroundColor: "#cc33ff" }}
                 className={classnames({ active: activeTab === "1" })}
                 onClick={() => toggle("1")}
               >
@@ -59,7 +49,8 @@ const GymPage = () => {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink style = {{backgroundColor: "#ffcc00",}}
+              <NavLink
+                style={{ backgroundColor: "#ffcc00" }}
                 className={classnames({ active: activeTab === "2" })}
                 onClick={() => toggle("2")}
               >
@@ -67,7 +58,8 @@ const GymPage = () => {
               </NavLink>
             </NavItem>
             <NavItem>
-              <NavLink style = {{backgroundColor: "#cccccc"}}
+              <NavLink
+                style={{ backgroundColor: "#cccccc" }}
                 className={classnames({ active: activeTab === "3" })}
                 onClick={() => toggle("3")}
               >
@@ -121,7 +113,7 @@ const GymListItem = ({ data }) => {
     <Card>
       <CardHeader>{display}</CardHeader>
       <CardBody>{description}</CardBody>
-      <CardFooter style = {{boxShadow: "5px 10px #999999"}}>
+      <CardFooter style={{ boxShadow: "5px 10px #999999" }}>
         <EditGymImage image_main={image_main} />
       </CardFooter>
     </Card>
