@@ -12,7 +12,11 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter
+  ModalFooter,
+  Form,
+  FormGroup,
+  Input,
+  Badge
 } from "reactstrap";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -56,6 +60,7 @@ const ChatPage = () => {
         <Navbar />
         <Jumbotron>
           <h1>Chats</h1>
+          <hr />
           <ButtonDropdown isOpen={dropdownOpen} toggle={toggle_dropdown}>
             <DropdownToggle caret>
               New Chat
@@ -78,6 +83,14 @@ const ChatPage = () => {
             <Modal isOpen={modal_group} toggle={toggle_modal_group}>
               <ModalHeader toggle={toggle_modal_group}>Group Chat</ModalHeader>
               <ModalBody>
+                <Form>
+                  <FormGroup>
+                    <h4>Group name:</h4>
+                    <Input type="text" id="groupChatNmae"/>
+                  </FormGroup>
+                </Form>
+                <h4>Participants:</h4>
+                friends list
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" onClick={toggle_modal_group}>Done</Button> {' '}
