@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams, Redirect } from "react-router-dom";
+import { useParams, Redirect, Link } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import {
@@ -11,6 +11,7 @@ import {
   Input,
   Button,
   Jumbotron,
+  Collapse
 } from "reactstrap";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -28,6 +29,9 @@ export const Chat = () => {
   const [chatParticipantData, setchatParticipantData] = useState();
   const [chatAuthorized, setChatAuthorized] = useState(false);
   const [inputMessage, setInputMessage] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggle = () => setIsOpen(!isOpen);
 
   useEffect(() => {
     if (chatAuthorized) {
@@ -113,20 +117,17 @@ export const Chat = () => {
           <h1>
             <i className={chatData.icon}></i> {chatData.title}
           </h1>
+          <hr />
+          <Button onClick={toggle}>Participants</Button>
+          <Collapse isOpen={isOpen}>
+            {chatParticipants &&
+              chatParticipants.map(p => (
+                <li><ul><Link to={`/u/${p.uid}`}>{p.username}</Link></ul></li>
+              ))}
+          </Collapse>
         </Jumbotron>
         <Container>
           <Row>
-            {/* <Col sm="4">
-              <h3>Participants</h3>
-              <ul>
-              {chatParticipants &&
-                chatParticipants.map(p => (
-                  <li key={p.uid}>
-                    {p.username} [uid: {p.uid}]
-                  </li>
-                ))}
-            </ul>
-            </Col> */}
             <Col sm={12}>
               <ul>
                 {chatMessages &&
