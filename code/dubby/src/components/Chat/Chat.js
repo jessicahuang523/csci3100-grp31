@@ -152,7 +152,7 @@ export const Chat = () => {
                     />
                   </Col>
                   <Col sm={2}>
-                    <Button type="submit">
+                    <Button block type="submit">
                       <i className="fas fa-paper-plane"></i>
                     </Button>
                   </Col>
