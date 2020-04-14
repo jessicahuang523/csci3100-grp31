@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import { firestore, auth } from "firebase";
+import React, { useState, useContext, useEffect } from "react";
+import { auth } from "firebase";
 import { useParams, Redirect } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
@@ -29,18 +29,8 @@ const ProfilePage = () => {
   const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
-    if (userData) {
-      const profileDataRef = firestore()
-        .collection("user_profile")
-        .doc(uid ? uid : auth().currentUser.uid);
-      const unsubscribeProfileData = profileDataRef.onSnapshot((snap) =>
-        setProfileData(snap.data())
-      );
-      return () => {
-        unsubscribeProfileData();
-      };
-    }
-  }, [userData, uid]);
+    setProfileData(userData);
+  }, [userData]);
 
   const toggleIsEditable = () => setIsEditable(!isEditable);
 
@@ -68,7 +58,6 @@ const ProfilePage = () => {
   } else if (!userData) {
     return <Redirect to="/launch" />;
   } else if (
-    !profileData ||
     !eventTypeData ||
     !sentRequests ||
     !receivedRequests ||
@@ -174,30 +163,18 @@ const ProfilePage = () => {
               {interested_sports.length &&
               interested_sports.length > 0 &&
               interested_sports.map !== undefined ? (
-                <p>
-                  {interested_sports.map((s) =>
-                    interested_sports.indexOf(s) ===
-                    interested_sports.length - 1 ? (
-                      <span key={s}>
-                        <i
-                          className={
-                            eventTypeData.find((c) => c.display === s).icon
-                          }
-                        ></i>{" "}
-                        {s}
-                      </span>
-                    ) : (
-                      <span key={s}>
-                        <i
-                          className={
-                            eventTypeData.find((c) => c.display === s).icon
-                          }
-                        ></i>
-                        {s},{" "}
-                      </span>
-                    )
-                  )}
-                </p>
+                <ul style={{ listStyle: "none", padding: 0 }}>
+                  {interested_sports.map((s) => (
+                    <li key={s}>
+                      <i
+                        className={
+                          eventTypeData.find((c) => c.display === s).icon
+                        }
+                      ></i>{" "}
+                      {s}
+                    </li>
+                  ))}
+                </ul>
               ) : (
                 <p>{interested_sports}</p>
               )}
