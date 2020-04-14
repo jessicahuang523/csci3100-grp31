@@ -21,10 +21,11 @@ import {
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import ChatCard from "./ChatCard";
+import ProfileHead from "../Profile/ProfileHead";
 
 const ChatPage = () => {
   const { userData, userLoading } = useContext(UserContext);
-  const { friendList } = useContext(FriendContext);
+  const { friendListData } = useContext(FriendContext);
   const [chatList, setChatList] = useState();
   const [dropdownOpen, setOpen] = useState(false);
   const [modal_private, setModalP] = useState(false);
@@ -78,8 +79,8 @@ const ChatPage = () => {
               </ModalHeader>
               <ModalBody>
                 <h4>To:</h4>
-                {friendList && friendList.length > 0 ? (
-                  friendList.map(({ username }) => (
+                {friendListData && friendListData.length > 0 ? (
+                  friendListData.map(({ username }) => (
                     <p key={username}>{username}</p>
                   ))
                 ) : (
@@ -101,12 +102,12 @@ const ChatPage = () => {
                 <Form>
                   <FormGroup>
                     <h4>Group name:</h4>
-                    <Input type="text" id="groupChatNmae" />
+                    <Input type="text" id="groupChatName" />
                   </FormGroup>
                 </Form>
                 <h4>Participants:</h4>
-                {friendList && friendList.length > 0 ? (
-                  friendList.map(({ username }) => (
+                {friendListData && friendListData.length > 0 ? (
+                  friendListData.map(({ username }) => (
                     <p key={username}>{username}</p>
                   ))
                 ) : (
