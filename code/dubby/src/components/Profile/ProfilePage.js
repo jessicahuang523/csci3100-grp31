@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { auth } from "firebase";
+import { auth, firestore } from "firebase";
 import { useParams, Redirect } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
@@ -22,16 +22,29 @@ const ProfilePage = () => {
 
   const { userData, userLoading } = useContext(UserContext);
   const { eventTypeData } = useContext(EventTypeContext);
-  const { sentRequests, receivedRequests, friendList } = useContext(
-    FriendContext
-  );
+  const {
+    sentRequestData,
+    receivedRequestData,
+    friendListData,
+    friendContextLoaded,
+  } = useContext(FriendContext);
 
   const [profileData, setProfileData] = useState();
   const [isEditable, setIsEditable] = useState(false);
 
   useEffect(() => {
-    setProfileData(userData);
-  }, [userData]);
+    if (uid) {
+      firestore()
+        .collection("user_profile")
+        .doc(uid)
+        .get()
+        .then((s) => {
+          setProfileData(s.data());
+        });
+    } else {
+      setProfileData(userData);
+    }
+  }, [userData, uid]);
 
   const toggleIsEditable = () => setIsEditable(!isEditable);
 
@@ -58,13 +71,7 @@ const ProfilePage = () => {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
-  } else if (
-    !profileData ||
-    !eventTypeData ||
-    !sentRequests ||
-    !receivedRequests ||
-    !friendList
-  ) {
+  } else if (!profileData || !eventTypeData || !friendContextLoaded) {
     return <Loading />;
   } else if (uid !== auth().currentUser.uid && isEditable) {
     // in editing mode
@@ -147,9 +154,9 @@ const ProfilePage = () => {
               <ProfileActionButton
                 uid={uid}
                 toggleIsEditable={toggleIsEditable}
-                friendList={friendList}
-                sentRequests={sentRequests}
-                receivedRequests={receivedRequests}
+                friendListData={friendListData}
+                sentRequestData={sentRequestData}
+                receivedRequestData={receivedRequestData}
               />
               <h2 style={{ marginTop: "50px" }}>Username</h2>
               <hr />
@@ -191,12 +198,12 @@ const ProfilePage = () => {
 const ProfileActionButton = ({
   uid,
   toggleIsEditable,
-  friendList,
-  sentRequests,
-  receivedRequests,
+  friendListData,
+  sentRequestData,
+  receivedRequestData,
 }) => {
   if (uid && uid !== auth().currentUser.uid) {
-    if (friendList.find((p) => p.uid === uid)) {
+    if (friendListData && friendListData.find((p) => p.uid === uid)) {
       return (
         <Button
           block
@@ -206,7 +213,7 @@ const ProfileActionButton = ({
           Unfriend
         </Button>
       );
-    } else if (sentRequests.find((p) => p.uid === uid)) {
+    } else if (sentRequestData && sentRequestData.find((p) => p.uid === uid)) {
       return (
         <Button
           block
@@ -216,7 +223,10 @@ const ProfileActionButton = ({
           Take Back Request
         </Button>
       );
-    } else if (receivedRequests.find((p) => p.uid === uid)) {
+    } else if (
+      receivedRequestData &&
+      receivedRequestData.find((p) => p.uid === uid)
+    ) {
       return (
         <Button
           block

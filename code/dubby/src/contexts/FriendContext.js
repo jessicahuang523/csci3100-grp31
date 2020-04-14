@@ -10,6 +10,13 @@ const FriendContextProvider = (props) => {
   const [sentRequests, setSentRequests] = useState(null);
   const [receivedRequests, setReceivedRequests] = useState(null);
   const [friendList, setFriendList] = useState(null);
+  const [sentRequestData, setSentRequestData] = useState(null);
+  const [receivedRequestData, setReceivedRequestData] = useState(null);
+  const [friendListData, setFriendListData] = useState(null);
+  const [srLoaded, setSrLoaded] = useState(false);
+  const [rrLoaded, setRrLoaded] = useState(false);
+  const [flLoaded, setFlLoaded] = useState(false);
+  const [friendContextLoaded, setFriendContextLoaded] = useState(false);
 
   useEffect(() => {
     if (userData) {
@@ -20,9 +27,13 @@ const FriendContextProvider = (props) => {
         .collection("sent_friend_requests");
       const unsubscribeSentRequestsRefData = sentRequestsRef.onSnapshot(
         (snap) => {
-          let tmp = [];
-          snap.forEach((doc) => tmp.push(doc.data()));
-          setSentRequests(tmp);
+          if (snap.empty) {
+            setSrLoaded(true);
+          } else {
+            let tmp = [];
+            snap.forEach((doc) => tmp.push(doc.data()));
+            setSentRequests(tmp);
+          }
         }
       );
       return () => {
@@ -40,9 +51,13 @@ const FriendContextProvider = (props) => {
         .collection("received_friend_requests");
       const unsubscribeReceivedRequestData = receivedRequestsRef.onSnapshot(
         (snap) => {
-          let tmp = [];
-          snap.forEach((doc) => tmp.push(doc.data()));
-          setReceivedRequests(tmp);
+          if (snap.empty) {
+            setRrLoaded(true);
+          } else {
+            let tmp = [];
+            snap.forEach((doc) => tmp.push(doc.data()));
+            setReceivedRequests(tmp);
+          }
         }
       );
       return () => {
@@ -59,9 +74,13 @@ const FriendContextProvider = (props) => {
         .doc(uid)
         .collection("friend_list");
       const unsubscribeFriendListData = friendListRef.onSnapshot((snap) => {
-        let tmp = [];
-        snap.forEach((doc) => tmp.push(doc.data()));
-        setFriendList(tmp);
+        if (snap.empty) {
+          setFlLoaded(true);
+        } else {
+          let tmp = [];
+          snap.forEach((doc) => tmp.push(doc.data()));
+          setFriendList(tmp);
+        }
       });
       return () => {
         unsubscribeFriendListData();
@@ -69,9 +88,68 @@ const FriendContextProvider = (props) => {
     }
   }, [userData]);
 
+  useEffect(() => {
+    let data = [];
+    if (sentRequests) {
+      sentRequests.forEach(({ uid }) => {
+        const ref = firestore().collection("user_profile").doc(uid);
+        ref.get().then((s) => {
+          data.push(s.data());
+          if (data.length === sentRequests.length) {
+            setSentRequestData(data);
+            setSrLoaded(true);
+          }
+        });
+      });
+    }
+  }, [sentRequests]);
+
+  useEffect(() => {
+    let data = [];
+    if (receivedRequests) {
+      receivedRequests.forEach(({ uid }) => {
+        const ref = firestore().collection("user_profile").doc(uid);
+        ref.get().then((s) => {
+          data.push(s.data());
+          if (data.length === receivedRequests.length) {
+            setReceivedRequestData(data);
+            setRrLoaded(true);
+          }
+        });
+      });
+    }
+  }, [receivedRequests]);
+
+  useEffect(() => {
+    let data = [];
+    if (friendList) {
+      friendList.forEach(({ uid }) => {
+        const ref = firestore().collection("user_profile").doc(uid);
+        ref.get().then((s) => {
+          data.push(s.data());
+          if (data.length === friendList.length) {
+            setFriendListData(data);
+            setFlLoaded(true);
+          }
+        });
+      });
+    }
+  }, [friendList]);
+
+  useEffect(() => {
+    if (srLoaded && rrLoaded && flLoaded) {
+      setFriendContextLoaded(true);
+    }
+  }, [srLoaded, rrLoaded, flLoaded]);
+
   return (
     <FriendContext.Provider
-      value={{ sentRequests, receivedRequests, friendList }}
+      value={{
+        sentRequestData,
+        receivedRequestData,
+        friendListData,
+        friendContextLoaded,
+      }}
     >
       {props.children}
     </FriendContext.Provider>

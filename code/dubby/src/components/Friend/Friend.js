@@ -26,12 +26,16 @@ import {
   removeFriendRequest,
   unfriendFriend,
 } from "../../utilityfunctions/Utilities";
+import ProfileHead from "../Profile/ProfileHead";
 
 const Friend = () => {
   const { userData, userLoading } = useContext(UserContext);
-  const { sentRequests, receivedRequests, friendList } = useContext(
-    FriendContext
-  );
+  const {
+    sentRequestData,
+    receivedRequestData,
+    friendListData,
+    friendContextLoaded,
+  } = useContext(FriendContext);
   const { eventTypeData } = useContext(EventTypeContext);
 
   const [searchUserString, setSearchUserString] = useState();
@@ -70,12 +74,7 @@ const Friend = () => {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
-  } else if (
-    !sentRequests ||
-    !receivedRequests ||
-    !friendList ||
-    !eventTypeData
-  ) {
+  } else if (!friendContextLoaded || !eventTypeData) {
     return <Loading />;
   } else {
     return (
@@ -123,21 +122,21 @@ const Friend = () => {
           {searchUserResult && <UserList users={searchUserResult} />}
         </Jumbotron>
         <UserList
-          users={friendList}
+          users={friendListData}
           heading="Friends"
           action={unfriendFriend}
           actionText="Unfriend"
           actionColor="danger"
         />
         <UserList
-          users={sentRequests}
+          users={sentRequestData}
           heading="Sent Requests"
           action={removeFriendRequest}
           actionText="Take Back Request"
           actionColor="warning"
         />
         <UserList
-          users={receivedRequests}
+          users={receivedRequestData}
           heading="Received Requests"
           action={acceptFriendRequest}
           actionText="Accept"
@@ -154,6 +153,8 @@ const UserList = ({ users, heading, action, actionText, actionColor }) => (
     {users && users.length > 0 ? (
       users.map((u) => (
         <ListGroupItem key={u.uid}>
+          <ProfileHead src={u.profileImageSrc} size="friend" />
+          {"  "}
           <Link to={`/u/${u.uid}`}>{u.username}</Link>
           {"  "}
           {action && (

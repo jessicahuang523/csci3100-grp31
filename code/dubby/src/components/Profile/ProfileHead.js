@@ -15,7 +15,7 @@ const styles = {
     },
   },
   profile: {
-    container: { textAlign: "center" },
+    container: { textAlign: "center", display: "block" },
     img: {
       width: "300px",
       height: "300px",
@@ -23,6 +23,16 @@ const styles = {
       borderRadius: "150px",
     },
     noImg: { fontSize: "220px", margin: "40px" },
+  },
+  friend: {
+    container: { textAlign: "center" },
+    img: {
+      width: "2rem",
+      height: "2rem",
+      overflow: "hidden",
+      borderRadius: "1rem",
+    },
+    noImg: { fontSize: "1.8rem", margin: "0.1rem" },
   },
   default: {
     container: { display: "none" },
@@ -40,6 +50,9 @@ const ProfileHead = ({ src, size }) => {
     case "profile":
       style = styles.profile;
       break;
+    case "friend":
+      style = styles.friend;
+      break;
     default:
       style = styles.default;
       break;
@@ -47,15 +60,15 @@ const ProfileHead = ({ src, size }) => {
 
   if (src) {
     return (
-      <div style={style.container}>
+      <span style={style.container}>
         <img src={src} style={style.img} alt="" />
-      </div>
+      </span>
     );
   } else {
     return (
-      <div style={style.container}>
+      <span style={style.container}>
         <i className="fas fa-user" style={style.noImg}></i>
-      </div>
+      </span>
     );
   }
 };
