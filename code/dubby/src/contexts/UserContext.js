@@ -1,34 +1,33 @@
 import React, { createContext, useState, useEffect } from "react";
 import { firestore, auth } from "firebase";
-import { setupFirestoreForNewAccount } from "../utilityfunctions/Utilities";
 
 export const UserContext = createContext();
 
-const UserContextProvider = props => {
+const UserContextProvider = (props) => {
   const [userLoading, setUserLoading] = useState(true);
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
+    let unsubscribeUserData = () => {};
     const unsubscribeAuthStateListener = auth().onAuthStateChanged(
-      async user => {
+      async (user) => {
         setUserLoading(true);
         if (user) {
-          const profile = await firestore()
-            .collection("user_profile")
-            .doc(user.uid)
-            .get();
-          if (!profile.exists) {
-            setupFirestoreForNewAccount(user);
-          }
-          setUserData(user);
+          const { uid } = user;
+          const userDataRef = firestore().collection("user_profile").doc(uid);
+          unsubscribeUserData = userDataRef.onSnapshot((snap) => {
+            setUserData(snap.data());
+            setUserLoading(false);
+          });
         } else {
           setUserData(null);
+          setUserLoading(false);
         }
-        setUserLoading(false);
       }
     );
     return () => {
       unsubscribeAuthStateListener();
+      unsubscribeUserData();
     };
   }, []);
 

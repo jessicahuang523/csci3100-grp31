@@ -1,19 +1,5 @@
 import { firestore, auth, storage } from "firebase";
 
-// sets up database for new account
-// should be called upon login, and when user data does not exist
-export const setupFirestoreForNewAccount = async ({ uid }) => {
-  const accountData = {
-    uid,
-    username: "Lil Potato",
-    university: "",
-    interested_sports: "",
-    description: "",
-  };
-  const userDataRef = firestore().collection("user_profile").doc(uid);
-  await userDataRef.set(accountData);
-};
-
 // sets up database for new event given event data
 // it will then automatically add current user to the event
 // by calling addParticipantToEvent() with status "joined"

@@ -11,7 +11,7 @@ const db = admin.firestore();
 //  response.send("Hello from Firebase!");
 // });
 
-exports.chatParticipantRename = functions.firestore
+exports.userRenameUpdater = functions.firestore
   .document("user_profile/{uid}")
   .onUpdate((change, context) => {
     const newValue = change.after.data();
@@ -96,3 +96,15 @@ exports.chatParticipantRename = functions.firestore
         });
       });
   });
+
+exports.userSignupSetup = functions.auth.user().onCreate((user) => {
+  if (user) {
+    db.collection("user_profile").doc(uid).set({
+      uid: user.uid,
+      username: "Lil Potato",
+      university: "",
+      interested_sports: [],
+      description: "",
+    });
+  }
+});
