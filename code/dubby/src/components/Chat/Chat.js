@@ -15,6 +15,7 @@ import {
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import { sendChatMessage } from "../../utilityfunctions/Utilities";
+import ProfileHead from "../Profile/ProfileHead";
 
 export const Chat = () => {
   const { cid } = useParams();
@@ -24,6 +25,7 @@ export const Chat = () => {
   const [chatData, setChatData] = useState();
   const [chatMessages, setChatMessages] = useState();
   const [chatParticipants, setChatParticipants] = useState();
+  const [chatParticipantData, setchatParticipantData] = useState();
   const [chatAuthorized, setChatAuthorized] = useState(false);
   const [inputMessage, setInputMessage] = useState("");
 
@@ -70,6 +72,21 @@ export const Chat = () => {
     }
   }, [userData, cid]);
 
+  useEffect(() => {
+    let pData = [];
+    if (chatParticipants) {
+      chatParticipants.forEach(({ uid }) => {
+        const pRef = firestore().collection("user_profile").doc(uid);
+        pRef.get().then((s) => {
+          pData.push(s.data());
+          if (pData.length === chatParticipants.length) {
+            setchatParticipantData(pData);
+          }
+        });
+      });
+    }
+  }, [chatParticipants]);
+
   const handleSendMessage = (e) => {
     e.preventDefault();
     sendChatMessage({ cid, inputMessage, chatParticipants });
@@ -86,7 +103,7 @@ export const Chat = () => {
     return <Redirect to="/launch" />;
   } else if (chatParticipants && !chatAuthorized) {
     return <Redirect to="/c" />;
-  } else if (!chatData || !chatMessages) {
+  } else if (!chatData || !chatMessages || !chatParticipantData) {
     return <Loading />;
   } else {
     return (
@@ -117,14 +134,10 @@ export const Chat = () => {
                   chatMessages.map((message) => (
                     <Message
                       key={message.created_at}
-                      name={
-                        chatParticipants.find(
-                          (p) => p.uid === message.sender.uid
-                        ).username
-                      }
-                      time={[new Date(message.created_at).toLocaleTimeString()]}
-                      mes={message.text}
-                      send={message.sender.uid}
+                      message={message}
+                      senderData={chatParticipantData.find(
+                        ({ uid }) => uid === message.sender.uid
+                      )}
                     />
                   ))}
               </ul>
@@ -153,36 +166,44 @@ export const Chat = () => {
   }
 };
 
-const Message = ({ name, time, mes ,send}) => {
+const messageStyle = {
+  left: {
+    container: { margin: "40px", textAlign: "left" },
+    bubbleClassName: "chat-bubble left",
+    textClassName: "chat-text-left",
+  },
+  right: {
+    container: { margin: "40px", textAlign: "right" },
+    bubbleClassName: "chat-bubble right",
+    textClassName: "chat-text-right",
+  },
+};
 
+const Message = ({ senderData, message }) => {
   const { userData } = useContext(UserContext);
 
-  if (userData.uid === send) {
-    return (
-      <div style={{ margin: "40px", textAlign: "right" }}>
-        <p>{name}</p>
-        <div className="chat-bubble right">
-          <div className="chat-text-right">
-            <p>{mes}</p>
-          </div>
-        </div>
-        <p>{time}</p>
-      </div>
-    );
-  }
-  else {
-    return (
-    <div style={{ margin: "40px", textAlign: "left" }}>
-      <p>{name}</p>
-      <div className="chat-bubble left">
-        <div className="chat-text-left">
-          <p>{mes}</p>
+  const { username } = senderData;
+  const { created_at, text, sender } = message;
+  const { profileImageSrc } = senderData;
+  const time = new Date(created_at).toLocaleTimeString();
+
+  console.log({ senderData });
+
+  const style =
+    userData.uid === sender.uid ? messageStyle.right : messageStyle.left;
+
+  return (
+    <div style={style.container}>
+      <ProfileHead src={profileImageSrc} size="chat" />
+      <p>{username}</p>
+      <div className={style.bubbleClassName}>
+        <div className={style.textClassName}>
+          <p>{text}</p>
         </div>
       </div>
       <p>{time}</p>
     </div>
-    );
-  }
+  );
 };
 
 export default Chat;

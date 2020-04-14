@@ -15,6 +15,7 @@ import {
   unfriendFriend,
   removeFriendRequest,
 } from "../../utilityfunctions/Utilities";
+import ProfileHead from "./ProfileHead";
 
 const ProfilePage = () => {
   const { uid } = useParams();
@@ -58,6 +59,7 @@ const ProfilePage = () => {
   } else if (!userData) {
     return <Redirect to="/launch" />;
   } else if (
+    !profileData ||
     !eventTypeData ||
     !sentRequests ||
     !receivedRequests ||
@@ -71,7 +73,7 @@ const ProfilePage = () => {
       <div>
         <NavBar />
         <div>
-          <ProfileImage profileImageSrc={profileImageSrc} />
+          <ProfileHead src={profileImageSrc} size="profile" />
           <br />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
@@ -138,7 +140,7 @@ const ProfilePage = () => {
       <div>
         <NavBar />
         <div>
-          <ProfileImage profileImageSrc={profileImageSrc} />
+          <ProfileHead src={profileImageSrc} size="profile" />
           <br />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
@@ -163,7 +165,7 @@ const ProfilePage = () => {
               {interested_sports.length &&
               interested_sports.length > 0 &&
               interested_sports.map !== undefined ? (
-                <ul style={{ listStyle: "none", padding: 0 }}>
+                <ul>
                   {interested_sports.map((s) => (
                     <li key={s}>
                       <i
@@ -185,28 +187,6 @@ const ProfilePage = () => {
     );
   }
 };
-
-const ProfileImage = ({ profileImageSrc }) => (
-  <div style={{ textAlign: "center" }}>
-    {profileImageSrc ? (
-      <img
-        src={profileImageSrc}
-        alt="profile"
-        style={{
-          width: "300px",
-          height: "300px",
-          overflow: "hidden",
-          borderRadius: "150px",
-        }}
-      />
-    ) : (
-      <i
-        className="fas fa-user"
-        style={{ fontSize: "220px", margin: "40px" }}
-      ></i>
-    )}
-  </div>
-);
 
 const ProfileActionButton = ({
   uid,
