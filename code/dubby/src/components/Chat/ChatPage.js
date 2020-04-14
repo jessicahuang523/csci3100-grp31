@@ -17,6 +17,7 @@ import {
   Form,
   FormGroup,
   Input,
+  Label
 } from "reactstrap";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -79,13 +80,7 @@ const ChatPage = () => {
               </ModalHeader>
               <ModalBody>
                 <h4>To:</h4>
-                {friendListData && friendListData.length > 0 ? (
-                  friendListData.map(({ username }) => (
-                    <p key={username}>{username}</p>
-                  ))
-                ) : (
-                  <p>you have no friend</p>
-                )}
+                <FriendList list={friendListData} />
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" onClick={toggle_modal_private}>
@@ -106,13 +101,7 @@ const ChatPage = () => {
                   </FormGroup>
                 </Form>
                 <h4>Participants:</h4>
-                {friendListData && friendListData.length > 0 ? (
-                  friendListData.map(({ username }) => (
-                    <p key={username}>{username}</p>
-                  ))
-                ) : (
-                  <p>you have no friend</p>
-                )}
+                <FriendList list={friendListData} />
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" onClick={toggle_modal_group}>
@@ -131,6 +120,24 @@ const ChatPage = () => {
       </div>
     );
   }
+};
+
+const FriendList = ({ list }) => {
+  return(
+    <FormGroup check>
+      {list && list.length > 0 ? (
+        list.map(({ username }) => (
+          <Label check>
+            <Input type="checkbox" />{" "}
+              <ProfileHead src={username.profileImageSrc} size="friend" />
+              {" "}{username}
+          </Label>
+        ))
+      ) : (
+        <p>you have no friend</p>
+      )}
+    </FormGroup>
+  );
 };
 
 export default ChatPage;
