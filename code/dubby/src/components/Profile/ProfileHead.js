@@ -4,12 +4,15 @@ const styles = {
   chat: {
     container: { textAlign: "center" },
     img: {
-      width: "80px",
-      height: "80px",
+      width: "70px",
+      height: "70px",
       overflow: "hidden",
-      borderRadius: "40px",
+      borderRadius: "35px",
+      border: "1px solid #555",
     },
-    noImg: { fontSize: "75px", margin: "10px" },
+    noImg: {
+      fontSize: "50px",
+    },
   },
   profile: {
     container: { textAlign: "center" },

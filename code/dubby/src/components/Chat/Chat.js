@@ -166,14 +166,28 @@ export const Chat = () => {
   }
 };
 
+const containerStyle = {
+  margin: "40px",
+  display: "grid",
+  columnGap: "20px",
+};
+
 const messageStyle = {
   left: {
-    container: { margin: "40px", textAlign: "left" },
+    container: {
+      ...containerStyle,
+      textAlign: "left",
+      gridTemplateColumns: "70px 1fr",
+    },
     bubbleClassName: "chat-bubble left",
     textClassName: "chat-text-left",
   },
   right: {
-    container: { margin: "40px", textAlign: "right" },
+    container: {
+      ...containerStyle,
+      textAlign: "right",
+      gridTemplateColumns: "1fr 70px",
+    },
     bubbleClassName: "chat-bubble right",
     textClassName: "chat-text-right",
   },
@@ -187,22 +201,25 @@ const Message = ({ senderData, message }) => {
   const { profileImageSrc } = senderData;
   const time = new Date(created_at).toLocaleTimeString();
 
-  console.log({ senderData });
-
   const style =
     userData.uid === sender.uid ? messageStyle.right : messageStyle.left;
 
   return (
-    <div style={style.container}>
-      <ProfileHead src={profileImageSrc} size="chat" />
-      <p>{username}</p>
+    <li style={style.container}>
+      {userData.uid === sender.uid || (
+        <ProfileHead src={profileImageSrc} size="chat" />
+      )}
       <div className={style.bubbleClassName}>
+        <p>{username}</p>
         <div className={style.textClassName}>
           <p>{text}</p>
         </div>
+        <p>{time}</p>
       </div>
-      <p>{time}</p>
-    </div>
+      {userData.uid === sender.uid && (
+        <ProfileHead src={profileImageSrc} size="chat" />
+      )}
+    </li>
   );
 };
 
