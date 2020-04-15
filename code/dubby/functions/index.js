@@ -99,8 +99,9 @@ exports.userRenameUpdater = functions.firestore
 
 exports.userSignupSetup = functions.auth.user().onCreate((user) => {
   if (user) {
+    const { uid } = user;
     db.collection("user_profile").doc(uid).set({
-      uid: user.uid,
+      uid,
       username: "Lil Potato",
       university: "",
       interested_sports: [],

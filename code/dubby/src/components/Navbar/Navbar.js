@@ -13,7 +13,7 @@ import {
   DropdownItem,
   Media,
   NavbarBrand,
-  NavLink
+  NavLink,
 } from "reactstrap";
 import logo from "../../image/Dubby_logo.png";
 
