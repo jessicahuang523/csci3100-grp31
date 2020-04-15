@@ -120,9 +120,12 @@ export const Chat = () => {
           <hr />
           <Button onClick={toggle}>Participants</Button>
           <Collapse isOpen={isOpen}>
-            {chatParticipants &&
-              chatParticipants.map(p => (
-                <li><ul><Link to={`/u/${p.uid}`}>{p.username}</Link></ul></li>
+            {chatParticipantData &&
+              chatParticipantData.map(p => (
+                <div style={{margin:"10px"}}>
+                  <ProfileHead src={p.profileImageSrc} size="friend" />{" "}
+                  <Link to={`/u/${p.uid}`}>{p.username}</Link>
+                </div> 
               ))}
           </Collapse>
         </Jumbotron>

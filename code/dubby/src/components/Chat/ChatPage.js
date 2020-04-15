@@ -124,19 +124,23 @@ const ChatPage = () => {
 
 const FriendList = ({ list }) => {
   return (
-    <FormGroup check>
+    <Form>
       {list && list.length > 0 ? (
         list.map(({ username }) => (
-          <Label check>
-            <Input type="checkbox" />{" "}
-            <ProfileHead src={username.profileImageSrc} size="friend" />{" "}
-            {username}
-          </Label>
+          <div style={{margin:"10px"}}>
+          <FormGroup check>
+            <Label check>
+              <Input type="checkbox" />{" "}
+              {" "}
+              {username}
+            </Label>
+          </FormGroup>
+          </div>
         ))
       ) : (
         <p>you have no friend</p>
       )}
-    </FormGroup>
+    </Form>
   );
 };
 
