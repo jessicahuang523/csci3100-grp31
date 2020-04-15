@@ -14,7 +14,7 @@ const EventPage = () => {
 
   useEffect(() => {
     if (userData) {
-      const { uid } = auth().currentUser;
+      const { uid } = userData;
       const unsubscribeUserEventList = firestore()
         .collection("user_profile")
         .doc(uid)

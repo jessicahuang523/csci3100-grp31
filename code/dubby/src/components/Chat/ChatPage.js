@@ -17,7 +17,7 @@ import {
   Form,
   FormGroup,
   Input,
-  Label
+  Label,
 } from "reactstrap";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -37,7 +37,7 @@ const ChatPage = () => {
 
   useEffect(() => {
     if (userData) {
-      const { uid } = auth().currentUser;
+      const { uid } = userData;
       const unsubscribeChatList = firestore()
         .collection("user_profile")
         .doc(uid)
@@ -123,14 +123,14 @@ const ChatPage = () => {
 };
 
 const FriendList = ({ list }) => {
-  return(
+  return (
     <FormGroup check>
       {list && list.length > 0 ? (
         list.map(({ username }) => (
           <Label check>
             <Input type="checkbox" />{" "}
-              <ProfileHead src={username.profileImageSrc} size="friend" />
-              {" "}{username}
+            <ProfileHead src={username.profileImageSrc} size="friend" />{" "}
+            {username}
           </Label>
         ))
       ) : (
