@@ -18,6 +18,7 @@ import {
 } from "reactstrap";
 import Loading from "../Loading/Loading";
 import logo from "../../image/Dubby_logo.png";
+import LoadingUserCreation from "../Loading/LoadingUserCreation";
 
 const SignupPage = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -25,6 +26,7 @@ const SignupPage = () => {
   const [inputEmail, setInputEmail] = useState();
   const [inputPassword, setInputPassword] = useState();
   const [alertSignin, setAlertSignin] = useState("Sign up!");
+  const [dataCreationLoading, setDataCreationLoading] = useState(false);
 
   const handleSignUpFormSubmit = async (e) => {
     e.preventDefault();
@@ -32,6 +34,8 @@ const SignupPage = () => {
     if (/\S+@\S+\.\S+/.test(inputEmail) && inputPassword !== "") {
       try {
         await auth().createUserWithEmailAndPassword(inputEmail, inputPassword);
+        setAlertSignin("Hang on! We're signing you in!");
+        setDataCreationLoading(true);
         auth().signInWithEmailAndPassword(inputEmail, inputPassword);
       } catch (e) {
         if (e.code === "auth/weak-password") {
@@ -47,6 +51,8 @@ const SignupPage = () => {
     return <Loading />;
   } else if (userData) {
     return <Redirect to="/" />;
+  } else if (dataCreationLoading) {
+    return <LoadingUserCreation />;
   } else {
     return (
       <div>
