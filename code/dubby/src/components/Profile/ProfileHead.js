@@ -34,6 +34,16 @@ const styles = {
     },
     noImg: { fontSize: "1.8rem", margin: "0.1rem" },
   },
+  inline: {
+    container: { textAlign: "center" },
+    img: {
+      width: "1rem",
+      height: "1rem",
+      overflow: "hidden",
+      borderRadius: "0.5rem",
+    },
+    noImg: { fontSize: "0.9rem", margin: "0.05rem" },
+  },
   default: {
     container: { display: "none" },
     img: { display: "none" },
@@ -52,6 +62,9 @@ const ProfileHead = ({ src, size }) => {
       break;
     case "friend":
       style = styles.friend;
+      break;
+    case "inline":
+      style = styles.inline;
       break;
     default:
       style = styles.default;

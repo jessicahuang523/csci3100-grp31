@@ -8,6 +8,7 @@ import { Jumbotron, Button, Badge, Row, Col } from "reactstrap";
 import Loading from "../Loading/Loading";
 import NavBar from "../Navbar/Navbar";
 import { addParticipantToEvent } from "../../utilityfunctions/Utilities";
+import ProfileHead from "../Profile/ProfileHead";
 
 const Event = () => {
   const { eid } = useParams();
@@ -87,34 +88,18 @@ const Event = () => {
     return (
       <div>
         <NavBar />
-        <Jumbotron
-          fluid="fluid"
-          style={{
-            padding: "1rem",
-          }}
-        >
+        <Jumbotron fluid style={{ padding: "1rem" }}>
           <h1>
             <i className={foundTypeData.icon}></i>[{foundTypeData.display}]{" "}
             {eventData.eventName}{" "}
             {eventParticipants.find((x) => x.uid === uid) && (
-              <Badge color="info" pill="pill">
+              <Badge pill color="info">
                 Joined
               </Badge>
             )}
           </h1>
-          {eventParticipants.find((x) => x.uid === uid) ? (
-            <Button tag={Link} to={`/c/${eventData.cid}`}>
-              Talk with participants!
-            </Button>
-          ) : (
-            <Button onClick={handleJoinButtonClick}>Join</Button>
-          )}
         </Jumbotron>
-        <div
-          style={{
-            padding: "1rem",
-          }}
-        >
+        <div style={{ padding: "1rem" }}>
           <p>Location: {foundLocationData.display}</p>
           <p>Starting at {new Date(eventData.startingTime).toLocaleString()}</p>
           <p>
@@ -123,23 +108,22 @@ const Event = () => {
               (eventParticipants.length ? eventParticipants.length : 0)}
           </p>
           <Row>
-            <Col
-              sm={{
-                size: 2,
-              }}
-            >
-              <Button tag={Link} to={`/u/${hostUserData.uid}`}>
-                Host: {hostUserData.username}
+            <Col sm={{ size: 6 }}>
+              <Button block outline tag={Link} to={`/u/${hostUserData.uid}`}>
+                <ProfileHead size="inline" src={hostUserData.profileImageSrc} />{" "}
+                {hostUserData.username}
               </Button>
             </Col>
-            <Col
-              sm={{
-                size: 2,
-              }}
-            >
-              <Button type="return" tag={Link} to="/e">
-                Return
-              </Button>
+            <Col sm={{ size: 6 }}>
+              {eventParticipants.find((x) => x.uid === uid) ? (
+                <Button block tag={Link} to={`/c/${eventData.cid}`}>
+                  Chat!
+                </Button>
+              ) : (
+                <Button block onClick={handleJoinButtonClick}>
+                  Join
+                </Button>
+              )}
             </Col>
           </Row>
         </div>
