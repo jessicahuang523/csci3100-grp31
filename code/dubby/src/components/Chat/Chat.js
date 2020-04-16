@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { useParams, Redirect, Link } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
@@ -30,6 +30,8 @@ export const Chat = () => {
   const [chatAuthorized, setChatAuthorized] = useState(false);
   const [inputMessage, setInputMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+
+  const divRef = useRef(null);
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -91,6 +93,16 @@ export const Chat = () => {
     }
   }, [chatParticipants]);
 
+  const scrollToBottom = () => {
+    if (divRef.current) {
+      divRef.current.scrollIntoView({ behavior: 'smooth' }) 
+    }
+  }
+
+  useEffect(() => {
+    scrollToBottom();
+  })
+
   const handleSendMessage = (e) => {
     e.preventDefault();
     sendChatMessage({ cid, inputMessage, chatParticipants });
@@ -101,6 +113,8 @@ export const Chat = () => {
     setInputMessage(e.target.value);
   };
 
+  
+  
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -145,7 +159,7 @@ export const Chat = () => {
                     />
                   ))}
               </ul>
-              <Form onSubmit={handleSendMessage}>
+              <Form onSubmit={handleSendMessage} >
                 <FormGroup row>
                   <Col sm={10}>
                     <Input
@@ -165,6 +179,7 @@ export const Chat = () => {
             </Col>
           </Row>
         </Container>
+        <div ref={divRef} />
       </div>
     );
   }
