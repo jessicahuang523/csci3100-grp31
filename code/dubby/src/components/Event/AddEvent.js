@@ -18,7 +18,7 @@ import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import { setupFirestoreForNewEvent } from "../../utilityfunctions/Utilities";
 
-const calculateMinStartingDate = () => {
+const calculateDate = () => {
   const date = new Date(Date.now());
   const dateLocal = new Date(
     date.getTime() - date.getTimezoneOffset() * 60 * 1000
@@ -26,10 +26,10 @@ const calculateMinStartingDate = () => {
   return dateLocal.toISOString().substr(0, 10);
 };
 
-const calculateMinStartingTime = () => {
+const calculateTime = () => {
   const date = new Date(Date.now());
   const dateLocal = new Date(
-    date.getTime() - date.getTimezoneOffset() * 60 * 1000 + 1000 * 60 * 60
+    date.getTime() - date.getTimezoneOffset() * 60 * 1000
   );
   return dateLocal.toISOString().substr(11, 5);
 };
@@ -45,14 +45,11 @@ const AddEvent = () => {
   const [isPublic, setIsPublic] = useState(true);
   const [location, setLocation] = useState();
   const [startingTime, setStartingTime] = useState();
-  const [eventStartingDate, setEventStartingDate] = useState(
-    calculateMinStartingDate()
-  );
-  const [eventStartingTime, setEventStartingTime] = useState(
-    calculateMinStartingTime()
-  );
+  const [eventStartingDate, setEventStartingDate] = useState(calculateDate());
+  const [eventStartingTime, setEventStartingTime] = useState(calculateTime());
   const [submittingEventData, setSubmittingEventData] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+  const [eventSubmittedEid, setEventSubmittedEid] = useState(false);
 
   useEffect(() => {
     setStartingTime(
@@ -60,30 +57,60 @@ const AddEvent = () => {
     );
   }, [eventStartingDate, eventStartingTime]);
 
+  useEffect(() => {
+    if (gymData) {
+      setLocation(gymData[0].value);
+    }
+  }, [gymData]);
+
+  useEffect(() => {
+    if (eventTypeData) {
+      setEventType(eventTypeData[0].value);
+    }
+  }, [eventTypeData]);
+
+  useEffect(() => {
+    console.log({
+      allowedPeople,
+      eventName,
+      eventType,
+      isPublic,
+      location,
+      startingTime,
+    });
+  }, [allowedPeople, eventName, eventType, isPublic, location, startingTime]);
+
   const handleEventSubmit = async (e) => {
     e.preventDefault();
-    if (
-      userData &&
-      allowedPeople &&
-      eventName &&
-      eventType &&
-      isPublic &&
-      location
-    ) {
-      setErrorMessage("");
-      setSubmittingEventData(true);
-      const eventData = {
-        allowedPeople,
-        eventName,
-        eventType,
-        isPublic,
-        location,
-        startingTime,
-      };
-      await setupFirestoreForNewEvent(eventData);
-      setSubmittingEventData(false);
+    if (startingTime < Date.now()) {
+      setErrorMessage(
+        "Chill, man. You need to give people some time to prep for this event!"
+      );
     } else {
-      setErrorMessage("Please fill in all data!");
+      if (
+        userData &&
+        allowedPeople &&
+        eventName &&
+        eventType &&
+        isPublic &&
+        location
+      ) {
+        setErrorMessage("");
+        setSubmittingEventData(true);
+        const eventData = {
+          allowedPeople,
+          eventName,
+          eventType,
+          isPublic,
+          location,
+          startingTime,
+        };
+        const eid = await setupFirestoreForNewEvent(eventData);
+        setSubmittingEventData(false);
+        setEventSubmittedEid(eid);
+      } else {
+        setErrorMessage("Please fill in all data!");
+      }
     }
   };
 
@@ -94,27 +121,23 @@ const AddEvent = () => {
   } else if (!gymData || !eventTypeData) {
     return <Loading />;
   } else if (submittingEventData) {
-    return (
-      <div>
-        <header>
-          <h1>submitting...</h1>
-        </header>
-      </div>
-    );
+    return <Loading />;
+  } else if (eventSubmittedEid) {
+    return <Redirect to={`/e/${eventSubmittedEid}`} />;
   } else {
     return (
       <div>
         <Navbar />
         <Jumbotron>
-          <h1>Add new event</h1>
+          <h1>Create a new event!</h1>
         </Jumbotron>
-        {errorMessage && <Alert>{errorMessage}</Alert>}
         <Form
           onSubmit={handleEventSubmit}
           style={{
             padding: "1rem",
           }}
         >
+          {errorMessage && <Alert>{errorMessage}</Alert>}
           <FormGroup>
             <Label for="eventName">Event Name</Label>
             <Input
@@ -124,7 +147,7 @@ const AddEvent = () => {
               onChange={(e) => setEventName(e.target.value)}
             />
           </FormGroup>
-          <Row form="form">
+          <Row>
             <Col sm={6}>
               <FormGroup>
                 <Label for="allowedPeople">Allowed People</Label>
@@ -194,7 +217,7 @@ const AddEvent = () => {
                   type="date"
                   id="startingDate"
                   value={eventStartingDate}
-                  min={calculateMinStartingDate()}
+                  min={calculateDate()}
                   onChange={(e) => setEventStartingDate(e.target.value)}
                 />
               </FormGroup>
@@ -207,22 +230,19 @@ const AddEvent = () => {
                   type="time"
                   id="startingTime"
                   value={eventStartingTime}
-                  min={calculateMinStartingTime()}
                   onChange={(e) => setEventStartingTime(e.target.value)}
                 />
               </FormGroup>
             </Col>
           </Row>
           <Row>
-            <Col
-              sm={{
-                size: 1,
-              }}
-            >
-              <Button type="submit">Submit</Button>
+            <Col>
+              <Button block color="primary" type="submit">
+                Submit
+              </Button>
             </Col>
             <Col>
-              <Button type="cancel" tag={Link} to="/launch">
+              <Button block color="danger" type="reset" tag={Link} to="/launch">
                 Cancel
               </Button>
             </Col>

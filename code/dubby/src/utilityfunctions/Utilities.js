@@ -45,7 +45,8 @@ export const setupFirestoreForNewEvent = async ({
       eid: eventDataRef.id,
       eventName,
     });
-    eventDataRef.update({ cid, eid: eventDataRef.id });
+    await eventDataRef.update({ cid, eid: eventDataRef.id });
+    return eventDataRef.id;
   }
 };
 
