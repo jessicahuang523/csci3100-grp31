@@ -7,7 +7,10 @@ import { EventTypeContext } from "../../contexts/EventTypeContext";
 import { Jumbotron, Button, Badge, Row, Col } from "reactstrap";
 import Loading from "../Loading/Loading";
 import NavBar from "../Navbar/Navbar";
-import { addParticipantToEvent } from "../../utilityfunctions/Utilities";
+import {
+  addParticipantToEvent,
+  deleteEvent,
+} from "../../utilityfunctions/Utilities";
 import ProfileHead from "../Profile/ProfileHead";
 
 const Event = () => {
@@ -18,18 +21,24 @@ const Event = () => {
   const { eventTypeData } = useContext(EventTypeContext);
 
   const [eventData, setEventData] = useState();
+  const [noEventRedirect, setNoEventRedirect] = useState(false);
   const [eventParticipants, setEventParticipants] = useState();
   const [hostUserData, setHostUserData] = useState();
   const [foundTypeData, setFoundTypeData] = useState();
   const [foundLocationData, setFoundLocationData] = useState();
   const [joinLoading, setJoinLoading] = useState(false);
+  const [eventDeleteLoading, setEventDeleteLoading] = useState(false);
 
   useEffect(() => {
     if (eid) {
       const eventRef = firestore().collection("event").doc(eid);
-      const unsubscribeEventData = eventRef.onSnapshot((snap) =>
-        setEventData(snap.data())
-      );
+      const unsubscribeEventData = eventRef.onSnapshot((snap) => {
+        if (snap.exists) {
+          setEventData(snap.data());
+        } else {
+          setNoEventRedirect(true);
+        }
+      });
       const unsubscribeEventParticipantData = eventRef
         .collection("participants")
         .onSnapshot((snap) => {
@@ -77,11 +86,24 @@ const Event = () => {
     setJoinLoading(false);
   };
 
+  const handleDeleteEventButtonClick = async () => {
+    setEventDeleteLoading(true);
+    await deleteEvent(eventData);
+  };
+
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
-  } else if (!eventData || !eventParticipants || !hostUserData || joinLoading) {
+  } else if (noEventRedirect) {
+    return <Redirect to="/e" />;
+  } else if (
+    eventDeleteLoading ||
+    !eventData ||
+    !eventParticipants ||
+    !hostUserData ||
+    joinLoading
+  ) {
     return <Loading />;
   } else {
     const { uid } = auth().currentUser;
@@ -117,7 +139,7 @@ const Event = () => {
             <Col sm={{ size: 6 }}>
               {eventParticipants.find((x) => x.uid === uid) ? (
                 <Button block tag={Link} to={`/c/${eventData.cid}`}>
-                  Chat!
+                  <i className="fas fa-comment-dots"></i> Chat!
                 </Button>
               ) : (
                 <Button block onClick={handleJoinButtonClick}>
@@ -126,6 +148,16 @@ const Event = () => {
               )}
             </Col>
           </Row>
+          <hr />
+          {uid === hostUserData.uid && (
+            <Row>
+              <Col>
+                <Button block onClick={handleDeleteEventButtonClick}>
+                  <i className="fas fa-trash"></i> Delete
+                </Button>
+              </Col>
+            </Row>
+          )}
         </div>
       </div>
     );

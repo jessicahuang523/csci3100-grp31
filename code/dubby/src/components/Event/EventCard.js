@@ -3,8 +3,17 @@ import { GymContext } from "../../contexts/GymContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
 import { Link } from "react-router-dom";
 import { firestore, auth } from "firebase";
-import { Card, CardTitle, CardSubtitle, CardText, Button } from "reactstrap";
+import {
+  Card,
+  CardTitle,
+  CardSubtitle,
+  CardText,
+  Button,
+  ButtonGroup,
+  Badge,
+} from "reactstrap";
 import LoadingEventCard from "../Loading/LoadingEventCard";
+import ProfileHead from "../Profile/ProfileHead";
 
 const EventCard = ({ eid, searchString }) => {
   const { gymData } = useContext(GymContext);
@@ -117,10 +126,15 @@ const EventCard = ({ eid, searchString }) => {
     return (
       <Card body style={{ marginBottom: "1rem" }}>
         <CardTitle>
+          {eventParticipants.find((p) => p.uid === uid) && (
+            <Badge pill color="info">
+              Joined
+            </Badge>
+          )}{" "}
           <i className={foundTypeData.icon}></i> [{foundTypeData.display}]{" "}
           {eventName}
         </CardTitle>
-        <CardSubtitle>{foundLocationData.display}</CardSubtitle>
+        <CardSubtitle>{foundLocationData.display_short}</CardSubtitle>
         <CardText>
           Starting at {new Date(startingTime).toLocaleString()}
         </CardText>
@@ -129,11 +143,15 @@ const EventCard = ({ eid, searchString }) => {
           {allowedPeople -
             (eventParticipants.length ? eventParticipants.length : 0)}
         </CardText>
-        <CardText>Hosted by {hostUserData.username}</CardText>
-        <Button tag={Link} to={`/e/${eid}`}>
-          More
-          {eventParticipants.find((p) => p.uid === uid) ? " (joined)" : "/Join"}
-        </Button>
+        <ButtonGroup size="sm">
+          <Button tag={Link} to={`/e/${eid}`}>
+            <i className="fas fa-plus"></i> More
+          </Button>
+          <Button outline tag={Link} to={`/u/${hostUserData.uid}`}>
+            <ProfileHead size="inline" src={hostUserData.profileImageSrc} />{" "}
+            {hostUserData.username}
+          </Button>
+        </ButtonGroup>
       </Card>
     );
   }

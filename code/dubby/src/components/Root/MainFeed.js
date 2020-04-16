@@ -49,11 +49,13 @@ const MainFeed = () => {
             />
           </Form>
         </Jumbotron>
-        {eventList &&
-          eventList.length > 0 &&
-          eventList.map((eid) => (
-            <EventCard searchString={searchEvent} key={eid} eid={eid} />
-          ))}
+        <div style={{ padding: "1rem" }}>
+          {eventList &&
+            eventList.length > 0 &&
+            eventList.map((eid) => (
+              <EventCard searchString={searchEvent} key={eid} eid={eid} />
+            ))}
+        </div>
       </div>
     );
   }

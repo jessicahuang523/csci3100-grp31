@@ -131,12 +131,7 @@ const AddEvent = () => {
         <Jumbotron>
           <h1>Create a new event!</h1>
         </Jumbotron>
-        <Form
-          onSubmit={handleEventSubmit}
-          style={{
-            padding: "1rem",
-          }}
-        >
+        <Form onSubmit={handleEventSubmit} style={{ padding: "1rem" }}>
           {errorMessage && <Alert>{errorMessage}</Alert>}
           <FormGroup>
             <Label for="eventName">Event Name</Label>
@@ -242,7 +237,14 @@ const AddEvent = () => {
               </Button>
             </Col>
             <Col>
-              <Button block color="danger" type="reset" tag={Link} to="/launch">
+              <Button
+                block
+                color="danger"
+                outline
+                type="reset"
+                tag={Link}
+                to="/launch"
+              >
                 Cancel
               </Button>
             </Col>

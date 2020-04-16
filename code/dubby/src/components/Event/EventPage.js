@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Redirect, Link } from "react-router-dom";
-import { firestore, auth } from "firebase";
+import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
-import { CardColumns, Jumbotron, Button } from "reactstrap";
+import { Jumbotron, Button } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import EventCard from "./EventCard";
@@ -45,17 +45,17 @@ const EventPage = () => {
           <h1>My Events</h1>
           <p>Events I joined or hosted by me!</p>
           <hr />
-          <Button tag={Link} to="/e/add">
-            Add new Event
+          <Button block color="primary" tag={Link} to="/e/add">
+            Create a new event!
           </Button>
         </Jumbotron>
-        {userEventList && userEventList.length > 0 && (
-          <CardColumns>
-            {userEventList.map((event) => (
+        <div style={{ padding: "1rem" }}>
+          {userEventList &&
+            userEventList.length > 0 &&
+            userEventList.map((event) => (
               <EventCard key={event.eid} eid={event.eid} />
             ))}
-          </CardColumns>
-        )}
+        </div>
       </div>
     );
   }
