@@ -28,7 +28,7 @@ const FriendContextProvider = (props) => {
       const unsubscribeSentRequestsRefData = sentRequestsRef.onSnapshot(
         (snap) => {
           if (snap.empty) {
-            setSrLoaded(true);
+            setSentRequests("none");
           } else {
             let tmp = [];
             snap.forEach((doc) => tmp.push(doc.data()));
@@ -52,7 +52,7 @@ const FriendContextProvider = (props) => {
       const unsubscribeReceivedRequestData = receivedRequestsRef.onSnapshot(
         (snap) => {
           if (snap.empty) {
-            setRrLoaded(true);
+            setReceivedRequests("none");
           } else {
             let tmp = [];
             snap.forEach((doc) => tmp.push(doc.data()));
@@ -75,7 +75,7 @@ const FriendContextProvider = (props) => {
         .collection("friend_list");
       const unsubscribeFriendListData = friendListRef.onSnapshot((snap) => {
         if (snap.empty) {
-          setFlLoaded(true);
+          setFriendList("none");
         } else {
           let tmp = [];
           snap.forEach((doc) => tmp.push(doc.data()));
@@ -91,6 +91,11 @@ const FriendContextProvider = (props) => {
   useEffect(() => {
     let data = [];
     if (sentRequests) {
+      if (sentRequests === "none") {
+        setSentRequestData(null);
+        setSrLoaded(true);
+        return;
+      }
       sentRequests.forEach(({ uid }) => {
         const ref = firestore().collection("user_profile").doc(uid);
         ref.get().then((s) => {
@@ -107,6 +112,11 @@ const FriendContextProvider = (props) => {
   useEffect(() => {
     let data = [];
     if (receivedRequests) {
+      if (receivedRequests === "none") {
+        setReceivedRequestData(null);
+        setRrLoaded(true);
+        return;
+      }
       receivedRequests.forEach(({ uid }) => {
         const ref = firestore().collection("user_profile").doc(uid);
         ref.get().then((s) => {
@@ -123,6 +133,11 @@ const FriendContextProvider = (props) => {
   useEffect(() => {
     let data = [];
     if (friendList) {
+      if (friendList === "none") {
+        setFriendListData(null);
+        setFlLoaded(true);
+        return;
+      }
       friendList.forEach(({ uid }) => {
         const ref = firestore().collection("user_profile").doc(uid);
         ref.get().then((s) => {
