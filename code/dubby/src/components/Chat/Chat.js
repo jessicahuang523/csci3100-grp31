@@ -11,7 +11,7 @@ import {
   Input,
   Button,
   Jumbotron,
-  Collapse
+  Collapse,
 } from "reactstrap";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -121,11 +121,11 @@ export const Chat = () => {
           <Button onClick={toggle}>Participants</Button>
           <Collapse isOpen={isOpen}>
             {chatParticipantData &&
-              chatParticipantData.map(p => (
-                <div style={{margin:"10px"}}>
+              chatParticipantData.map((p) => (
+                <div style={{ margin: "10px" }}>
                   <ProfileHead src={p.profileImageSrc} size="friend" />{" "}
                   <Link to={`/u/${p.uid}`}>{p.username}</Link>
-                </div> 
+                </div>
               ))}
           </Collapse>
         </Jumbotron>

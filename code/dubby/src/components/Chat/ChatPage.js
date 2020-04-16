@@ -127,14 +127,12 @@ const FriendList = ({ list }) => {
     <Form>
       {list && list.length > 0 ? (
         list.map(({ username }) => (
-          <div style={{margin:"10px"}}>
-          <FormGroup check>
-            <Label check>
-              <Input type="checkbox" />{" "}
-              {" "}
-              {username}
-            </Label>
-          </FormGroup>
+          <div style={{ margin: "10px" }}>
+            <FormGroup check>
+              <Label check>
+                <Input type="checkbox" /> {username}
+              </Label>
+            </FormGroup>
           </div>
         ))
       ) : (
