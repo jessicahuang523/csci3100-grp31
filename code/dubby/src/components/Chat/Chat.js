@@ -113,8 +113,6 @@ export const Chat = () => {
     setInputMessage(e.target.value);
   };
 
-  
-  
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -159,7 +157,7 @@ export const Chat = () => {
                     />
                   ))}
               </ul>
-              <Form onSubmit={handleSendMessage} >
+              <Form onSubmit={handleSendMessage}>
                 <FormGroup row>
                   <Col sm={10}>
                     <Input
