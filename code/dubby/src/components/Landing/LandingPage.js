@@ -46,11 +46,16 @@ const LandingPage = () => {
     return <Redirect to="/"/>;
   } else {
     return (<div>
-      <Jumbotron>
-        <Media src={logo} style={{
+      <Jumbotron style={{
+          textAlign: "center"
+        }}>
+        <Media middle="middle" src={logo} style={{
             width: "10rem"
           }}/>
         <hr/>
+        <p>
+          <b>Welcome to Dubby</b>
+        </p>
         <p>
           <b>Find your sport partners. Find your buddies.</b>
         </p>

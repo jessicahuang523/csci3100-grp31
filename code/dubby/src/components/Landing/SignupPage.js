@@ -1,7 +1,7 @@
-import React, { useContext, useState } from "react";
-import { Redirect, Link } from "react-router-dom";
-import { auth } from "firebase";
-import { UserContext } from "../../contexts/UserContext";
+import React, {useContext, useState} from "react";
+import {Redirect, Link} from "react-router-dom";
+import {auth} from "firebase";
+import {UserContext} from "../../contexts/UserContext";
 import {
   Jumbotron,
   Media,
@@ -14,14 +14,14 @@ import {
   FormGroup,
   Label,
   Input,
-  Button,
+  Button
 } from "reactstrap";
 import Loading from "../Loading/Loading";
 import logo from "../../image/Dubby_logo.png";
 import LoadingUserCreation from "../Loading/LoadingUserCreation";
 
 const SignupPage = () => {
-  const { userData, userLoading } = useContext(UserContext);
+  const {userData, userLoading} = useContext(UserContext);
 
   const [inputEmail, setInputEmail] = useState();
   const [inputPassword, setInputPassword] = useState();
@@ -48,58 +48,56 @@ const SignupPage = () => {
   };
 
   if (userLoading) {
-    return <Loading />;
+    return <Loading/>;
   } else if (userData) {
-    return <Redirect to="/" />;
+    return <Redirect to="/"/>;
   } else if (dataCreationLoading) {
-    return <LoadingUserCreation />;
+    return <LoadingUserCreation/>;
   } else {
-    return (
-      <div>
-        <Jumbotron>
-          <Media src={logo} style={{ width: "10rem" }} />
-          <hr />
-          <p>buddy dubby dubby buddy</p>
-        </Jumbotron>
-        <Row>
-          <Col sm={{ size: 6, offset: 3 }}>
-            <Card>
-              <CardHeader>{alertSignin}</CardHeader>
-              <CardBody>
-                <Form onSubmit={handleSignUpFormSubmit}>
-                  <FormGroup>
-                    <Label for="email">Email</Label>
-                    <Input
-                      id="email"
-                      placeholder="account@example.com"
-                      type="email"
-                      required
-                      onChange={(e) => setInputEmail(e.target.value)}
-                    />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label for="password">Password</Label>
-                    <Input
-                      id="password"
-                      placeholder="password"
-                      type="password"
-                      required
-                      onChange={(e) => setInputPassword(e.target.value)}
-                    />
-                  </FormGroup>
-                  <Button color="primary" block type="submit">
-                    Sign Up
-                  </Button>
-                  <Button color="secondary" block tag={Link} to="/launch">
-                    Back to login
-                  </Button>
-                </Form>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </div>
-    );
+    return (<div>
+      <Jumbotron style={{
+          textAlign: "center"
+        }}>
+        <Media middle="middle" src={logo} style={{
+            width: "10rem"
+          }}/>
+        <hr/>
+        <p>
+          <b>Welcome to Dubby!</b>
+        </p>
+        <p>
+          <b>Find your sport partners. Find your buddies.</b>
+        </p>
+      </Jumbotron>
+      <Row>
+        <Col sm={{
+            size: 6,
+            offset: 3
+          }}>
+          <Card>
+            <CardHeader>{alertSignin}</CardHeader>
+            <CardBody>
+              <Form onSubmit={handleSignUpFormSubmit}>
+                <FormGroup>
+                  <Label for="email">Email</Label>
+                  <Input id="email" placeholder="account@example.com" type="email" required="required" onChange={(e) => setInputEmail(e.target.value)}/>
+                </FormGroup>
+                <FormGroup>
+                  <Label for="password">Password</Label>
+                  <Input id="password" placeholder="password" type="password" required="required" onChange={(e) => setInputPassword(e.target.value)}/>
+                </FormGroup>
+                <Button color="primary" block="block" type="submit">
+                  Sign Up
+                </Button>
+                <Button color="secondary" block="block" tag={Link} to="/launch">
+                  Back to login
+                </Button>
+              </Form>
+            </CardBody>
+          </Card>
+        </Col>
+      </Row>
+    </div>);
   }
 };
 
