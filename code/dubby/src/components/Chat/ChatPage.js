@@ -78,7 +78,10 @@ const ChatPage = () => {
   } else {
     return (<div>
       <Navbar/>
-      <Jumbotron>
+      <Jumbotron style={{
+          textAlign: "center"
+        }}>
+
         <h1>Chats</h1>
         <hr/>
         <ButtonGroup>

@@ -1,5 +1,4 @@
 /* css/index.css */
-
 @import url("all.min.css");
 
 ul {
@@ -11,13 +10,11 @@ ul {
 .card {
   margin-bottom: 1rem;
 }
-
 /* ChatCard link */
 .chat-card a {
   color: currentColor;
   text-decoration: none;
 }
-
 /* ChatMessages */
 .chat-bubble {
   position: relative;
