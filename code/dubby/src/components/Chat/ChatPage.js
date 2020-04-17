@@ -5,7 +5,6 @@ import { FriendContext } from "../../contexts/FriendContext";
 import { UserContext } from "../../contexts/UserContext";
 import {
   Jumbotron,
-  ButtonDropdown,
   Button,
   Modal,
   ModalHeader,
@@ -14,20 +13,18 @@ import {
   Form,
   FormGroup,
   Input,
-  Label,
   ButtonGroup,
 } from "reactstrap";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import ChatCard from "./ChatCard";
-import ProfileHead from "../Profile/ProfileHead";
 import UserList from "../Friend/UserList";
 
 const ChatPage = () => {
   const { userData, userLoading } = useContext(UserContext);
   const { friendListData } = useContext(FriendContext);
+
   const [chatList, setChatList] = useState();
-  const [dropdownOpen, setOpen] = useState(false);
   const [modal_private, setModalP] = useState(false);
   const [modal_group, setModalG] = useState(false);
   const [selectedFriendData, setSelectedFriendData] = useState([]);
@@ -50,13 +47,16 @@ const ChatPage = () => {
     }
   }, [userData]);
 
-  useEffect(() => {
-    console.log({ selectedFriendData });
-  }, [selectedFriendData]);
-
-  const toggle_dropdown = () => setOpen(!dropdownOpen);
   const toggle_modal_private = () => setModalP(!modal_private);
   const toggle_modal_group = () => setModalG(!modal_group);
+
+  const handlePrivateSelectFriend = ({ targetUid }) => {
+    if (targetUid && friendListData) {
+      const friend = friendListData.find(({ uid }) => uid === targetUid);
+      console.log({ friend });
+      // TODO: create new chat and redirect to chat page
+    }
+  };
 
   const handleSelectFriend = ({ targetUid }) => {
     if (targetUid && friendListData) {
@@ -86,72 +86,82 @@ const ChatPage = () => {
         <Jumbotron>
           <h1>Chats</h1>
           <hr />
-          <ButtonDropdown isOpen={dropdownOpen} toggle={toggle_dropdown}>
-            <ButtonGroup>
-              <Button color="primary" onClick={toggle_modal_private}>
-                New Private Chat
-              </Button>
-              <Button color="info" onClick={toggle_modal_group}>
-                New Group Chat
-              </Button>
-            </ButtonGroup>
-            <Modal isOpen={modal_private} toggle={toggle_modal_private}>
+          <ButtonGroup>
+            <Button color="primary" onClick={toggle_modal_private}>
+              New Private Chat
+            </Button>
+            <Button color="info" onClick={toggle_modal_group}>
+              New Group Chat
+            </Button>
+          </ButtonGroup>
+
+          <Modal isOpen={modal_private} toggle={toggle_modal_private}>
+            <Form>
               <ModalHeader toggle={toggle_modal_private}>
                 Private Chat
               </ModalHeader>
               <ModalBody>
-                <h4>To:</h4>
-                <FriendList list={friendListData} />
+                <UserList
+                  users={friendListData}
+                  heading="To..."
+                  action={handlePrivateSelectFriend}
+                  actionIcon="fas fa-comment-dots"
+                  actionColor="primary"
+                />
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onClick={toggle_modal_private}>
-                  Done
-                </Button>{" "}
                 <Button color="secondary" onClick={toggle_modal_private}>
+                  Done
+                </Button>
+              </ModalFooter>
+            </Form>
+          </Modal>
+
+          <Modal isOpen={modal_group} toggle={toggle_modal_group}>
+            <Form
+              onSubmit={(e) => {
+                e.preventDefault();
+                // TODO: create group chat and redirect to chat page
+              }}
+            >
+              <ModalHeader toggle={toggle_modal_group}>Group Chat</ModalHeader>
+              <ModalBody>
+                <FormGroup>
+                  <h4>Group name:</h4>
+                  <Input required type="text" id="groupChatName" />
+                </FormGroup>
+                <UserList
+                  users={friendListData.filter(
+                    ({ uid }) => selectedFriendData.indexOf(uid) > -1
+                  )}
+                  heading="Participants"
+                  action={handleDeselectFriend}
+                  actionIcon="fas fa-minus"
+                  actionColor="warning"
+                />
+                <hr />
+                <UserList
+                  users={friendListData.filter(
+                    ({ uid }) => selectedFriendData.indexOf(uid) < 0
+                  )}
+                  heading="Add Users"
+                  action={handleSelectFriend}
+                  actionIcon="fas fa-plus"
+                  actionColor="primary"
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button type="submit" color="primary">
+                  <i className="fas fa-comment-dots"></i> Create Chat!
+                </Button>{" "}
+                <Button color="secondary" onClick={toggle_modal_group}>
                   Cancel
                 </Button>
               </ModalFooter>
-            </Modal>
-            <Modal isOpen={modal_group} toggle={toggle_modal_group}>
-              <Form>
-                <ModalHeader toggle={toggle_modal_group}>
-                  Group Chat
-                </ModalHeader>
-                <ModalBody>
-                  <FormGroup>
-                    <h4>Group name:</h4>
-                    <Input type="text" id="groupChatName" />
-                  </FormGroup>
-                  <UserList
-                    users={friendListData.filter(
-                      ({ uid }) => selectedFriendData.indexOf(uid) > -1
-                    )}
-                    heading="Participants"
-                    action={handleDeselectFriend}
-                    actionText="remove"
-                  />
-                  <hr />
-                  <UserList
-                    users={friendListData.filter(
-                      ({ uid }) => selectedFriendData.indexOf(uid) < 0
-                    )}
-                    heading="Add Users"
-                    action={handleSelectFriend}
-                    actionText="select"
-                  />
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="primary" onClick={toggle_modal_group}>
-                    Done
-                  </Button>{" "}
-                  <Button color="secondary" onClick={toggle_modal_group}>
-                    Cancel
-                  </Button>
-                </ModalFooter>
-              </Form>
-            </Modal>
-          </ButtonDropdown>
+            </Form>
+          </Modal>
         </Jumbotron>
+
         <div style={{ padding: "1rem" }}>
           {chatList &&
             chatList.length > 0 &&
@@ -160,27 +170,6 @@ const ChatPage = () => {
       </div>
     );
   }
-};
-
-const FriendList = ({ list }) => {
-  return (
-    <Form>
-      {list && list.length > 0 ? (
-        list.map(({ profileImageSrc, username }) => (
-          <div key={username} style={{ margin: "10px" }}>
-            <FormGroup check>
-              <Label check>
-                <Input type="checkbox" />
-                <ProfileHead src={profileImageSrc} size="friend" /> {username}
-              </Label>
-            </FormGroup>
-          </div>
-        ))
-      ) : (
-        <p>you have no friend</p>
-      )}
-    </Form>
-  );
 };
 
 export default ChatPage;
