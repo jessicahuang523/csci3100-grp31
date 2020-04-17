@@ -1,14 +1,11 @@
 import React, { useContext, useState } from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import { FriendContext } from "../../contexts/FriendContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
 import {
   Jumbotron,
-  ListGroup,
-  ListGroupItem,
-  ListGroupItemHeading,
   Button,
   Form,
   Input,
@@ -26,7 +23,7 @@ import {
   removeFriendRequest,
   unfriendFriend,
 } from "../../utilityfunctions/Utilities";
-import ProfileHead from "../Profile/ProfileHead";
+import UserList from "./UserList";
 
 const Friend = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -121,57 +118,37 @@ const Friend = () => {
           <hr />
           {searchUserResult && <UserList users={searchUserResult} />}
         </Jumbotron>
-        <UserList
-          users={friendListData}
-          heading="Friends"
-          action={unfriendFriend}
-          actionText="Unfriend"
-          actionColor="danger"
-        />
-        <UserList
-          users={sentRequestData}
-          heading="Sent Requests"
-          action={removeFriendRequest}
-          actionText="Take Back Request"
-          actionColor="warning"
-        />
-        <UserList
-          users={receivedRequestData}
-          heading="Received Requests"
-          action={acceptFriendRequest}
-          actionText="Accept"
-          actionColor="primary"
-        />
+        <div style={{ padding: "1rem" }}>
+          <UserList
+            users={friendListData}
+            heading="Friends"
+            action={unfriendFriend}
+            actionIcon="fas fa-trash"
+            actionText="Unfriend"
+            actionColor="danger"
+          />
+          <hr />
+          <UserList
+            users={sentRequestData}
+            heading="Sent Requests"
+            action={removeFriendRequest}
+            actionIcon="fas fa-minus"
+            actionText="Unrequest"
+            actionColor="warning"
+          />
+          <hr />
+          <UserList
+            users={receivedRequestData}
+            heading="Received Requests"
+            action={acceptFriendRequest}
+            actionIcon="fas fa-user-friends"
+            actionText="Accept"
+            actionColor="primary"
+          />
+        </div>
       </div>
     );
   }
 };
-
-const UserList = ({ users, heading, action, actionText, actionColor }) => (
-  <ListGroup>
-    {heading && <ListGroupItemHeading>{heading}</ListGroupItemHeading>}
-    {users && users.length > 0 ? (
-      users.map((u) => (
-        <ListGroupItem key={u.uid}>
-          <ProfileHead src={u.profileImageSrc} size="friend" />
-          {"  "}
-          <Link to={`/u/${u.uid}`}>{u.username}</Link>
-          {"  "}
-          {action && (
-            <Button
-              size="sm"
-              color={actionColor}
-              onClick={() => action({ targetUid: u.uid })}
-            >
-              {actionText}
-            </Button>
-          )}
-        </ListGroupItem>
-      ))
-    ) : (
-      <ListGroupItem>Wow, such empty</ListGroupItem>
-    )}
-  </ListGroup>
-);
 
 export default Friend;

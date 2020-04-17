@@ -6,9 +6,6 @@ import { UserContext } from "../../contexts/UserContext";
 import {
   Jumbotron,
   ButtonDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   Button,
   Modal,
   ModalHeader,
@@ -24,6 +21,7 @@ import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import ChatCard from "./ChatCard";
 import ProfileHead from "../Profile/ProfileHead";
+import UserList from "../Friend/UserList";
 
 const ChatPage = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -32,9 +30,7 @@ const ChatPage = () => {
   const [dropdownOpen, setOpen] = useState(false);
   const [modal_private, setModalP] = useState(false);
   const [modal_group, setModalG] = useState(false);
-  const toggle_dropdown = () => setOpen(!dropdownOpen);
-  const toggle_modal_private = () => setModalP(!modal_private);
-  const toggle_modal_group = () => setModalG(!modal_group);
+  const [selectedFriendData, setSelectedFriendData] = useState([]);
 
   useEffect(() => {
     if (userData) {
@@ -54,7 +50,32 @@ const ChatPage = () => {
     }
   }, [userData]);
 
-  if (userLoading || !chatList) {
+  useEffect(() => {
+    console.log({ selectedFriendData });
+  }, [selectedFriendData]);
+
+  const toggle_dropdown = () => setOpen(!dropdownOpen);
+  const toggle_modal_private = () => setModalP(!modal_private);
+  const toggle_modal_group = () => setModalG(!modal_group);
+
+  const handleSelectFriend = ({ targetUid }) => {
+    if (targetUid && friendListData) {
+      let tmp = selectedFriendData;
+      tmp.push(targetUid);
+      tmp = tmp.filter((uid, index, a) => a.indexOf(uid) === index);
+      setSelectedFriendData(tmp);
+    }
+  };
+
+  const handleDeselectFriend = ({ targetUid }) => {
+    if (targetUid && selectedFriendData) {
+      let tmp = selectedFriendData;
+      tmp = tmp.filter((uid) => uid !== targetUid);
+      setSelectedFriendData(tmp);
+    }
+  };
+
+  if (userLoading || !chatList || !friendListData) {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
@@ -92,25 +113,42 @@ const ChatPage = () => {
               </ModalFooter>
             </Modal>
             <Modal isOpen={modal_group} toggle={toggle_modal_group}>
-              <ModalHeader toggle={toggle_modal_group}>Group Chat</ModalHeader>
-              <ModalBody>
-                <Form>
+              <Form>
+                <ModalHeader toggle={toggle_modal_group}>
+                  Group Chat
+                </ModalHeader>
+                <ModalBody>
                   <FormGroup>
                     <h4>Group name:</h4>
                     <Input type="text" id="groupChatName" />
                   </FormGroup>
-                </Form>
-                <h4>Participants:</h4>
-                <FriendList list={friendListData} />
-              </ModalBody>
-              <ModalFooter>
-                <Button color="primary" onClick={toggle_modal_group}>
-                  Done
-                </Button>{" "}
-                <Button color="secondary" onClick={toggle_modal_group}>
-                  Cancel
-                </Button>
-              </ModalFooter>
+                  <UserList
+                    users={friendListData.filter(
+                      ({ uid }) => selectedFriendData.indexOf(uid) > -1
+                    )}
+                    heading="Participants"
+                    action={handleDeselectFriend}
+                    actionText="remove"
+                  />
+                  <hr />
+                  <UserList
+                    users={friendListData.filter(
+                      ({ uid }) => selectedFriendData.indexOf(uid) < 0
+                    )}
+                    heading="Add Users"
+                    action={handleSelectFriend}
+                    actionText="select"
+                  />
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="primary" onClick={toggle_modal_group}>
+                    Done
+                  </Button>{" "}
+                  <Button color="secondary" onClick={toggle_modal_group}>
+                    Cancel
+                  </Button>
+                </ModalFooter>
+              </Form>
             </Modal>
           </ButtonDropdown>
         </Jumbotron>
