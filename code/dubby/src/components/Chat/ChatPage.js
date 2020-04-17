@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
-import { firestore, auth } from "firebase";
+import { firestore } from "firebase";
 import { FriendContext } from "../../contexts/FriendContext";
 import { UserContext } from "../../contexts/UserContext";
 import {
@@ -18,6 +18,7 @@ import {
   FormGroup,
   Input,
   Label,
+  ButtonGroup,
 } from "reactstrap";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -65,15 +66,14 @@ const ChatPage = () => {
           <h1>Chats</h1>
           <hr />
           <ButtonDropdown isOpen={dropdownOpen} toggle={toggle_dropdown}>
-            <DropdownToggle caret>New Chat</DropdownToggle>
-            <DropdownMenu>
-              <DropdownItem onClick={toggle_modal_private}>
-                Private chat
-              </DropdownItem>
-              <DropdownItem onClick={toggle_modal_group}>
-                Group chat
-              </DropdownItem>
-            </DropdownMenu>
+            <ButtonGroup>
+              <Button color="primary" onClick={toggle_modal_private}>
+                New Private Chat
+              </Button>
+              <Button color="info" onClick={toggle_modal_group}>
+                New Group Chat
+              </Button>
+            </ButtonGroup>
             <Modal isOpen={modal_private} toggle={toggle_modal_private}>
               <ModalHeader toggle={toggle_modal_private}>
                 Private Chat
@@ -114,9 +114,11 @@ const ChatPage = () => {
             </Modal>
           </ButtonDropdown>
         </Jumbotron>
-        {chatList &&
-          chatList.length > 0 &&
-          chatList.map((chat) => <ChatCard key={chat.cid} cid={chat.cid} />)}
+        <div style={{ padding: "1rem" }}>
+          {chatList &&
+            chatList.length > 0 &&
+            chatList.map((chat) => <ChatCard key={chat.cid} cid={chat.cid} />)}
+        </div>
       </div>
     );
   }
@@ -126,11 +128,12 @@ const FriendList = ({ list }) => {
   return (
     <Form>
       {list && list.length > 0 ? (
-        list.map(({ username }) => (
-          <div style={{ margin: "10px" }}>
+        list.map(({ profileImageSrc, username }) => (
+          <div key={username} style={{ margin: "10px" }}>
             <FormGroup check>
               <Label check>
-                <Input type="checkbox" /> {username}
+                <Input type="checkbox" />
+                <ProfileHead src={profileImageSrc} size="friend" /> {username}
               </Label>
             </FormGroup>
           </div>

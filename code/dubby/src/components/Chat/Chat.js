@@ -95,13 +95,13 @@ export const Chat = () => {
 
   const scrollToBottom = () => {
     if (divRef.current) {
-      divRef.current.scrollIntoView({ behavior: 'smooth' }) 
+      divRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }
+  };
 
   useEffect(() => {
     scrollToBottom();
-  })
+  });
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -134,7 +134,7 @@ export const Chat = () => {
           <Collapse isOpen={isOpen}>
             {chatParticipantData &&
               chatParticipantData.map((p) => (
-                <div style={{ margin: "10px" }}>
+                <div key={p.uid} style={{ margin: "10px" }}>
                   <ProfileHead src={p.profileImageSrc} size="friend" />{" "}
                   <Link to={`/u/${p.uid}`}>{p.username}</Link>
                 </div>

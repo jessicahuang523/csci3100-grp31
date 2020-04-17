@@ -4,13 +4,7 @@ admin.initializeApp();
 
 const db = admin.firestore();
 
-// // Create and Deploy Your First Cloud Functions
-// // https://firebase.google.com/docs/functions/write-firebase-functions
-//
-// exports.helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
-
+// listens for username change and updates database accordingly
 exports.userRenameUpdater = functions.firestore
   .document("user_profile/{uid}")
   .onUpdate((change, context) => {
@@ -97,6 +91,7 @@ exports.userRenameUpdater = functions.firestore
       });
   });
 
+// sets up database for new user upon signup
 exports.userSignupSetup = functions.auth.user().onCreate((user) => {
   if (user) {
     const { uid } = user;
