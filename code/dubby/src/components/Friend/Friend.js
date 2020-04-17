@@ -40,8 +40,9 @@ const Friend = () => {
   const [searchUserResult, setSearchUserResult] = useState();
   const [eventTypeDropdownOpen, setEventTypeDropdownOpen] = useState(false);
 
-  const handleToggleEventTypeDropdown = () =>
+  const handleToggleEventTypeDropdown = () => {
     setEventTypeDropdownOpen(!eventTypeDropdownOpen);
+  };
 
   const handleSearchUseSubmit = (e) => {
     e.preventDefault();
@@ -96,14 +97,14 @@ const Friend = () => {
                 </DropdownToggle>
                 <DropdownMenu>
                   <DropdownItem onClick={() => setSearchUserInterest(null)}>
-                    None
+                    <i className="fas fa-times"></i> None
                   </DropdownItem>
-                  {eventTypeData.map(({ value, display }) => (
+                  {eventTypeData.map(({ value, display, icon }) => (
                     <DropdownItem
                       key={value}
                       onClick={() => setSearchUserInterest(display)}
                     >
-                      {display}
+                      <i className={icon}></i> {display}
                     </DropdownItem>
                   ))}
                 </DropdownMenu>

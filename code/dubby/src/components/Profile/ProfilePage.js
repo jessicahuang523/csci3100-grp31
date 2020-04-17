@@ -146,7 +146,7 @@ const ProfilePage = () => {
     return (
       <div>
         <NavBar />
-        <div>
+        <div style={{ marginBottom: "2rem" }}>
           <ProfileHead src={profileImageSrc} size="profile" />
           <br />
           <Row>
@@ -175,11 +175,13 @@ const ProfilePage = () => {
                 <ul>
                   {interested_sports.map((s) => (
                     <li key={s}>
-                      <i
-                        className={
-                          eventTypeData.find((c) => c.display === s).icon
-                        }
-                      ></i>{" "}
+                      {eventTypeData.find((c) => c.display === s) && (
+                        <i
+                          className={
+                            eventTypeData.find((c) => c.display === s).icon
+                          }
+                        ></i>
+                      )}{" "}
                       {s}
                     </li>
                   ))}
