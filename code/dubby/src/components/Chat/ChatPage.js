@@ -25,8 +25,8 @@ const ChatPage = () => {
   const { friendListData } = useContext(FriendContext);
 
   const [chatList, setChatList] = useState();
-  const [modal_private, setModalP] = useState(false);
-  const [modal_group, setModalG] = useState(false);
+  const [privateModalOpen, setPrivateModalOpen] = useState(false);
+  const [groupModalOpen, setGroupModalOpen] = useState(false);
   const [selectedFriendData, setSelectedFriendData] = useState([]);
 
   useEffect(() => {
@@ -47,8 +47,8 @@ const ChatPage = () => {
     }
   }, [userData]);
 
-  const toggle_modal_private = () => setModalP(!modal_private);
-  const toggle_modal_group = () => setModalG(!modal_group);
+  const handlePrivateModalToggle = () => setPrivateModalOpen(!privateModalOpen);
+  const handleGroupModalToggle = () => setGroupModalOpen(!groupModalOpen);
 
   const handlePrivateSelectFriend = ({ targetUid }) => {
     if (targetUid && friendListData) {
@@ -87,17 +87,17 @@ const ChatPage = () => {
           <h1>Chats</h1>
           <hr />
           <ButtonGroup>
-            <Button color="primary" onClick={toggle_modal_private}>
+            <Button color="primary" onClick={handlePrivateModalToggle}>
               New Private Chat
             </Button>
-            <Button color="info" onClick={toggle_modal_group}>
+            <Button color="info" onClick={handleGroupModalToggle}>
               New Group Chat
             </Button>
           </ButtonGroup>
 
-          <Modal isOpen={modal_private} toggle={toggle_modal_private}>
+          <Modal isOpen={privateModalOpen} toggle={handlePrivateModalToggle}>
             <Form>
-              <ModalHeader toggle={toggle_modal_private}>
+              <ModalHeader toggle={handlePrivateModalToggle}>
                 Private Chat
               </ModalHeader>
               <ModalBody>
@@ -110,21 +110,23 @@ const ChatPage = () => {
                 />
               </ModalBody>
               <ModalFooter>
-                <Button color="secondary" onClick={toggle_modal_private}>
+                <Button color="secondary" onClick={handlePrivateModalToggle}>
                   Done
                 </Button>
               </ModalFooter>
             </Form>
           </Modal>
 
-          <Modal isOpen={modal_group} toggle={toggle_modal_group}>
+          <Modal isOpen={groupModalOpen} toggle={handleGroupModalToggle}>
             <Form
               onSubmit={(e) => {
                 e.preventDefault();
                 // TODO: create group chat and redirect to chat page
               }}
             >
-              <ModalHeader toggle={toggle_modal_group}>Group Chat</ModalHeader>
+              <ModalHeader toggle={handleGroupModalToggle}>
+                Group Chat
+              </ModalHeader>
               <ModalBody>
                 <FormGroup>
                   <h4>Group name:</h4>
@@ -154,7 +156,7 @@ const ChatPage = () => {
                 <Button type="submit" color="primary">
                   <i className="fas fa-comment-dots"></i> Create Chat!
                 </Button>{" "}
-                <Button color="secondary" onClick={toggle_modal_group}>
+                <Button color="secondary" onClick={handleGroupModalToggle}>
                   Cancel
                 </Button>
               </ModalFooter>
