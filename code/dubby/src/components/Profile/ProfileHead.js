@@ -1,17 +1,15 @@
 import React from "react";
+import User from "../../image/user.svg";
 
 const styles = {
   chat: {
     container: { textAlign: "center" },
     img: {
-      width: "70px",
-      height: "70px",
+      width: "60px",
+      height: "60px",
       overflow: "hidden",
-      borderRadius: "35px",
-      border: "1px solid #555",
-    },
-    noImg: {
-      fontSize: "50px",
+      borderRadius: "30px",
+      border: "2px solid #eee",
     },
   },
   profile: {
@@ -21,8 +19,8 @@ const styles = {
       height: "300px",
       overflow: "hidden",
       borderRadius: "150px",
+      border: "5px solid #eee",
     },
-    noImg: { fontSize: "220px", margin: "40px" },
   },
   friend: {
     container: { textAlign: "center" },
@@ -31,8 +29,8 @@ const styles = {
       height: "2rem",
       overflow: "hidden",
       borderRadius: "1rem",
+      border: "1px solid black",
     },
-    noImg: { fontSize: "1.8rem", margin: "0.1rem" },
   },
   inline: {
     container: { textAlign: "center" },
@@ -41,13 +39,12 @@ const styles = {
       height: "1rem",
       overflow: "hidden",
       borderRadius: "0.5rem",
+      border: "1px solid black",
     },
-    noImg: { fontSize: "0.9rem", margin: "0.05rem" },
   },
   default: {
     container: { display: "none" },
     img: { display: "none" },
-    noImg: { display: "none" },
   },
 };
 
@@ -71,19 +68,11 @@ const ProfileHead = ({ src, size }) => {
       break;
   }
 
-  if (src) {
-    return (
-      <span style={style.container}>
-        <img src={src} style={style.img} alt="" />
-      </span>
-    );
-  } else {
-    return (
-      <span style={style.container}>
-        <i className="fas fa-user" style={style.noImg}></i>
-      </span>
-    );
-  }
+  return (
+    <span style={style.container}>
+      <img src={src || User} style={style.img} alt="" />
+    </span>
+  );
 };
 
 export default ProfileHead;

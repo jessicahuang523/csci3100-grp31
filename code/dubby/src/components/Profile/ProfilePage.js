@@ -66,10 +66,10 @@ const ProfilePage = () => {
     return (<div>
       <NavBar/>
       <div style={{
-          marginBottom: "2rem"
+          marginBottom: "2rem",
+          marginTop: "2rem"
         }}>
         <ProfileHead src={profileImageSrc} size="profile"/>
-        <br/>
         <Row>
           <Col sm={{
               size: 8,
@@ -116,7 +116,8 @@ const ProfilePage = () => {
           </Col>
         </Row>
       </div>
-    </div>);
+    </div>
+  </div>);
   } else {
     // in viewing mode
     // button shows "add friend" if not self, otherwise show "edit"
@@ -124,10 +125,10 @@ const ProfilePage = () => {
     return (<div>
       <NavBar/>
       <div style={{
-          marginBottom: "2rem"
+          marginBottom: "2rem",
+          marginTop: "2rem"
         }}>
         <ProfileHead src={profileImageSrc} size="profile"/>
-        <br/>
         <Row>
           <Col sm={{
               size: 8,

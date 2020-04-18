@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import { firestore } from "firebase";
 import { Card, CardHeader, CardText, CardBody } from "reactstrap";
 import LoadingChatCard from "../Loading/LoadingChatCard";
+import ProfileHead from "../Profile/ProfileHead";
 
 const ChatCard = ({ cid }) => {
   const [chatData, setChatData] = useState();
   const [chatMessage, setChatMessage] = useState();
-  const [chatSenderUsername, setChatSenderUsername] = useState();
+  const [chatSenderData, setChatSenderData] = useState();
 
   useEffect(() => {
     const chatRef = firestore().collection("chat").doc(cid);
@@ -29,16 +30,16 @@ const ChatCard = ({ cid }) => {
     if (chatMessage && chatMessage.sender) {
       const { uid } = chatMessage.sender;
       const userDataRef = firestore().collection("user_profile").doc(uid);
-      const unsubscribeChatSenderUsername = userDataRef.onSnapshot((snap) =>
-        setChatSenderUsername(snap.data().username)
+      const unsubscribeChatSenderData = userDataRef.onSnapshot((snap) =>
+        setChatSenderData(snap.data())
       );
       return () => {
-        unsubscribeChatSenderUsername();
+        unsubscribeChatSenderData();
       };
     }
   }, [chatMessage]);
 
-  if (!chatData || (chatMessage && !chatSenderUsername)) {
+  if (!chatData || (chatMessage && !chatSenderData)) {
     return <LoadingChatCard />;
   } else {
     const { icon, title } = chatData;
@@ -50,8 +51,14 @@ const ChatCard = ({ cid }) => {
           </CardHeader>
           <CardBody>
             <CardText>
+              {chatSenderData && (
+                <ProfileHead
+                  src={chatSenderData.profileImageSrc}
+                  size="inline"
+                />
+              )}
               {chatMessage
-                ? `${chatSenderUsername}: ${chatMessage.text}`
+                ? ` ${chatSenderData.username}: ${chatMessage.text}`
                 : "Wow, such empty"}
             </CardText>
           </CardBody>
