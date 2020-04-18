@@ -43,6 +43,7 @@ const ChatPage = () => {
         .collection("user_profile")
         .doc(uid)
         .collection("chats")
+        .orderBy("title")
         .onSnapshot((snap) => {
           let tmp = [];
           snap.forEach((doc) => tmp.push(doc.data()));
