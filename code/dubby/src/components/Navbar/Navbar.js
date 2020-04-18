@@ -60,16 +60,19 @@ const NavBar = () => {
             </DropdownToggle>
             <DropdownMenu right>
               <DropdownItem tag={Link} to="/u">
-                Profile
+                <i className="fas fa-user" /> Profile
               </DropdownItem>
               <DropdownItem tag={Link} to="/friends">
-                Friends
+                <i className="fas fa-users"></i> Friends
               </DropdownItem>
               <DropdownItem onClick={() => toggleTheme()}>
+                <i
+                  className={`fas fa-toggle-${isPrimaryTheme ? "on" : "off"}`}
+                ></i>{" "}
                 {isPrimaryTheme ? "Lights Off" : "Lights On"}
               </DropdownItem>
               <DropdownItem tag={Link} to="/" onClick={handleSignOutClick}>
-                Sign out
+                <i className="fas fa-running"></i> Sign out
               </DropdownItem>
             </DropdownMenu>
           </UncontrolledDropdown>
