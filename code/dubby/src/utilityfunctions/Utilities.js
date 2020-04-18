@@ -83,6 +83,72 @@ export const setupFirestoreForNewEventChat = async ({ eid, eventName }) => {
   }
 };
 
+// sets up group chat given chat name and users. Called by ChatPage.
+export const setupFirestoreForNewGroupChat = async ({ users, chatName }) => {
+  if (auth().currentUser && users && chatName) {
+    const { uid } = auth().currentUser;
+    const userDataRef = firestore().collection("user_profile").doc(uid);
+    const userDataSnap = await userDataRef.get();
+    if (userDataSnap.exists) {
+      const chatData = {
+        type: "group",
+        title: chatName,
+        icon: "fas fa-users",
+      };
+      const chatDataRef = await firestore().collection("chat").add(chatData);
+      await chatDataRef.update({ cid: chatDataRef.id });
+      await Promise.all(
+        users.map(({ uid }) =>
+          addParticipantToChat({ cid: chatDataRef.id, uid })
+        )
+      );
+      return { cid: chatDataRef.id };
+    }
+  }
+};
+
+// checks if previous private chat exists
+// if not creates private chat. Called by ChatPage.
+export const setupFirestoreForNewPrivateChat = async ({ targetUid }) => {
+  if (auth().currentUser && targetUid) {
+    const { uid } = auth().currentUser;
+    const userDataRef = firestore().collection("user_profile").doc(uid);
+    const targetDataRef = firestore().collection("user_profile").doc(targetUid);
+    const userDataSnap = await userDataRef.get();
+    const targetDataSnap = await targetDataRef.get();
+    if (userDataSnap.exists && targetDataSnap.exists) {
+      const chatExistData = await userDataRef
+        .collection("private_chats")
+        .where("uid", "==", targetUid)
+        .get();
+      if (chatExistData.empty) {
+        const chatData = {
+          type: "private",
+          title: "(Private Chat)",
+          icon: "fas fa-user-friends",
+        };
+        const chatDataRef = await firestore().collection("chat").add(chatData);
+        const cid = chatDataRef.id;
+        await chatDataRef.update({ cid });
+        await addParticipantToChat({ cid, uid: targetUid });
+        await addParticipantToChat({ cid, uid });
+        await userDataRef
+          .collection("private_chats")
+          .doc(targetUid)
+          .set({ uid: targetUid, cid });
+        await targetDataRef
+          .collection("private_chats")
+          .doc(uid)
+          .set({ uid, cid });
+        return { cid };
+      } else {
+        const { cid } = chatExistData.docs[0].data();
+        return { cid };
+      }
+    }
+  }
+};
+
 // deletes event. Takes care of event participants and chat dependencies
 // calls deleteEventChat()
 export const deleteEvent = async ({ eid }) => {

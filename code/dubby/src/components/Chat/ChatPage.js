@@ -19,6 +19,10 @@ import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import ChatCard from "./ChatCard";
 import UserList from "../Friend/UserList";
+import {
+  setupFirestoreForNewGroupChat,
+  setupFirestoreForNewPrivateChat,
+} from "../../utilityfunctions/Utilities";
 
 const ChatPage = () => {
   const { userData, userLoading } = useContext(UserContext);
@@ -28,6 +32,9 @@ const ChatPage = () => {
   const [privateModalOpen, setPrivateModalOpen] = useState(false);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
   const [selectedFriendData, setSelectedFriendData] = useState([]);
+  const [chatName, setChatName] = useState();
+  const [chatCreatedCid, setChatCreatedCid] = useState();
+  const [createChatPrompt, setCreateChatPrompt] = useState(" Create Chat!");
 
   useEffect(() => {
     if (userData) {
@@ -50,11 +57,13 @@ const ChatPage = () => {
   const handlePrivateModalToggle = () => setPrivateModalOpen(!privateModalOpen);
   const handleGroupModalToggle = () => setGroupModalOpen(!groupModalOpen);
 
-  const handlePrivateSelectFriend = ({ targetUid }) => {
-    if (targetUid && friendListData) {
-      const friend = friendListData.find(({ uid }) => uid === targetUid);
-      console.log({ friend });
-      // TODO: create new chat and redirect to chat page
+  const handlePrivateSelectFriend = async ({ targetUid }) => {
+    if (targetUid) {
+      console.log({ targetUid });
+      const { cid } = await setupFirestoreForNewPrivateChat({ targetUid });
+      console.log({ cid });
+
+      setChatCreatedCid(cid);
     }
   };
 
@@ -79,6 +88,8 @@ const ChatPage = () => {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
+  } else if (chatCreatedCid) {
+    return <Redirect to={`/c/${chatCreatedCid}`} />;
   } else {
     return (
       <div>
@@ -96,32 +107,42 @@ const ChatPage = () => {
           </ButtonGroup>
 
           <Modal isOpen={privateModalOpen} toggle={handlePrivateModalToggle}>
-            <Form>
-              <ModalHeader toggle={handlePrivateModalToggle}>
-                Private Chat
-              </ModalHeader>
-              <ModalBody>
-                <UserList
-                  users={friendListData}
-                  heading="To..."
-                  action={handlePrivateSelectFriend}
-                  actionIcon="fas fa-comment-dots"
-                  actionColor="primary"
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button color="secondary" onClick={handlePrivateModalToggle}>
-                  Done
-                </Button>
-              </ModalFooter>
-            </Form>
+            <ModalHeader toggle={handlePrivateModalToggle}>
+              Private Chat
+            </ModalHeader>
+            <ModalBody>
+              <UserList
+                users={friendListData}
+                heading="To..."
+                action={handlePrivateSelectFriend}
+                actionIcon="fas fa-comment-dots"
+                actionColor="primary"
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button color="secondary" onClick={handlePrivateModalToggle}>
+                Done
+              </Button>
+            </ModalFooter>
           </Modal>
 
           <Modal isOpen={groupModalOpen} toggle={handleGroupModalToggle}>
             <Form
-              onSubmit={(e) => {
+              onSubmit={async (e) => {
                 e.preventDefault();
                 // TODO: create group chat and redirect to chat page
+                if (selectedFriendData && chatName) {
+                  setCreateChatPrompt(" Creating...");
+                  const users = [
+                    userData,
+                    ...selectedFriendData.map((d) => ({ uid: d })),
+                  ];
+                  const { cid } = await setupFirestoreForNewGroupChat({
+                    users,
+                    chatName,
+                  });
+                  setChatCreatedCid(cid);
+                }
               }}
             >
               <ModalHeader toggle={handleGroupModalToggle}>
@@ -130,7 +151,12 @@ const ChatPage = () => {
               <ModalBody>
                 <FormGroup>
                   <h4>Group name:</h4>
-                  <Input required="required" type="text" id="groupChatName" />
+                  <Input
+                    required="required"
+                    type="text"
+                    id="groupChatName"
+                    onChange={(e) => setChatName(e.target.value)}
+                  />
                 </FormGroup>
                 <UserList
                   users={friendListData.filter(
@@ -155,7 +181,7 @@ const ChatPage = () => {
               <ModalFooter>
                 <Button type="submit" color="primary">
                   <i className="fas fa-comment-dots"></i>
-                  Create Chat!
+                  {createChatPrompt}
                 </Button>{" "}
                 <Button color="danger" outline onClick={handleGroupModalToggle}>
                   Cancel
