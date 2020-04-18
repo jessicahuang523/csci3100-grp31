@@ -116,8 +116,7 @@ const ProfilePage = () => {
           </Col>
         </Row>
       </div>
-    </div>
-  </div>);
+    </div>);
   } else {
     // in viewing mode
     // button shows "add friend" if not self, otherwise show "edit"
@@ -157,10 +156,7 @@ const ProfilePage = () => {
                 ? (<ul>
                   {
                     interested_sports.map((s) => (<li key={s}>
-                      {
-                        eventTypeData.find((c) => c.display === s) && (<i className={eventTypeData.find((c) => c.display === s).icon
-}></i>)
-                      }{" "}
+                      {eventTypeData.find((c) => c.display === s) && (<i className={eventTypeData.find((c) => c.display === s).icon}></i>)}{" "}
                       {s}
                     </li>))
                   }
