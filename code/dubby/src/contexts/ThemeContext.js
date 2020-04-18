@@ -2,6 +2,8 @@ import React, { createContext, useState } from "react";
 
 export const ThemeContext = createContext();
 
+const logo_purple = "#b83dba";
+const logo_yellow = "#ffca18";
 const purple = "#4B1248";
 const yellow = "#F0C27B";
 const black = "#000000";
