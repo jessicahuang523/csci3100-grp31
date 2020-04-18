@@ -112,7 +112,7 @@ const Event = () => {
         <NavBar />
         <Jumbotron fluid style={{ padding: "1rem" }}>
           <h1>
-            <i className={foundTypeData.icon}></i>[{foundTypeData.display}]{" "}
+            <i className={foundTypeData.icon}></i> [{foundTypeData.display}]{" "}
             {eventData.eventName}{" "}
             {eventParticipants.find((x) => x.uid === uid) && (
               <Badge pill color="info">
@@ -138,7 +138,12 @@ const Event = () => {
             </Col>
             <Col sm={{ size: 6 }}>
               {eventParticipants.find((x) => x.uid === uid) ? (
-                <Button block tag={Link} to={`/c/${eventData.cid}`}>
+                <Button
+                  block
+                  color="success"
+                  tag={Link}
+                  to={`/c/${eventData.cid}`}
+                >
                   <i className="fas fa-comment-dots"></i>
                   Chat!
                 </Button>
@@ -171,7 +176,11 @@ const Event = () => {
           {uid === hostUserData.uid && (
             <Row>
               <Col>
-                <Button block onClick={handleDeleteEventButtonClick}>
+                <Button
+                  block
+                  color="danger"
+                  onClick={handleDeleteEventButtonClick}
+                >
                   <i className="fas fa-trash"></i>
                   Delete
                 </Button>

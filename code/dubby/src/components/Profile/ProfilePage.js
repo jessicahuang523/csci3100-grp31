@@ -50,7 +50,9 @@ const ProfilePage = () => {
 
   const handleProfileDataSubmit = async () => {
     toggleIsEditable();
-    await updateProfileData({ profileData });
+    if (profileData !== userData) {
+      await updateProfileData({ profileData });
+    }
   };
 
   const handleProfileDataEdit = (key, value) => {
@@ -79,17 +81,12 @@ const ProfilePage = () => {
     return (
       <div>
         <NavBar />
-        <div>
+        <div style={{ marginBottom: "2rem" }}>
           <ProfileHead src={profileImageSrc} size="profile" />
           <br />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
-              <EditProfileImage />
-              <hr />
               <Form onSubmit={handleProfileDataSubmit}>
-                <Button block type="submit">
-                  Save
-                </Button>
                 <h2 style={{ marginTop: "50px" }}>Username</h2>
                 <hr />
                 <Input
@@ -127,6 +124,12 @@ const ProfilePage = () => {
                     </option>
                   ))}
                 </Input>
+                <hr />
+                <EditProfileImage />
+                <hr />
+                <Button block type="submit">
+                  {profileData !== userData ? "Save" : "Cancel"}
+                </Button>
               </Form>
             </Col>
           </Row>
@@ -151,13 +154,6 @@ const ProfilePage = () => {
           <br />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
-              <ProfileActionButton
-                uid={uid}
-                toggleIsEditable={toggleIsEditable}
-                friendListData={friendListData}
-                sentRequestData={sentRequestData}
-                receivedRequestData={receivedRequestData}
-              />
               <h2 style={{ marginTop: "50px" }}>Username</h2>
               <hr />
               <p>{username}</p>
@@ -189,6 +185,14 @@ const ProfilePage = () => {
               ) : (
                 <p>{interested_sports}</p>
               )}
+              <hr />
+              <ProfileActionButton
+                uid={uid}
+                toggleIsEditable={toggleIsEditable}
+                friendListData={friendListData}
+                sentRequestData={sentRequestData}
+                receivedRequestData={receivedRequestData}
+              />
             </Col>
           </Row>
         </div>
@@ -222,7 +226,7 @@ const ProfileActionButton = ({
           color="warning"
           onClick={() => removeFriendRequest({ targetUid: uid })}
         >
-          Take Back Request
+          Unrequest
         </Button>
       );
     } else if (
@@ -245,7 +249,7 @@ const ProfileActionButton = ({
           color="primary"
           onClick={() => sendFriendRequest({ targetUid: uid })}
         >
-          Add friend
+          Add Friend
         </Button>
       );
     }
