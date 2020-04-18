@@ -28,6 +28,7 @@ const themes = {
   primary: {
     background: {
       backgroundColor: yellow,
+      color: black,
       ...backgroundStyle,
     },
     jumbotron: {
@@ -43,6 +44,7 @@ const themes = {
   secondary: {
     background: {
       backgroundColor: purple,
+      color: white,
       ...backgroundStyle,
     },
     jumbotron: {
