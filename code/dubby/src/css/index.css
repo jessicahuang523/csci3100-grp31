@@ -1,10 +1,22 @@
 /* css/index.css */
 @import url("all.min.css");
 
+:root {
+  --chat-self-color: gold;
+  --chat-other-color: plum;
+}
+
+/* clear list css */
 ul {
   margin: 0;
   padding: 0;
   list-style-type: none;
+}
+
+/* icon css */
+i {
+  width: 1.3rem;
+  text-align: center;
 }
 
 .card {
@@ -27,7 +39,7 @@ ul {
 .chat-text-right {
   max-width: 400px;
   border-radius: 15px;
-  background-color: gold;
+  background-color: var(--chat-self-color);
   display: inline-block;
   padding-top: 8px;
   padding-left: 15px;
@@ -39,29 +51,13 @@ ul {
 .chat-text-left {
   max-width: 400px;
   border-radius: 15px;
-  background-color: plum;
+  background-color: var(--chat-other-color);
   display: inline-block;
   padding-top: 8px;
   padding-left: 15px;
   padding-right: 15px;
   text-align: left;
   line-height: 1.5em;
-}
-
-.left:after {
-  content: " ";
-  position: absolute;
-  width: 0;
-  height: 0;
-  left: 0;
-  top: 50%;
-  bottom: auto;
-  border: 20px solid transparent;
-  border-right-color: plum;
-  border-left: 0;
-  border-top: 0;
-  margin-top: -10px;
-  margin-left: -20px;
 }
 
 .right:before {
@@ -73,14 +69,25 @@ ul {
   top: 50%;
   bottom: auto;
   border: 20px solid transparent;
-  border-left-color: gold;
+  border-left-color: var(--chat-self-color);
   border-right: 0;
   border-top: 0;
   margin-top: -10px;
   margin-right: -20px;
 }
 
-i {
-  width: 1.3rem;
-  text-align: center;
+.left:after {
+  content: " ";
+  position: absolute;
+  width: 0;
+  height: 0;
+  left: 0;
+  top: 50%;
+  bottom: auto;
+  border: 20px solid transparent;
+  border-right-color: var(--chat-other-color);
+  border-left: 0;
+  border-top: 0;
+  margin-top: -10px;
+  margin-left: -20px;
 }
