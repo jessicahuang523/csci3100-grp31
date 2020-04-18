@@ -10,11 +10,13 @@ ul {
 .card {
   margin-bottom: 1rem;
 }
+
 /* ChatCard link */
 .chat-card a {
   color: currentColor;
   text-decoration: none;
 }
+
 /* ChatMessages */
 .chat-bubble {
   position: relative;
@@ -76,4 +78,9 @@ ul {
   border-top: 0;
   margin-top: -10px;
   margin-right: -20px;
+}
+
+i {
+  width: 1.3rem;
+  text-align: center;
 }
