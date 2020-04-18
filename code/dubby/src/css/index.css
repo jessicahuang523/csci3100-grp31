@@ -6,6 +6,10 @@
   --chat-other-color: plum;
 }
 
+.App {
+  height: 100vh;
+}
+
 /* clear list css */
 ul {
   margin: 0;

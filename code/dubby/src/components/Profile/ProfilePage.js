@@ -6,6 +6,7 @@ import { EventTypeContext } from "../../contexts/EventTypeContext";
 import { FriendContext } from "../../contexts/FriendContext";
 import { Button, Input, Form, Row, Col } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
+import ProfileHead from "./ProfileHead";
 import Loading from "../Loading/Loading";
 import EditProfileImage from "./EditProfileImage";
 import {
@@ -15,7 +16,6 @@ import {
   unfriendFriend,
   removeFriendRequest,
 } from "../../utilityfunctions/Utilities";
-import ProfileHead from "./ProfileHead";
 
 const ProfilePage = () => {
   const { uid } = useParams();
@@ -69,6 +69,12 @@ const ProfilePage = () => {
     handleProfileDataEdit("interested_sports", values);
   };
 
+  const backgroundStyle = {
+    background: "#F0C27B",
+    height: "auto",
+    minHeight: "75vw",
+  };
+
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -114,7 +120,7 @@ const ProfilePage = () => {
                 <hr />
                 <Input
                   type="select"
-                  multiple
+                  multiple="multiple"
                   onChange={handleInterestedSportsEdit}
                 >
                   {eventTypeData.map(({ value, display }) => (
@@ -146,7 +152,7 @@ const ProfilePage = () => {
       profileImageSrc,
     } = profileData;
     return (
-      <div>
+      <div style={backgroundStyle}>
         <NavBar />
         <div style={{ marginBottom: "2rem", marginTop: "2rem" }}>
           <ProfileHead src={profileImageSrc} size="profile" />
@@ -162,7 +168,7 @@ const ProfilePage = () => {
               <hr />
               <p>{university}</p>
               <h2 style={{ marginTop: "50px" }}>Interested In</h2>
-              <hr />
+              <hr />{" "}
               {interested_sports.length &&
               interested_sports.length > 0 &&
               interested_sports.map !== undefined ? (
@@ -258,5 +264,4 @@ const ProfileActionButton = ({
       </Button>
     );
 };
-
 export default ProfilePage;

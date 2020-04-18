@@ -12,6 +12,15 @@ const EventPage = () => {
 
   const [userEventList, setUserEventList] = useState();
 
+  const backgroundStyle = {
+    background: "#F0C27B",
+  };
+
+  const jumbotronStyle = {
+    background: "#F0C27B",
+    textAlign: "center",
+  };
+
   useEffect(() => {
     if (userData) {
       const { uid } = userData;
@@ -39,9 +48,9 @@ const EventPage = () => {
     return <Loading />;
   } else {
     return (
-      <div>
+      <div style={backgroundStyle}>
         <NavBar />
-        <Jumbotron>
+        <Jumbotron style={jumbotronStyle}>
           <h1>My Events</h1>
           <p>Events I joined or hosted by me!</p>
           <hr />
@@ -49,6 +58,7 @@ const EventPage = () => {
             Create a new event!
           </Button>
         </Jumbotron>
+
         <div style={{ padding: "1rem" }}>
           {userEventList &&
             userEventList.length > 0 &&

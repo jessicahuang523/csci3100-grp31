@@ -3,7 +3,9 @@ import User from "../../image/user.svg";
 
 const styles = {
   chat: {
-    container: { textAlign: "center" },
+    container: {
+      textAlign: "center",
+    },
     img: {
       width: "60px",
       height: "60px",
@@ -13,7 +15,10 @@ const styles = {
     },
   },
   profile: {
-    container: { textAlign: "center", display: "block" },
+    container: {
+      textAlign: "center",
+      display: "block",
+    },
     img: {
       width: "300px",
       height: "300px",
@@ -23,7 +28,9 @@ const styles = {
     },
   },
   friend: {
-    container: { textAlign: "center" },
+    container: {
+      textAlign: "center",
+    },
     img: {
       width: "2rem",
       height: "2rem",
@@ -33,7 +40,9 @@ const styles = {
     },
   },
   inline: {
-    container: { textAlign: "center" },
+    container: {
+      textAlign: "center",
+    },
     img: {
       width: "1rem",
       height: "1rem",
@@ -43,8 +52,12 @@ const styles = {
     },
   },
   default: {
-    container: { display: "none" },
-    img: { display: "none" },
+    container: {
+      display: "none",
+    },
+    img: {
+      display: "none",
+    },
   },
 };
 

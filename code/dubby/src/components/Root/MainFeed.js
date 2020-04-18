@@ -29,6 +29,16 @@ const MainFeed = () => {
     };
   }, []);
 
+  const backgroundStyle = {
+    background: "#4B1248",
+  };
+
+  const jumbotronStyle = {
+    background: "#4B1248",
+    color: "white",
+    textAlign: "center",
+  };
+
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -37,9 +47,9 @@ const MainFeed = () => {
     return <Loading />;
   } else {
     return (
-      <div>
+      <div style={backgroundStyle}>
         <NavBar />
-        <Jumbotron style={{ textAlign: "center" }}>
+        <Jumbotron style={jumbotronStyle}>
           <h1>Dubby</h1>
           <p>Find an event to join!</p>
           <Form onSubmit={(e) => e.preventDefault()}>

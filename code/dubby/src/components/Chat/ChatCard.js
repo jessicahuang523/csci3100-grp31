@@ -47,7 +47,8 @@ const ChatCard = ({ cid }) => {
       <div className="chat-card">
         <Card tag={Link} to={`/c/${cid}`}>
           <CardHeader>
-            <i className={icon}></i> {title}
+            <i className={icon}></i>
+            {title}
           </CardHeader>
           <CardBody>
             <CardText>

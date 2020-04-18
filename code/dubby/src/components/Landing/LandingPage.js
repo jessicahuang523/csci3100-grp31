@@ -40,15 +40,26 @@ const LandingPage = () => {
     }
   };
 
+  const backgroundStyle = {
+    background: "#F0C27B",
+    height: "auto",
+    minHeight: "50vw",
+  };
+
+  const jumbotronStyle = {
+    background: "#F0C27B",
+    textAlign: "center",
+  };
+
   if (userLoading) {
     return <Loading />;
   } else if (userData) {
     return <Redirect to="/" />;
   } else {
     return (
-      <div>
-        <Jumbotron style={{ textAlign: "center" }}>
-          <Media middle src={logo} style={{ width: "10rem" }} />
+      <div style={backgroundStyle}>
+        <Jumbotron style={jumbotronStyle}>
+          <Media middle="middle" src={logo} style={{ width: "10rem" }} />
           <hr />
           <p>
             <b>Welcome to Dubby!</b>

@@ -115,6 +115,16 @@ export const Chat = () => {
     setInputMessage(e.target.value);
   };
 
+  const backgroundStyle = {
+    background: "#F0C27B",
+    minHeight: "100vh",
+  };
+
+  const jumbotronStyle = {
+    background: "#F0C27B",
+    textAlign: "center",
+  };
+
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -125,14 +135,14 @@ export const Chat = () => {
     return <Loading />;
   } else {
     return (
-      <div>
+      <div style={backgroundStyle}>
         <Navbar />
-        <Jumbotron style={{ textAlign: "center" }}>
+        <Jumbotron style={jumbotronStyle}>
           <h1>
             <i className={chatData.icon}></i>
             {chatData.title}{" "}
             {chatData.type === "event" && (
-              <Button close tag={Link} to={`/e/${chatData.eid}`}>
+              <Button close="close" tag={Link} to={`/e/${chatData.eid}`}>
                 <i className="fas fa-info-circle"></i>
               </Button>
             )}

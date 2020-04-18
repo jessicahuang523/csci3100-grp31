@@ -61,8 +61,6 @@ const ChatPage = () => {
     if (targetUid) {
       console.log({ targetUid });
       const { cid } = await setupFirestoreForNewPrivateChat({ targetUid });
-      console.log({ cid });
-
       setChatCreatedCid(cid);
     }
   };
@@ -84,6 +82,16 @@ const ChatPage = () => {
     }
   };
 
+  const backgroundStyle = {
+    background: "#F0C27B",
+    minHeight: "100vh",
+  };
+
+  const jumbotronStyle = {
+    background: "#F0C27B",
+    textAlign: "center",
+  };
+
   if (userLoading || !chatList || !friendListData) {
     return <Loading />;
   } else if (!userData) {
@@ -92,9 +100,9 @@ const ChatPage = () => {
     return <Redirect to={`/c/${chatCreatedCid}`} />;
   } else {
     return (
-      <div>
+      <div style={backgroundStyle}>
         <Navbar />
-        <Jumbotron style={{ textAlign: "center" }}>
+        <Jumbotron style={jumbotronStyle}>
           <h1>Chats</h1>
           <hr />
           <ButtonGroup>
