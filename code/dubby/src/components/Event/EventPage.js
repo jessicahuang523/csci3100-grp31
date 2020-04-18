@@ -2,24 +2,17 @@ import React, { useState, useEffect, useContext } from "react";
 import { Redirect, Link } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { Jumbotron, Button } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import EventCard from "./EventCard";
 
 const EventPage = () => {
+  const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
 
   const [userEventList, setUserEventList] = useState();
-
-  const backgroundStyle = {
-    background: "#F0C27B",
-  };
-
-  const jumbotronStyle = {
-    background: "#F0C27B",
-    textAlign: "center",
-  };
 
   useEffect(() => {
     if (userData) {
@@ -48,9 +41,9 @@ const EventPage = () => {
     return <Loading />;
   } else {
     return (
-      <div style={backgroundStyle}>
+      <div style={theme.background}>
         <NavBar />
-        <Jumbotron style={jumbotronStyle}>
+        <Jumbotron style={theme.jumbotron}>
           <h1>My Events</h1>
           <p>Events I joined or hosted by me!</p>
           <hr />

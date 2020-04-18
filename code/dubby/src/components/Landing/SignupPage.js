@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Redirect, Link } from "react-router-dom";
 import { auth } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import {
   Jumbotron,
   Media,
@@ -21,6 +22,7 @@ import logo from "../../image/Dubby_logo.png";
 import LoadingUserCreation from "../Loading/LoadingUserCreation";
 
 const SignupPage = () => {
+  const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
 
   const [inputEmail, setInputEmail] = useState();
@@ -55,8 +57,8 @@ const SignupPage = () => {
     return <LoadingUserCreation />;
   } else {
     return (
-      <div>
-        <Jumbotron style={{ textAlign: "center" }}>
+      <div style={theme.background}>
+        <Jumbotron style={theme.jumbotron}>
           <Media middle src={logo} style={{ width: "10rem" }} />
           <hr />
           <p>

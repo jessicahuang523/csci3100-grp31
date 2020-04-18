@@ -2,8 +2,9 @@ import React, { useState, useContext, useEffect } from "react";
 import { auth, firestore } from "firebase";
 import { useParams, Redirect } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
-import { EventTypeContext } from "../../contexts/EventTypeContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { FriendContext } from "../../contexts/FriendContext";
+import { EventTypeContext } from "../../contexts/EventTypeContext";
 import { Button, Input, Form, Row, Col } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import ProfileHead from "./ProfileHead";
@@ -28,6 +29,7 @@ const ProfilePage = () => {
     friendListData,
     friendContextLoaded,
   } = useContext(FriendContext);
+  const { theme } = useContext(ThemeContext);
 
   const [profileData, setProfileData] = useState();
   const [isEditable, setIsEditable] = useState(false);
@@ -69,12 +71,6 @@ const ProfilePage = () => {
     handleProfileDataEdit("interested_sports", values);
   };
 
-  const backgroundStyle = {
-    background: "#F0C27B",
-    height: "auto",
-    minHeight: "75vw",
-  };
-
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -87,7 +83,13 @@ const ProfilePage = () => {
     return (
       <div>
         <NavBar />
-        <div style={{ marginBottom: "2rem", marginTop: "2rem" }}>
+        <div
+          style={{
+            marginBottom: "2rem",
+            marginTop: "2rem",
+            ...theme.background,
+          }}
+        >
           <ProfileHead src={profileImageSrc} size="profile" />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
@@ -152,7 +154,7 @@ const ProfilePage = () => {
       profileImageSrc,
     } = profileData;
     return (
-      <div style={backgroundStyle}>
+      <div style={theme.background}>
         <NavBar />
         <div style={{ marginBottom: "2rem", marginTop: "2rem" }}>
           <ProfileHead src={profileImageSrc} size="profile" />

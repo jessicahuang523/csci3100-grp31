@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { UserContext } from "../../contexts/UserContext";
 import { GymContext } from "../../contexts/GymContext";
+import { UserContext } from "../../contexts/UserContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
 import {
   Jumbotron,
@@ -17,6 +17,7 @@ import {
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import { setupFirestoreForNewEvent } from "../../utilityfunctions/Utilities";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 const calculateDate = () => {
   const date = new Date(Date.now());
@@ -35,9 +36,10 @@ const calculateTime = () => {
 };
 
 const AddEvent = () => {
-  const { userData, userLoading } = useContext(UserContext);
+  const { theme } = useContext(ThemeContext);
   const { gymData } = useContext(GymContext);
   const { eventTypeData } = useContext(EventTypeContext);
+  const { userData, userLoading } = useContext(UserContext);
 
   const [allowedPeople, setAllowedPeople] = useState();
   const [eventName, setEventName] = useState();
@@ -115,9 +117,9 @@ const AddEvent = () => {
     return <Redirect to={`/e/${eventSubmittedEid}`} />;
   } else {
     return (
-      <div>
+      <div style={theme.background}>
         <Navbar />
-        <Jumbotron style={{ textAlign: "center" }}>
+        <Jumbotron style={theme.jumbotron}>
           <h1>Create a new event!</h1>
         </Jumbotron>
         <Form onSubmit={handleEventSubmit} style={{ padding: "1rem" }}>

@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { auth } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import {
   Button,
   Form,
@@ -20,6 +21,7 @@ import Loading from "../Loading/Loading";
 import logo from "../../image/Dubby_logo.png";
 
 const LandingPage = () => {
+  const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
 
   const [inputEmail, setInputEmail] = useState();
@@ -40,26 +42,15 @@ const LandingPage = () => {
     }
   };
 
-  const backgroundStyle = {
-    background: "#F0C27B",
-    height: "auto",
-    minHeight: "50vw",
-  };
-
-  const jumbotronStyle = {
-    background: "#F0C27B",
-    textAlign: "center",
-  };
-
   if (userLoading) {
     return <Loading />;
   } else if (userData) {
     return <Redirect to="/" />;
   } else {
     return (
-      <div style={backgroundStyle}>
-        <Jumbotron style={jumbotronStyle}>
-          <Media middle="middle" src={logo} style={{ width: "10rem" }} />
+      <div style={theme.background}>
+        <Jumbotron style={theme.jumbotron}>
+          <Media middle src={logo} style={{ width: "10rem" }} />
           <hr />
           <p>
             <b>Welcome to Dubby!</b>

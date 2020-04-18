@@ -4,10 +4,25 @@ export const ThemeContext = createContext();
 
 const purple = "#4B1248";
 const yellow = "#F0C27B";
+const black = "#000000";
+const white = "#FFFFFF";
 
-const backgroundStyle = { minHeight: "100vh" };
+const backgroundStyle = {
+  minHeight: "100vh",
+  paddingBottom: "1rem",
+  overflowX: "hidden",
+};
 
 const jumbotronStyle = { textAlign: "center" };
+
+const loadingStyle = {
+  width: "100vw",
+  height: "80vh",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "space-around",
+};
 
 const themes = {
   primary: {
@@ -17,8 +32,13 @@ const themes = {
     },
     jumbotron: {
       backgroundColor: yellow,
+      color: black,
       ...jumbotronStyle,
     },
+    loading: {
+      ...loadingStyle,
+    },
+    spinnerColor: "dark",
   },
   secondary: {
     background: {
@@ -27,22 +47,31 @@ const themes = {
     },
     jumbotron: {
       backgroundColor: purple,
+      color: white,
       ...jumbotronStyle,
     },
+    loading: {
+      ...loadingStyle,
+    },
+    spinnerColor: "light",
   },
 };
 
 const ThemeContextProvider = (props) => {
-  const [themeColor, setThemeColor] = useState();
+  const [isPrimaryTheme, setIsPrimaryTheme] = useState(true);
 
   const toggleTheme = () => {
-    setThemeColor(
-      themeColor === themes.primary ? themes.secondary : themes.primary
-    );
+    setIsPrimaryTheme(!isPrimaryTheme);
   };
 
   return (
-    <ThemeContext.Provider value={{ themeColor, toggleTheme }}>
+    <ThemeContext.Provider
+      value={{
+        toggleTheme,
+        isPrimaryTheme,
+        theme: isPrimaryTheme ? themes.primary : themes.secondary,
+      }}
+    >
       {props.children}
     </ThemeContext.Provider>
   );

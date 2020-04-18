@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { firestore } from "firebase";
-import { FriendContext } from "../../contexts/FriendContext";
 import { UserContext } from "../../contexts/UserContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
+import { FriendContext } from "../../contexts/FriendContext";
 import {
   Jumbotron,
   Button,
@@ -25,8 +26,9 @@ import {
 } from "../../utilityfunctions/Utilities";
 
 const ChatPage = () => {
-  const { userData, userLoading } = useContext(UserContext);
+  const { theme } = useContext(ThemeContext);
   const { friendListData } = useContext(FriendContext);
+  const { userData, userLoading } = useContext(UserContext);
 
   const [chatList, setChatList] = useState();
   const [privateModalOpen, setPrivateModalOpen] = useState(false);
@@ -83,16 +85,6 @@ const ChatPage = () => {
     }
   };
 
-  const backgroundStyle = {
-    background: "#F0C27B",
-    minHeight: "100vh",
-  };
-
-  const jumbotronStyle = {
-    background: "#F0C27B",
-    textAlign: "center",
-  };
-
   if (userLoading || !chatList || !friendListData) {
     return <Loading />;
   } else if (!userData) {
@@ -101,9 +93,9 @@ const ChatPage = () => {
     return <Redirect to={`/c/${chatCreatedCid}`} />;
   } else {
     return (
-      <div style={backgroundStyle}>
+      <div style={theme.background}>
         <Navbar />
-        <Jumbotron style={jumbotronStyle}>
+        <Jumbotron style={theme.jumbotron}>
           <h1>Chats</h1>
           <hr />
           <ButtonGroup>

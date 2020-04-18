@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link, Redirect } from "react-router-dom";
 import { firestore, auth } from "firebase";
-import { UserContext } from "../../contexts/UserContext";
 import { GymContext } from "../../contexts/GymContext";
+import { UserContext } from "../../contexts/UserContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
 import { Jumbotron, Button, Badge, Row, Col } from "reactstrap";
 import Loading from "../Loading/Loading";
@@ -16,9 +17,10 @@ import ProfileHead from "../Profile/ProfileHead";
 const Event = () => {
   const { eid } = useParams();
 
-  const { userData, userLoading } = useContext(UserContext);
+  const { theme } = useContext(ThemeContext);
   const { gymData } = useContext(GymContext);
   const { eventTypeData } = useContext(EventTypeContext);
+  const { userData, userLoading } = useContext(UserContext);
 
   const [eventData, setEventData] = useState();
   const [noEventRedirect, setNoEventRedirect] = useState(false);
@@ -108,9 +110,9 @@ const Event = () => {
   } else {
     const { uid } = auth().currentUser;
     return (
-      <div>
+      <div style={theme.background}>
         <NavBar />
-        <Jumbotron fluid style={{ padding: "1rem" }}>
+        <Jumbotron style={theme.jumbotron}>
           <h1>
             <i className={foundTypeData.icon}></i> [{foundTypeData.display}]{" "}
             {eventData.eventName}{" "}

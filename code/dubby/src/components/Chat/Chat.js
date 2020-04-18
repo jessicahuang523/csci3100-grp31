@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext, useRef } from "react";
 import { useParams, Redirect, Link } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import {
   Container,
   Row,
@@ -23,6 +24,7 @@ import { sendChatMessage } from "../../utilityfunctions/Utilities";
 export const Chat = () => {
   const { cid } = useParams();
 
+  const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
 
   const [chatData, setChatData] = useState();
@@ -115,16 +117,6 @@ export const Chat = () => {
     setInputMessage(e.target.value);
   };
 
-  const backgroundStyle = {
-    background: "#F0C27B",
-    minHeight: "100vh",
-  };
-
-  const jumbotronStyle = {
-    background: "#F0C27B",
-    textAlign: "center",
-  };
-
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -135,9 +127,9 @@ export const Chat = () => {
     return <Loading />;
   } else {
     return (
-      <div style={backgroundStyle}>
+      <div style={theme.background}>
         <Navbar />
-        <Jumbotron style={jumbotronStyle}>
+        <Jumbotron style={theme.jumbotron}>
           <h1>
             <i className={chatData.icon}></i>
             {chatData.title}{" "}

@@ -2,12 +2,14 @@ import React, { useState, useEffect, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { Jumbotron, Input, Form } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import EventCard from "../Event/EventCard";
 
 const MainFeed = () => {
+  const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
 
   const [eventList, setEventList] = useState();
@@ -29,16 +31,6 @@ const MainFeed = () => {
     };
   }, []);
 
-  const backgroundStyle = {
-    background: "#4B1248",
-  };
-
-  const jumbotronStyle = {
-    background: "#4B1248",
-    color: "white",
-    textAlign: "center",
-  };
-
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -47,9 +39,9 @@ const MainFeed = () => {
     return <Loading />;
   } else {
     return (
-      <div style={backgroundStyle}>
+      <div style={theme.background}>
         <NavBar />
-        <Jumbotron style={jumbotronStyle}>
+        <Jumbotron style={theme.jumbotron}>
           <h1>Dubby</h1>
           <p>Find an event to join!</p>
           <Form onSubmit={(e) => e.preventDefault()}>

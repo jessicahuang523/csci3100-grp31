@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { auth } from "firebase";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import {
   Collapse,
   Navbar,
@@ -18,13 +19,20 @@ import {
 import logo from "../../image/Dubby_logo.png";
 
 const NavBar = () => {
+  const { isPrimaryTheme, toggleTheme } = useContext(ThemeContext);
+
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
   const handleSignOutClick = () => auth().signOut();
 
   return (
-    <Navbar color="light" light expand="sm">
+    <Navbar
+      color={isPrimaryTheme ? "dark" : "light"}
+      dark={isPrimaryTheme}
+      light={!isPrimaryTheme}
+      expand="sm"
+    >
       <NavbarBrand tag={Link} to="/">
         <Media src={logo} style={{ height: "1rem" }} alt="logo" />
       </NavbarBrand>
@@ -56,6 +64,9 @@ const NavBar = () => {
               </DropdownItem>
               <DropdownItem tag={Link} to="/friends">
                 Friends
+              </DropdownItem>
+              <DropdownItem onClick={() => toggleTheme()}>
+                {isPrimaryTheme ? "Lights Off" : "Lights On"}
               </DropdownItem>
               <DropdownItem tag={Link} to="/" onClick={handleSignOutClick}>
                 Sign out

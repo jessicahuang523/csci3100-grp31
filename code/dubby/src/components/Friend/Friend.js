@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { FriendContext } from "../../contexts/FriendContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
 import {
@@ -26,6 +27,8 @@ import {
 import UserList from "./UserList";
 
 const Friend = () => {
+  const { theme } = useContext(ThemeContext);
+  const { eventTypeData } = useContext(EventTypeContext);
   const { userData, userLoading } = useContext(UserContext);
   const {
     sentRequestData,
@@ -33,7 +36,6 @@ const Friend = () => {
     friendListData,
     friendContextLoaded,
   } = useContext(FriendContext);
-  const { eventTypeData } = useContext(EventTypeContext);
 
   const [searchUserString, setSearchUserString] = useState();
   const [searchUserInterest, setSearchUserInterest] = useState();
@@ -68,16 +70,6 @@ const Friend = () => {
     }
   };
 
-  const backgroundStyle = {
-    background: "#F0C27B",
-    minHeight: "100vh",
-  };
-
-  const jumbotronStyle = {
-    background: "#F0C27B",
-    textAlign: "center",
-  };
-
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -86,9 +78,9 @@ const Friend = () => {
     return <Loading />;
   } else {
     return (
-      <div style={backgroundStyle}>
+      <div style={theme.background}>
         <NavBar />
-        <Jumbotron style={jumbotronStyle}>
+        <Jumbotron style={theme.jumbotron}>
           <div style={{ textAlign: "center" }}>
             <h1>Friends</h1>
             <Form onSubmit={handleSearchUseSubmit}>
