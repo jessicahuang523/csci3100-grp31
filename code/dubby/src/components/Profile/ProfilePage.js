@@ -81,15 +81,9 @@ const ProfilePage = () => {
     // in editing mode
     const { username, description, university, profileImageSrc } = profileData;
     return (
-      <div>
+      <div style={theme.background}>
         <NavBar />
-        <div
-          style={{
-            marginBottom: "2rem",
-            marginTop: "2rem",
-            ...theme.background,
-          }}
-        >
+        <div style={{ marginBottom: "2rem", marginTop: "2rem" }}>
           <ProfileHead src={profileImageSrc} size="profile" />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
