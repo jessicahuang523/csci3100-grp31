@@ -54,6 +54,12 @@ const ProfilePage = () => {
     handleProfileDataEdit("interested_sports", values);
   };
 
+  const backgroundStyle = {
+    background: "#F0C27B",
+    height: "auto",
+    minHeight: "75vw"
+  };
+
   if (userLoading) {
     return <Loading/>;
   } else if (!userData) {
@@ -121,7 +127,7 @@ const ProfilePage = () => {
     // in viewing mode
     // button shows "add friend" if not self, otherwise show "edit"
     const {username, description, interested_sports, university, profileImageSrc} = profileData;
-    return (<div>
+    return (<div style={backgroundStyle}>
       <NavBar/>
       <div style={{
           marginBottom: "2rem",

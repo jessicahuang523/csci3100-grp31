@@ -41,7 +41,9 @@ const LandingPage = () => {
   };
 
   const backgroundStyle = {
-    background: "#F0C27B"
+    background: "#F0C27B",
+    height: "auto",
+    minHeight: "50vw"
   };
 
   const jumbotronStyle = {

@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useContext, useRef } from "react";
-import { useParams, Redirect, Link } from "react-router-dom";
-import { firestore } from "firebase";
-import { UserContext } from "../../contexts/UserContext";
+import React, {useEffect, useState, useContext, useRef} from "react";
+import {useParams, Redirect, Link} from "react-router-dom";
+import {firestore} from "firebase";
+import {UserContext} from "../../contexts/UserContext";
 import {
   Container,
   Row,
@@ -12,18 +12,18 @@ import {
   Jumbotron,
   Collapse,
   InputGroup,
-  InputGroupAddon,
+  InputGroupAddon
 } from "reactstrap";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import UserList from "../Friend/UserList";
 import ProfileHead from "../Profile/ProfileHead";
-import { sendChatMessage } from "../../utilityfunctions/Utilities";
+import {sendChatMessage} from "../../utilityfunctions/Utilities";
 
 export const Chat = () => {
-  const { cid } = useParams();
+  const {cid} = useParams();
 
-  const { userData, userLoading } = useContext(UserContext);
+  const {userData, userLoading} = useContext(UserContext);
 
   const [chatData, setChatData] = useState();
   const [chatMessages, setChatMessages] = useState();
@@ -44,14 +44,12 @@ export const Chat = () => {
       const unsubscribeChatData = chatDataRef.onSnapshot((snap) => {
         setChatData(snap.data());
       });
-      const unsubscribeChatMessages = chatMessagesRef
-        .orderBy("created_at", "asc")
-        .onSnapshot((snap) => {
-          let tmp = [];
-          snap.forEach((doc) => tmp.push(doc.data()));
-          setChatMessages(tmp);
-        });
-      return () => {
+      const unsubscribeChatMessages = chatMessagesRef.orderBy("created_at", "asc").onSnapshot((snap) => {
+        let tmp = [];
+        snap.forEach((doc) => tmp.push(doc.data()));
+        setChatMessages(tmp);
+      });
+      return() => {
         unsubscribeChatData();
         unsubscribeChatMessages();
       };
@@ -62,19 +60,17 @@ export const Chat = () => {
     if (userData) {
       const chatDataRef = firestore().collection("chat").doc(cid);
       const chatParticipantsRef = chatDataRef.collection("participants");
-      const unsubscribeChatParticipants = chatParticipantsRef.onSnapshot(
-        (snap) => {
-          let tmp = [];
-          snap.forEach((doc) => {
-            tmp.push(doc.data());
-            if (userData.uid === doc.data().uid) {
-              setChatAuthorized(true);
-            }
-          });
-          setChatParticipants(tmp);
-        }
-      );
-      return () => {
+      const unsubscribeChatParticipants = chatParticipantsRef.onSnapshot((snap) => {
+        let tmp = [];
+        snap.forEach((doc) => {
+          tmp.push(doc.data());
+          if (userData.uid === doc.data().uid) {
+            setChatAuthorized(true);
+          }
+        });
+        setChatParticipants(tmp);
+      });
+      return() => {
         unsubscribeChatParticipants();
       };
     }
@@ -83,7 +79,7 @@ export const Chat = () => {
   useEffect(() => {
     let pData = [];
     if (chatParticipants) {
-      chatParticipants.forEach(({ uid }) => {
+      chatParticipants.forEach(({uid}) => {
         const pRef = firestore().collection("user_profile").doc(uid);
         pRef.get().then((s) => {
           pData.push(s.data());
@@ -107,7 +103,7 @@ export const Chat = () => {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    sendChatMessage({ cid, inputMessage, chatParticipants });
+    sendChatMessage({cid, inputMessage, chatParticipants});
     setInputMessage("");
   };
 
@@ -115,80 +111,72 @@ export const Chat = () => {
     setInputMessage(e.target.value);
   };
 
+  const backgroundStyle = {
+    background: "#F0C27B"
+  };
+
+  const jumbotronStyle = {
+    background: "#F0C27B",
+    textAlign: "center"
+  };
+
   if (userLoading) {
-    return <Loading />;
+    return <Loading/>;
   } else if (!userData) {
-    return <Redirect to="/launch" />;
+    return <Redirect to="/launch"/>;
   } else if (chatParticipants && !chatAuthorized) {
-    return <Redirect to="/c" />;
+    return <Redirect to="/c"/>;
   } else if (!chatData || !chatMessages || !chatParticipantData) {
-    return <Loading />;
+    return <Loading/>;
   } else {
-    return (
-      <div>
-        <Navbar />
-        <Jumbotron style={{ textAlign: "center" }}>
-          <h1>
-            <i className={chatData.icon}></i>
-            {chatData.title}{" "}
-            {chatData.type === "event" && (
-              <Button close tag={Link} to={`/e/${chatData.eid}`}>
-                <i className="fas fa-info-circle"></i>
-              </Button>
-            )}
-          </h1>
-          <hr />
-          <Button size="sm" color="success" onClick={toggle}>
-            Participants
-          </Button>
-          <Collapse isOpen={isOpen}>
-            <UserList users={chatParticipantData} />
-          </Collapse>
-        </Jumbotron>
-        <Container>
-          <Row>
-            <Col sm={12}>
-              <ul>
-                {chatMessages &&
-                  chatMessages.length > 0 &&
-                  chatMessages.map((message) => (
-                    <Message
-                      key={message.created_at}
-                      message={message}
-                      senderData={chatParticipantData.find(
-                        ({ uid }) => uid === message.sender.uid
-                      )}
-                    />
-                  ))}
-              </ul>
-              <Form onSubmit={handleSendMessage}>
-                <InputGroup>
-                  <Input
-                    id="message"
-                    placeholder="message"
-                    value={inputMessage}
-                    onChange={handleInputChange}
-                  />
-                  <InputGroupAddon addonType="append">
-                    <Button color="primary" type="submit">
-                      <i className="fas fa-paper-plane"></i>
-                    </Button>
-                  </InputGroupAddon>
-                </InputGroup>
-              </Form>
-            </Col>
-          </Row>
-        </Container>
-        {/* <div ref={divRef} /> */}
-      </div>
-    );
+    return (<div style={backgroundStyle}>
+      <Navbar/>
+      <Jumbotron style={jumbotronStyle}>
+        <h1>
+          <i className={chatData.icon}></i>
+          {chatData.title}{" "}
+          {
+            chatData.type === "event" && (<Button close="close" tag={Link} to={`/e/${chatData.eid}`}>
+              <i className="fas fa-info-circle"></i>
+            </Button>)
+          }
+        </h1>
+        <hr/>
+        <Button size="sm" color="success" onClick={toggle}>
+          Participants
+        </Button>
+        <Collapse isOpen={isOpen}>
+          <UserList users={chatParticipantData}/>
+        </Collapse>
+      </Jumbotron>
+      <Container>
+        <Row>
+          <Col sm={12}>
+            <ul>
+              {chatMessages && chatMessages.length > 0 && chatMessages.map((message) => (<Message key={message.created_at} message={message} senderData={chatParticipantData.find(({uid}) => uid === message.sender.uid)}/>))}
+            </ul>
+            <Form onSubmit={handleSendMessage}>
+              <InputGroup>
+                <Input id="message" placeholder="message" value={inputMessage} onChange={handleInputChange}/>
+                <InputGroupAddon addonType="append">
+                  <Button color="primary" type="submit">
+                    <i className="fas fa-paper-plane"></i>
+                  </Button>
+                </InputGroupAddon>
+              </InputGroup>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+      {/* <div ref={divRef} /> */}
+    </div>);
   }
 };
 
 const containerStyle = {
   margin: "40px",
   display: "grid",
-  columnGap: "20px",
+  columnGap: "20px"
 };
 
 const messageStyle = {
@@ -196,50 +184,45 @@ const messageStyle = {
     container: {
       ...containerStyle,
       textAlign: "left",
-      gridTemplateColumns: "70px 1fr",
+      gridTemplateColumns: "70px 1fr"
     },
     bubbleClassName: "chat-bubble left",
-    textClassName: "chat-text-left",
+    textClassName: "chat-text-left"
   },
   right: {
     container: {
       ...containerStyle,
       textAlign: "right",
-      gridTemplateColumns: "1fr 70px",
+      gridTemplateColumns: "1fr 70px"
     },
     bubbleClassName: "chat-bubble right",
-    textClassName: "chat-text-right",
-  },
+    textClassName: "chat-text-right"
+  }
 };
 
-const Message = ({ senderData, message }) => {
-  const { userData } = useContext(UserContext);
+const Message = ({senderData, message}) => {
+  const {userData} = useContext(UserContext);
 
-  const { username } = senderData;
-  const { created_at, text, sender } = message;
-  const { profileImageSrc } = senderData;
+  const {username} = senderData;
+  const {created_at, text, sender} = message;
+  const {profileImageSrc} = senderData;
   const time = new Date(created_at).toLocaleTimeString();
 
-  const style =
-    userData.uid === sender.uid ? messageStyle.right : messageStyle.left;
+  const style = userData.uid === sender.uid
+    ? messageStyle.right
+    : messageStyle.left;
 
-  return (
-    <li style={style.container}>
-      {userData.uid === sender.uid || (
-        <ProfileHead src={profileImageSrc} size="chat" />
-      )}
-      <div className={style.bubbleClassName}>
-        <p>{username}</p>
-        <div className={style.textClassName}>
-          <p>{text}</p>
-        </div>
-        <p>{time}</p>
+  return (<li style={style.container}>
+    {userData.uid === sender.uid || (<ProfileHead src={profileImageSrc} size="chat"/>)}
+    <div className={style.bubbleClassName}>
+      <p>{username}</p>
+      <div className={style.textClassName}>
+        <p>{text}</p>
       </div>
-      {userData.uid === sender.uid && (
-        <ProfileHead src={profileImageSrc} size="chat" />
-      )}
-    </li>
-  );
+      <p>{time}</p>
+    </div>
+    {userData.uid === sender.uid && (<ProfileHead src={profileImageSrc} size="chat"/>)}
+  </li>);
 };
 
 export default Chat;
