@@ -81,9 +81,8 @@ const ProfilePage = () => {
     return (
       <div>
         <NavBar />
-        <div style={{ marginBottom: "2rem" }}>
+        <div style={{ marginBottom: "2rem", marginTop: "2rem" }}>
           <ProfileHead src={profileImageSrc} size="profile" />
-          <br />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
               <Form onSubmit={handleProfileDataSubmit}>
@@ -149,9 +148,8 @@ const ProfilePage = () => {
     return (
       <div>
         <NavBar />
-        <div style={{ marginBottom: "2rem" }}>
+        <div style={{ marginBottom: "2rem", marginTop: "2rem" }}>
           <ProfileHead src={profileImageSrc} size="profile" />
-          <br />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
               <h2 style={{ marginTop: "50px" }}>Username</h2>
