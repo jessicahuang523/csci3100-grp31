@@ -22,6 +22,7 @@ const UserContextProvider = (props) => {
         } else {
           setUserData(null);
           setUserLoading(false);
+          unsubscribeUserData();
         }
       }
     );
