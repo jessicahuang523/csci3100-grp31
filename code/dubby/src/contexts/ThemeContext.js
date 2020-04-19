@@ -4,6 +4,7 @@ export const ThemeContext = createContext();
 
 const purple = "#AD93AB";
 const yellow = "#F0C27B";
+const jumbotron_yellow = "#F2CD93";
 
 const backgroundStyle = {
   minHeight: "100vh",
@@ -11,7 +12,13 @@ const backgroundStyle = {
   overflowX: "hidden",
 };
 
-const jumbotronStyle = { textAlign: "center" };
+const jumbotronStyle = {
+  textAlign: "center",
+  marginTop: "3rem",
+  // position: "fixed",
+  // zIndex: 1,
+  width: "100%",
+};
 
 const loadingStyle = {
   width: "100vw",
@@ -29,7 +36,7 @@ const themes = {
       ...backgroundStyle,
     },
     jumbotron: {
-      backgroundColor: yellow,
+      backgroundColor: jumbotron_yellow,
       ...jumbotronStyle,
     },
     loading: {

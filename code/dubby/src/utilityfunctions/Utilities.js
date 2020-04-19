@@ -72,6 +72,7 @@ export const setupFirestoreForNewEventChat = async ({ eid, eventName }) => {
         title: eventName,
         eid,
         icon,
+        lastModified: Date.now(),
       };
       const chatDataRef = await firestore().collection("chat").add(chatData);
       await chatDataRef.update({ cid: chatDataRef.id });
@@ -93,6 +94,7 @@ export const setupFirestoreForNewGroupChat = async ({ users, chatName }) => {
         type: "group",
         title: chatName,
         icon: "fas fa-users",
+        lastModified: Date.now(),
       };
       const chatDataRef = await firestore().collection("chat").add(chatData);
       await chatDataRef.update({ cid: chatDataRef.id });
@@ -125,6 +127,7 @@ export const setupFirestoreForNewPrivateChat = async ({ targetUid }) => {
           type: "private",
           title: "(Private Chat)",
           icon: "fas fa-user-friends",
+          lastModified: Date.now(),
         };
         const chatDataRef = await firestore().collection("chat").add(chatData);
         const cid = chatDataRef.id;
@@ -460,6 +463,10 @@ export const sendChatMessage = async ({
         .doc(cid)
         .collection("messages")
         .add(toSend);
+      firestore()
+        .collection("chat")
+        .doc(cid)
+        .update({ lastModified: Date.now() });
     }
   }
 };

@@ -126,20 +126,17 @@ export const Chat = () => {
   } else if (!chatData || !chatMessages || !chatParticipantData) {
     return <Loading />;
   } else {
+    const title =
+      chatData.type === "private"
+        ? chatParticipantData.find((p) => p.uid !== userData.uid).username
+        : chatData.title;
     return (
       <div style={theme.background}>
         <Navbar />
-        <Jumbotron
-          style={{
-            position: "fixed",
-            zIndex: 9,
-            width: "100%",
-            ...theme.jumbotron,
-          }}
-        >
+        <Jumbotron style={theme.jumbotron}>
           <h1>
             <i className={chatData.icon}></i>
-            {chatData.title}{" "}
+            {title}{" "}
             {chatData.type === "event" && (
               <Button close tag={Link} to={`/e/${chatData.eid}`}>
                 <i className="fas fa-info-circle"></i>

@@ -31,6 +31,7 @@ const ChatPage = () => {
   const { userData, userLoading } = useContext(UserContext);
 
   const [chatList, setChatList] = useState();
+  const [chatListData, setChatListData] = useState();
   const [privateModalOpen, setPrivateModalOpen] = useState(false);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
   const [selectedFriendData, setSelectedFriendData] = useState([]);
@@ -56,6 +57,25 @@ const ChatPage = () => {
       };
     }
   }, [userData]);
+
+  useEffect(() => {
+    const getData = async () => {
+      let tmp = [];
+      await Promise.all(
+        chatList.map(async ({ cid }) => {
+          const chatData = await firestore().collection("chat").doc(cid).get();
+          tmp.push(chatData.data());
+        })
+      );
+      tmp = tmp.sort((a, b) =>
+        a.lastModified && b.lastModified ? b.lastModified - a.lastModified : 0
+      );
+      setChatListData(tmp);
+    };
+    if (chatList) {
+      getData();
+    }
+  }, [chatList]);
 
   const handlePrivateModalToggle = () => setPrivateModalOpen(!privateModalOpen);
   const handleGroupModalToggle = () => setGroupModalOpen(!groupModalOpen);
@@ -85,7 +105,7 @@ const ChatPage = () => {
     }
   };
 
-  if (userLoading || !chatList || !friendListData) {
+  if (userLoading || !chatListData || !friendListData) {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
@@ -193,9 +213,9 @@ const ChatPage = () => {
         </Jumbotron>
 
         <div style={{ padding: "1rem" }}>
-          {chatList &&
-            chatList.length > 0 &&
-            chatList.map((chat) => <ChatCard key={chat.cid} cid={chat.cid} />)}
+          {chatListData &&
+            chatListData.length > 0 &&
+            chatListData.map(({ cid }) => <ChatCard key={cid} cid={cid} />)}
         </div>
       </div>
     );
