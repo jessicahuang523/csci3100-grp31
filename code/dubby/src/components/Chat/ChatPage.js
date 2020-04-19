@@ -68,7 +68,13 @@ const ChatPage = () => {
         })
       );
       tmp = tmp.sort((a, b) =>
-        a.lastModified && b.lastModified ? b.lastModified - a.lastModified : 0
+        a.lastModified
+          ? b.lastModified
+            ? a.lastModified - b.lastModified
+            : 1
+          : b.lastModified
+          ? 1
+          : 0
       );
       setChatListData(tmp);
     };
