@@ -35,7 +35,7 @@ export const Chat = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [isOpen, setIsOpen] = useState(false);
 
-  //const divRef = useRef(null);
+  const divRef = useRef(null);
 
   const toggle = () => setIsOpen(!isOpen);
 
@@ -97,7 +97,7 @@ export const Chat = () => {
     }
   }, [chatParticipants]);
 
-  /*const scrollToBottom = () => {
+  const scrollToBottom = () => {
     if (divRef.current) {
       divRef.current.scrollIntoView({ behavior: "smooth" });
     }
@@ -105,7 +105,7 @@ export const Chat = () => {
 
   useEffect(() => {
     scrollToBottom();
-  });*/
+  });
 
   const handleSendMessage = (e) => {
     e.preventDefault();
@@ -128,8 +128,15 @@ export const Chat = () => {
   } else {
     return (
       <div style={theme.background}>
-        <Navbar />
-        <Jumbotron style={theme.jumbotron}>
+        <Navbar isChat />
+        <Jumbotron
+          style={{
+            position: "fixed",
+            zIndex: 9,
+            width: "100%",
+            ...theme.jumbotron,
+          }}
+        >
           <h1>
             <i className={chatData.icon}></i>
             {chatData.title}{" "}
@@ -181,7 +188,7 @@ export const Chat = () => {
             </Col>
           </Row>
         </Container>
-        {/* <div ref={divRef} /> */}
+        <div ref={divRef} />
       </div>
     );
   }

@@ -18,7 +18,7 @@ import {
 } from "reactstrap";
 import logo from "../../image/Dubby_logo.png";
 
-const NavBar = () => {
+const NavBar = ({ isChat }) => {
   const { isPrimaryTheme, toggleTheme } = useContext(ThemeContext);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -32,6 +32,7 @@ const NavBar = () => {
       dark={isPrimaryTheme}
       light={!isPrimaryTheme}
       expand="sm"
+      style={isChat && { position: "fixed", top: 0, zIndex: 10, width: "100%" }}
     >
       <NavbarBrand tag={Link} to="/">
         <Media src={logo} style={{ height: "1rem" }} alt="logo" />
