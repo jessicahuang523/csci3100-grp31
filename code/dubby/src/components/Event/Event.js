@@ -121,6 +121,16 @@ const Event = () => {
                 Joined
               </Badge>
             )}
+            {eventData.isPublic || (
+              <Badge pill color="success">
+                Private
+              </Badge>
+            )}
+            {hostUserData.uid === uid && (
+              <Badge pill color="warning">
+                Hosting
+              </Badge>
+            )}
           </h1>
         </Jumbotron>
         <div style={{ padding: "1rem" }}>

@@ -7,7 +7,7 @@ import LoadingChatCard from "../Loading/LoadingChatCard";
 import ProfileHead from "../Profile/ProfileHead";
 
 const ChatCard = ({ cid }) => {
-  const { userData, userLoading } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   const [chatData, setChatData] = useState();
   const [chatParticipants, setChatParticipants] = useState();

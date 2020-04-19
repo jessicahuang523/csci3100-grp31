@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { GymContext } from "../../contexts/GymContext";
 import { UserContext } from "../../contexts/UserContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
 import {
   Jumbotron,
@@ -17,7 +18,6 @@ import {
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import { setupFirestoreForNewEvent } from "../../utilityfunctions/Utilities";
-import { ThemeContext } from "../../contexts/ThemeContext";
 
 const calculateDate = () => {
   const date = new Date(Date.now());
@@ -129,8 +129,9 @@ const AddEvent = () => {
           <Row>
             <Col sm={6}>
               <FormGroup>
-                <Label for="allowedPeople">Allowed People</Label>
+                <Label for="allowedPeople">Total Participants Allowed</Label>
                 <Input
+                  placeholder="Include yourself when counting!"
                   required="required"
                   type="number"
                   id="allowedPeople"

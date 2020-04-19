@@ -4,6 +4,7 @@ export const ThemeContext = createContext();
 
 const purple = "#AD93AB";
 const yellow = "#F0C27B";
+const jumbotron_purple = "#BBA6BA";
 const jumbotron_yellow = "#F2CD93";
 
 const backgroundStyle = {
@@ -50,7 +51,7 @@ const themes = {
       ...backgroundStyle,
     },
     jumbotron: {
-      backgroundColor: purple,
+      backgroundColor: jumbotron_purple,
       ...jumbotronStyle,
     },
     loading: {
