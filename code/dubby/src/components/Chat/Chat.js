@@ -128,7 +128,7 @@ export const Chat = () => {
   } else {
     return (
       <div style={theme.background}>
-        <Navbar isChat />
+        <Navbar />
         <Jumbotron
           style={{
             position: "fixed",

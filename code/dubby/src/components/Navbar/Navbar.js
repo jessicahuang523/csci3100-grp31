@@ -18,7 +18,7 @@ import {
 } from "reactstrap";
 import logo from "../../image/Dubby_logo.png";
 
-const NavBar = ({ isChat }) => {
+const NavBar = () => {
   const { isPrimaryTheme, toggleTheme } = useContext(ThemeContext);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -28,11 +28,10 @@ const NavBar = ({ isChat }) => {
 
   return (
     <Navbar
-      color={isPrimaryTheme ? "dark" : "light"}
-      dark={isPrimaryTheme}
-      light={!isPrimaryTheme}
+      color="dark"
+      dark
       expand="sm"
-      style={isChat && { position: "fixed", top: 0, zIndex: 10, width: "100%" }}
+      style={{ position: "fixed", top: 0, zIndex: 10, width: "100%" }}
     >
       <NavbarBrand tag={Link} to="/">
         <Media src={logo} style={{ height: "1rem" }} alt="logo" />
@@ -70,7 +69,7 @@ const NavBar = ({ isChat }) => {
                 <i
                   className={`fas fa-toggle-${isPrimaryTheme ? "on" : "off"}`}
                 ></i>{" "}
-                {isPrimaryTheme ? "Lights Off" : "Lights On"}
+                {isPrimaryTheme ? "Purple" : "Yellow"}
               </DropdownItem>
               <DropdownItem tag={Link} to="/" onClick={handleSignOutClick}>
                 <i className="fas fa-running"></i> Sign out

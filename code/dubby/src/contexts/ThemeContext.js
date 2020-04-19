@@ -2,12 +2,8 @@ import React, { createContext, useState } from "react";
 
 export const ThemeContext = createContext();
 
-const logo_purple = "#b83dba";
-const logo_yellow = "#ffca18";
-const purple = "#4B1248";
+const purple = "#AD93AB";
 const yellow = "#F0C27B";
-const black = "#000000";
-const white = "#FFFFFF";
 
 const backgroundStyle = {
   minHeight: "100vh",
@@ -30,12 +26,10 @@ const themes = {
   primary: {
     background: {
       backgroundColor: yellow,
-      color: black,
       ...backgroundStyle,
     },
     jumbotron: {
       backgroundColor: yellow,
-      color: black,
       ...jumbotronStyle,
     },
     loading: {
@@ -46,12 +40,10 @@ const themes = {
   secondary: {
     background: {
       backgroundColor: purple,
-      color: white,
       ...backgroundStyle,
     },
     jumbotron: {
       backgroundColor: purple,
-      color: white,
       ...jumbotronStyle,
     },
     loading: {

@@ -83,7 +83,7 @@ const ProfilePage = () => {
     return (
       <div style={theme.background}>
         <NavBar />
-        <div style={{ marginBottom: "2rem", marginTop: "2rem" }}>
+        <div style={{ marginBottom: "2rem", marginTop: "6rem" }}>
           <ProfileHead src={profileImageSrc} size="profile" />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
@@ -150,7 +150,7 @@ const ProfilePage = () => {
     return (
       <div style={theme.background}>
         <NavBar />
-        <div style={{ marginBottom: "2rem", marginTop: "2rem" }}>
+        <div style={{ marginBottom: "2rem", marginTop: "6rem" }}>
           <ProfileHead src={profileImageSrc} size="profile" />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
