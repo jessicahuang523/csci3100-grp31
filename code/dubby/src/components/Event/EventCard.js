@@ -118,7 +118,11 @@ const EventCard = ({ eid, searchString }) => {
     !foundLocationData
   ) {
     return <LoadingEventCard />;
-  } else if (!matchSearchResult) {
+  } else if (
+    !matchSearchResult ||
+    (!eventParticipants.find((p) => p.uid === auth().currentUser.uid) &&
+      !eventData.isPublic)
+  ) {
     return null;
   } else {
     const { eventName, startingTime, allowedPeople, eid } = eventData;
@@ -129,6 +133,16 @@ const EventCard = ({ eid, searchString }) => {
           {eventParticipants.find((p) => p.uid === uid) && (
             <Badge pill color="info">
               Joined
+            </Badge>
+          )}
+          {eventData.isPublic || (
+            <Badge pill color="success">
+              Private
+            </Badge>
+          )}
+          {hostUserData.uid === uid && (
+            <Badge pill color="warning">
+              Hosting
             </Badge>
           )}{" "}
           <i className={foundTypeData.icon}></i> [{foundTypeData.display}]{" "}

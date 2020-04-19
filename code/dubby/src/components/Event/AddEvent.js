@@ -78,15 +78,8 @@ const AddEvent = () => {
         "Chill, man. You need to give people some time to prep for this event!"
       );
     } else {
-      if (
-        userData &&
-        allowedPeople &&
-        eventName &&
-        eventType &&
-        isPublic &&
-        location
-      ) {
-        setErrorMessage("");
+      if (userData && allowedPeople && eventName && eventType && location) {
+        setErrorMessage("Submitting...");
         setSubmittingEventData(true);
         const eventData = {
           allowedPeople,

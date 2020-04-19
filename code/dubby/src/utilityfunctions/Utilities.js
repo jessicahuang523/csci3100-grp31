@@ -18,7 +18,6 @@ export const setupFirestoreForNewEvent = async ({
     allowedPeople &&
     eventName &&
     eventType &&
-    isPublic &&
     location &&
     startingTime
   ) {
