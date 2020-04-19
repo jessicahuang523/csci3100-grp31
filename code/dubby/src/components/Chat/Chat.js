@@ -134,7 +134,7 @@ export const Chat = () => {
             <i className={chatData.icon}></i>
             {chatData.title}{" "}
             {chatData.type === "event" && (
-              <Button close="close" tag={Link} to={`/e/${chatData.eid}`}>
+              <Button close tag={Link} to={`/e/${chatData.eid}`}>
                 <i className="fas fa-info-circle"></i>
               </Button>
             )}
