@@ -220,7 +220,11 @@ const Message = ({ senderData, message }) => {
   const { username } = senderData;
   const { created_at, text, sender } = message;
   const { profileImageSrc } = senderData;
-  const time = new Date(created_at).toLocaleTimeString();
+  const time = new Date(created_at);
+  const displayTime =
+    time.toLocaleDateString() === new Date(Date.now()).toLocaleDateString()
+      ? time.toLocaleTimeString()
+      : time.toLocaleDateString();
 
   const style =
     userData.uid === sender.uid ? messageStyle.right : messageStyle.left;
@@ -235,7 +239,7 @@ const Message = ({ senderData, message }) => {
         <div className={style.textClassName}>
           <p>{text}</p>
         </div>
-        <p>{time}</p>
+        <p>{displayTime}</p>
       </div>
       {userData.uid === sender.uid && (
         <ProfileHead src={profileImageSrc} size="chat" />
