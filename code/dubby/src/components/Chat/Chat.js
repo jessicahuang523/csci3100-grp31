@@ -14,6 +14,11 @@ import {
   Collapse,
   InputGroup,
   InputGroupAddon,
+  ButtonGroup,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
 } from "reactstrap";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -33,11 +38,13 @@ export const Chat = () => {
   const [chatParticipantData, setchatParticipantData] = useState();
   const [chatAuthorized, setChatAuthorized] = useState(false);
   const [inputMessage, setInputMessage] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [collapseOpen, setCollapseOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
 
   const divRef = useRef(null);
 
-  const toggle = () => setIsOpen(!isOpen);
+  const handleCollapseToggle = () => setCollapseOpen(!collapseOpen);
+  const handleModalToggle = () => setModalOpen(!modalOpen);
 
   useEffect(() => {
     if (chatAuthorized) {
@@ -144,10 +151,35 @@ export const Chat = () => {
             )}
           </h1>
           <hr />
-          <Button size="sm" color="success" onClick={toggle}>
-            Participants
-          </Button>
-          <Collapse isOpen={isOpen}>
+          <ButtonGroup>
+            <Button size="sm" color="success" onClick={handleCollapseToggle}>
+              Participants
+            </Button>
+            {chatData.type === "group" && (
+                <Button size="sm" onClick={handleModalToggle}>
+                  Invite Friends
+                </Button>
+              )}
+          </ButtonGroup>
+          <Modal isOpen={modalOpen} toggle={handleModalToggle}>
+            <Form>
+              <ModalHeader toggle={handleModalToggle}>
+                Invite Friends
+              </ModalHeader>
+              <ModalBody>
+                
+              </ModalBody>
+              <ModalFooter>
+                <Button type="submit" color="primary">
+                  Done
+                </Button>{" "}
+                <Button color="danger" outline onClick={handleModalToggle}>
+                  Cancel
+                </Button>
+              </ModalFooter>
+            </Form>
+          </Modal>
+          <Collapse isOpen={collapseOpen}>
             <UserList users={chatParticipantData} />
           </Collapse>
         </Jumbotron>
