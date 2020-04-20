@@ -98,11 +98,9 @@ export const setupFirestoreForNewGroupChat = async ({ users, chatName }) => {
       };
       const chatDataRef = await firestore().collection("chat").add(chatData);
       await chatDataRef.update({ cid: chatDataRef.id });
-      await Promise.all(
-        users.map(({ uid }) =>
-          addParticipantToChat({ cid: chatDataRef.id, uid })
-        )
-      );
+      for (const user of users) {
+        await addParticipantToChat({ cid: chatDataRef.id, uid: user.uid });
+      }
       return { cid: chatDataRef.id };
     }
   }
