@@ -6,31 +6,33 @@ import { Card, CardHeader, CardText, CardBody } from "reactstrap";
 import LoadingChatCard from "../Loading/LoadingChatCard";
 import ProfileHead from "../Profile/ProfileHead";
 
-const ChatCard = ({ cid }) => {
+const ChatCard = ({ chatData }) => {
   const { userData } = useContext(UserContext);
 
-  const [chatData, setChatData] = useState();
   const [chatParticipants, setChatParticipants] = useState();
   const [chatParticipantData, setchatParticipantData] = useState();
   const [chatMessage, setChatMessage] = useState();
   const [chatSenderData, setChatSenderData] = useState();
 
+  // subscribe to latest chat message
   useEffect(() => {
-    const chatRef = firestore().collection("chat").doc(cid);
-    const unsubscribeChatData = chatRef.onSnapshot((snap) =>
-      setChatData(snap.data())
-    );
-    const unsubscribeChatMessage = chatRef
-      .collection("messages")
-      .orderBy("created_at")
-      .limitToLast(1)
-      .onSnapshot((snap) => snap.forEach((doc) => setChatMessage(doc.data())));
-    return () => {
-      unsubscribeChatData();
-      unsubscribeChatMessage();
-    };
-  }, [cid]);
+    if (chatData) {
+      const { cid } = chatData;
+      const chatRef = firestore().collection("chat").doc(cid);
+      const unsubscribeChatMessage = chatRef
+        .collection("messages")
+        .orderBy("created_at")
+        .limitToLast(1)
+        .onSnapshot((snap) =>
+          snap.forEach((doc) => setChatMessage(doc.data()))
+        );
+      return () => {
+        unsubscribeChatMessage();
+      };
+    }
+  }, [chatData]);
 
+  // given latest message, subscribe to sender username
   useEffect(() => {
     if (chatMessage && chatMessage.sender) {
       const { uid } = chatMessage.sender;
@@ -44,25 +46,23 @@ const ChatCard = ({ cid }) => {
     }
   }, [chatMessage]);
 
+  // (for private chat) get participant list to determine chat name
   useEffect(() => {
-    if (userData) {
+    if (userData && chatData && chatData.type === "private") {
+      const { cid } = chatData;
       const chatDataRef = firestore().collection("chat").doc(cid);
       const chatParticipantsRef = chatDataRef.collection("participants");
-      const unsubscribeChatParticipants = chatParticipantsRef.onSnapshot(
-        (snap) => {
-          let tmp = [];
-          snap.forEach((doc) => {
-            tmp.push(doc.data());
-          });
-          setChatParticipants(tmp);
-        }
-      );
-      return () => {
-        unsubscribeChatParticipants();
-      };
+      chatParticipantsRef.get().then((snap) => {
+        let tmp = [];
+        snap.forEach((doc) => {
+          tmp.push(doc.data());
+        });
+        setChatParticipants(tmp);
+      });
     }
-  }, [userData, cid]);
+  }, [userData, chatData]);
 
+  // (for private chat) get data of participants
   useEffect(() => {
     let pData = [];
     if (chatParticipants) {
@@ -78,10 +78,14 @@ const ChatCard = ({ cid }) => {
     }
   }, [chatParticipants]);
 
-  if (!chatData || (chatMessage && !chatSenderData) || !chatParticipantData) {
+  if (
+    !chatData ||
+    (chatMessage && !chatSenderData) ||
+    (chatData.type === "private" && !chatParticipantData)
+  ) {
     return <LoadingChatCard />;
   } else {
-    const { icon } = chatData;
+    const { icon, cid } = chatData;
     const title =
       chatData.type === "private"
         ? chatParticipantData.find((p) => p.uid !== userData.uid).username

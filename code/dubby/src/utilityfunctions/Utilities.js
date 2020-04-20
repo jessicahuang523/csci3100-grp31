@@ -228,17 +228,20 @@ export const addParticipantToChat = async ({ cid, uid }) => {
     const userDataSnap = await userDataRef.get();
     if (chatDataSnap.exists && userDataSnap.exists) {
       const { username, uid } = userDataSnap.data();
+      const { participants } = chatDataSnap.data();
+      if (participants) {
+        await chatDataRef.update({
+          participants: [...participants, uid],
+        });
+      } else {
+        await chatDataRef.update({
+          participants: [uid],
+        });
+      }
       await chatDataRef
         .collection("participants")
         .doc(uid)
         .set({ username, uid });
-      await userDataRef
-        .collection("chats")
-        .doc(cid)
-        .set({
-          cid,
-          ...chatDataSnap.data(),
-        });
     }
   }
 };

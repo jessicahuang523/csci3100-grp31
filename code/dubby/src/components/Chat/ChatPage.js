@@ -30,7 +30,6 @@ const ChatPage = () => {
   const { friendListData } = useContext(FriendContext);
   const { userData, userLoading } = useContext(UserContext);
 
-  const [chatList, setChatList] = useState();
   const [chatListData, setChatListData] = useState();
   const [privateModalOpen, setPrivateModalOpen] = useState(false);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
@@ -39,57 +38,44 @@ const ChatPage = () => {
   const [chatCreatedCid, setChatCreatedCid] = useState();
   const [createChatPrompt, setCreateChatPrompt] = useState(" Create Chat!");
 
+  // given userData, subscribe to data of chats user has
   useEffect(() => {
     if (userData) {
       const { uid } = userData;
-      const unsubscribeChatList = firestore()
-        .collection("user_profile")
-        .doc(uid)
-        .collection("chats")
-        .orderBy("title")
+      const unsubscribeChatListData = firestore()
+        .collection("chat")
+        .where("participants", "array-contains", uid)
+        .orderBy("lastModified", "desc")
         .onSnapshot((snap) => {
           let tmp = [];
           snap.forEach((doc) => tmp.push(doc.data()));
-          setChatList(tmp);
+          setChatListData(tmp);
         });
       return () => {
-        unsubscribeChatList();
+        unsubscribeChatListData();
       };
     }
   }, [userData]);
-
-  useEffect(() => {
-    const getData = async () => {
-      let tmp = [];
-      await Promise.all(
-        chatList.map(async ({ cid }) => {
-          const chatData = await firestore().collection("chat").doc(cid).get();
-          tmp.push(chatData.data());
-        })
-      );
-      tmp = tmp.sort((a, b) =>
-        a.lastModified
-          ? b.lastModified
-            ? a.lastModified - b.lastModified
-            : 1
-          : b.lastModified
-          ? 1
-          : 0
-      );
-      setChatListData(tmp);
-    };
-    if (chatList) {
-      getData();
-    }
-  }, [chatList]);
 
   const handlePrivateModalToggle = () => setPrivateModalOpen(!privateModalOpen);
   const handleGroupModalToggle = () => setGroupModalOpen(!groupModalOpen);
 
   const handlePrivateSelectFriend = async ({ targetUid }) => {
     if (targetUid) {
-      console.log({ targetUid });
       const { cid } = await setupFirestoreForNewPrivateChat({ targetUid });
+      setChatCreatedCid(cid);
+    }
+  };
+
+  const handleGroupChatCreateFormSubmit = async (e) => {
+    e.preventDefault();
+    if (selectedFriendData && chatName) {
+      setCreateChatPrompt(" Creating...");
+      const users = [userData, ...selectedFriendData.map((d) => ({ uid: d }))];
+      const { cid } = await setupFirestoreForNewGroupChat({
+        users,
+        chatName,
+      });
       setChatCreatedCid(cid);
     }
   };
@@ -154,24 +140,7 @@ const ChatPage = () => {
           </Modal>
 
           <Modal isOpen={groupModalOpen} toggle={handleGroupModalToggle}>
-            <Form
-              onSubmit={async (e) => {
-                e.preventDefault();
-                // TODO: create group chat and redirect to chat page
-                if (selectedFriendData && chatName) {
-                  setCreateChatPrompt(" Creating...");
-                  const users = [
-                    userData,
-                    ...selectedFriendData.map((d) => ({ uid: d })),
-                  ];
-                  const { cid } = await setupFirestoreForNewGroupChat({
-                    users,
-                    chatName,
-                  });
-                  setChatCreatedCid(cid);
-                }
-              }}
-            >
+            <Form onSubmit={handleGroupChatCreateFormSubmit}>
               <ModalHeader toggle={handleGroupModalToggle}>
                 Group Chat
               </ModalHeader>
@@ -221,7 +190,9 @@ const ChatPage = () => {
         <div style={{ padding: "1rem" }}>
           {chatListData &&
             chatListData.length > 0 &&
-            chatListData.map(({ cid }) => <ChatCard key={cid} cid={cid} />)}
+            chatListData.map((chatData) => (
+              <ChatCard key={chatData.cid} chatData={chatData} />
+            ))}
         </div>
       </div>
     );
