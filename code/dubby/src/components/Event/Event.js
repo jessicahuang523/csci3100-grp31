@@ -5,7 +5,16 @@ import { GymContext } from "../../contexts/GymContext";
 import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
-import { Jumbotron, Button, Badge, Row, Col } from "reactstrap";
+import {
+  Jumbotron,
+  Button,
+  Badge,
+  Row,
+  Col,
+  Modal,
+  ModalHeader,
+  ModalFooter,
+} from "reactstrap";
 import Loading from "../Loading/Loading";
 import NavBar from "../Navbar/Navbar";
 import {
@@ -30,6 +39,7 @@ const Event = () => {
   const [foundLocationData, setFoundLocationData] = useState();
   const [joinLoading, setJoinLoading] = useState(false);
   const [eventDeleteLoading, setEventDeleteLoading] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     if (eid) {
@@ -88,7 +98,13 @@ const Event = () => {
     setJoinLoading(false);
   };
 
-  const handleDeleteEventButtonClick = async () => {
+  const toggleDeleteModal = () => setDeleteModalOpen(!deleteModalOpen);
+
+  const handleDeleteEventButtonClick = () => {
+    toggleDeleteModal();
+  };
+
+  const handleDeleteEventConfirmClick = async () => {
     setEventDeleteLoading(true);
     await deleteEvent(eventData);
   };
@@ -133,6 +149,21 @@ const Event = () => {
             )}
           </h1>
         </Jumbotron>
+        <Modal isOpen={deleteModalOpen} toggle={toggleDeleteModal}>
+          <ModalHeader toggle={toggleDeleteModal}>Delete Event?</ModalHeader>
+          <ModalFooter>
+            <Button
+              outline
+              color="danger"
+              onClick={handleDeleteEventConfirmClick}
+            >
+              <i className="fas fa-trash"></i> Delete
+            </Button>
+            <Button color="primary" onClick={toggleDeleteModal}>
+              <i className="fas fa-times"></i> Cancel
+            </Button>
+          </ModalFooter>
+        </Modal>
         <div style={{ padding: "1rem" }}>
           <p>Location: {foundLocationData.display}</p>
           <p>Starting at {new Date(eventData.startingTime).toLocaleString()}</p>
@@ -190,6 +221,7 @@ const Event = () => {
               <Col>
                 <Button
                   block
+                  outline
                   color="danger"
                   onClick={handleDeleteEventButtonClick}
                 >
