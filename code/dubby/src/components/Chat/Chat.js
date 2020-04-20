@@ -3,6 +3,7 @@ import { useParams, Redirect, Link } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
+import { FriendContext } from "../../contexts/FriendContext";
 import {
   Container,
   Row,
@@ -31,6 +32,7 @@ export const Chat = () => {
 
   const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
+  const { friendListData } = useContext(FriendContext);
 
   const [chatData, setChatData] = useState();
   const [chatMessages, setChatMessages] = useState();
@@ -40,6 +42,7 @@ export const Chat = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [collapseOpen, setCollapseOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
+  const [selectedFriendData, setSelectedFriendData] = useState([]);
 
   const divRef = useRef(null);
 
@@ -124,13 +127,44 @@ export const Chat = () => {
     setInputMessage(e.target.value);
   };
 
+  const handleAddFriendToChat = (e) => {
+    e.preventDefault();
+    console.log(
+      friendListData.map(({ uid }) => uid),
+      chatParticipantData.map(({ uid }) => uid),
+      friendListData.filter(
+        (f) =>
+        typeof chatParticipantData.find(
+          (p) => f.uid === p.uid
+        ) === "undefind"
+      )
+    )
+  };
+
+  const handleSelectFriend = ({ targetUid }) => {
+    if (targetUid && friendListData) {
+      let tmp = selectedFriendData;
+      tmp.push(targetUid);
+      tmp = tmp.filter((uid, index, a) => a.indexOf(uid) === index);
+      setSelectedFriendData(tmp);
+    }
+  };
+
+  const handleDeselectFriend = ({ targetUid }) => {
+    if (targetUid && selectedFriendData) {
+      let tmp = selectedFriendData;
+      tmp = tmp.filter((uid) => uid !== targetUid);
+      setSelectedFriendData(tmp);
+    }
+  };
+
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
   } else if (chatParticipants && !chatAuthorized) {
     return <Redirect to="/c" />;
-  } else if (!chatData || !chatMessages || !chatParticipantData) {
+  } else if (!chatData || !chatMessages || !chatParticipantData || !friendListData) {
     return <Loading />;
   } else {
     const title =
@@ -162,15 +196,33 @@ export const Chat = () => {
               )}
           </ButtonGroup>
           <Modal isOpen={modalOpen} toggle={handleModalToggle}>
-            <Form>
+            <Form onSubmit={handleAddFriendToChat}>
               <ModalHeader toggle={handleModalToggle}>
                 Invite Friends
               </ModalHeader>
               <ModalBody>
-                
+                <UserList
+                  users={friendListData.filter(
+                    ({ uid }) => selectedFriendData.indexOf(uid) > -1
+                  )}
+                  heading="Participants"
+                  action={handleDeselectFriend}
+                  actionIcon="fas fa-minus"
+                  actionColor="warning"
+                />
+                <hr />
+                <UserList
+                  users={friendListData.filter(
+                    ({ uid }) => selectedFriendData.indexOf(uid) < 0
+                  )}
+                  heading="Add Users"
+                  action={handleSelectFriend}
+                  actionIcon="fas fa-plus"
+                  actionColor="primary"
+                />
               </ModalBody>
               <ModalFooter>
-                <Button type="submit" color="primary">
+                <Button type="submit" color="primary" onClick={handleModalToggle}>
                   Done
                 </Button>{" "}
                 <Button color="danger" outline onClick={handleModalToggle}>
