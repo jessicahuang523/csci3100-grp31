@@ -285,12 +285,12 @@ export const inviteParticipantToEvent = async ({ eid, uid }) => {
     const eventDataSnap = await eventDataRef.get();
     const userDataSnap = await userDataRef.get();
     if (eventDataSnap.exists && userDataSnap.exists) {
-      // const { username, uid } = userDataSnap.data();
+      const { username, uid } = userDataSnap.data();
       // const { cid } = eventDataSnap.data();
-      // await eventDataRef
-      //   .collection("participants")
-      //   .doc(uid)
-      //   .set({ username, uid, status });
+      await eventDataRef
+        .collection("participants")
+        .doc(uid)
+        .set({ username, uid, status: "invited" });
       await userDataRef
         .collection("events")
         .doc(eid)

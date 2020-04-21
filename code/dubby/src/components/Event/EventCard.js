@@ -148,12 +148,12 @@ const EventCard = ({ eid, searchString, invited }) => {
           <Badge pill color="secondary">
             <i className={foundTypeData.icon}></i> {foundTypeData.display}
           </Badge>
-          {eventParticipants.find((p) => p.uid === uid) && (
+          {eventParticipants.find((p) => p.uid === uid) &&
+          eventParticipants.find((p) => p.uid === uid).status === "joined" ? (
             <Badge pill color="info">
               Joined
             </Badge>
-          )}
-          {invited && (
+          ) : (
             <Badge pill color="dark">
               Invited
             </Badge>
