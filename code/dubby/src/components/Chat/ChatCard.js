@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { firestore } from "firebase";
-import { Card, CardHeader, CardText, CardBody, Badge } from "reactstrap";
+import { Card, CardText, Badge } from "reactstrap";
 import LoadingChatCard from "../Loading/LoadingChatCard";
 import ProfileHead from "../Profile/ProfileHead";
 

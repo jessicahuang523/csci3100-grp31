@@ -134,11 +134,10 @@ export const Chat = () => {
       chatParticipantData.map(({ uid }) => uid),
       friendListData.filter(
         (f) =>
-        typeof chatParticipantData.find(
-          (p) => f.uid === p.uid
-        ) === "undefind"
+          typeof chatParticipantData.find((p) => f.uid === p.uid) ===
+          "undefined"
       )
-    )
+    );
   };
 
   const handleSelectFriend = ({ targetUid }) => {
@@ -164,7 +163,12 @@ export const Chat = () => {
     return <Redirect to="/launch" />;
   } else if (chatParticipants && !chatAuthorized) {
     return <Redirect to="/c" />;
-  } else if (!chatData || !chatMessages || !chatParticipantData || !friendListData) {
+  } else if (
+    !chatData ||
+    !chatMessages ||
+    !chatParticipantData ||
+    !friendListData
+  ) {
     return <Loading />;
   } else {
     const title =
@@ -190,10 +194,10 @@ export const Chat = () => {
               Participants
             </Button>
             {chatData.type === "group" && (
-                <Button size="sm" onClick={handleModalToggle}>
-                  Invite Friends
-                </Button>
-              )}
+              <Button size="sm" onClick={handleModalToggle}>
+                Invite Friends
+              </Button>
+            )}
           </ButtonGroup>
           <Modal isOpen={modalOpen} toggle={handleModalToggle}>
             <Form onSubmit={handleAddFriendToChat}>
@@ -222,7 +226,11 @@ export const Chat = () => {
                 />
               </ModalBody>
               <ModalFooter>
-                <Button type="submit" color="primary" onClick={handleModalToggle}>
+                <Button
+                  type="submit"
+                  color="primary"
+                  onClick={handleModalToggle}
+                >
                   Done
                 </Button>{" "}
                 <Button color="danger" outline onClick={handleModalToggle}>

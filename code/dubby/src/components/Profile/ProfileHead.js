@@ -36,7 +36,7 @@ const styles = {
       height: "2rem",
       overflow: "hidden",
       borderRadius: "1rem",
-      border: "1px solid black",
+      border: "1px solid #eee",
     },
   },
   inline: {
@@ -48,7 +48,7 @@ const styles = {
       height: "1rem",
       overflow: "hidden",
       borderRadius: "0.5rem",
-      border: "1px solid black",
+      border: "1px solid #eee",
     },
   },
   default: {
