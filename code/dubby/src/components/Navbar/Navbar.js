@@ -54,14 +54,16 @@ const NavBar = () => {
               Gym
             </NavLink>
           </NavItem>
+          <NavItem>
+            <NavLink tag={Link} to="/u">
+              Profile
+            </NavLink>
+          </NavItem>
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
               Menu
             </DropdownToggle>
             <DropdownMenu right>
-              <DropdownItem tag={Link} to="/u">
-                <i className="fas fa-user" /> Profile
-              </DropdownItem>
               <DropdownItem tag={Link} to="/friends">
                 <i className="fas fa-users"></i> Friends
               </DropdownItem>
