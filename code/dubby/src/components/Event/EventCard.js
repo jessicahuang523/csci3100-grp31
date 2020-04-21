@@ -112,6 +112,7 @@ const EventCard = ({ eid, searchString }) => {
     foundLocationData,
   ]);
 
+  // render
   if (
     !eventData ||
     !eventParticipants ||
@@ -129,6 +130,13 @@ const EventCard = ({ eid, searchString }) => {
   } else {
     const { eventName, startingTime, allowedPeople, eid } = eventData;
     const { uid } = auth().currentUser;
+    const vacancy =
+      allowedPeople -
+        (eventParticipants.length ? eventParticipants.length : 0) >
+      0
+        ? allowedPeople -
+          (eventParticipants.length ? eventParticipants.length : 0)
+        : 0;
     return (
       <Card
         body
@@ -164,9 +172,7 @@ const EventCard = ({ eid, searchString }) => {
           Starting at {new Date(startingTime).toLocaleString()}
         </CardText>
         <CardText>
-          Vacancy:{" "}
-          {allowedPeople -
-            (eventParticipants.length ? eventParticipants.length : 0)}
+          Vacancy: {vacancy}/{allowedPeople}
         </CardText>
         <ButtonGroup size="sm">
           <Button tag={Link} to={`/e/${eid}`}>

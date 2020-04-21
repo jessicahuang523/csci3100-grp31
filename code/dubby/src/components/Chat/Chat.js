@@ -214,54 +214,50 @@ export const Chat = () => {
               </Button>
             )}
           </ButtonGroup>
-          <Modal
-            returnFocusAfterClose={false}
-            isOpen={modalOpen}
-            toggle={handleModalToggle}
-          >
-            <Form onSubmit={handleAddFriendToChat}>
-              <ModalHeader toggle={handleModalToggle}>
-                Invite Friends
-              </ModalHeader>
-              <ModalBody>
-                <UserList
-                  users={friendListData.filter(
-                    ({ uid }) => selectedFriendData.indexOf(uid) > -1
-                  )}
-                  heading="Participants"
-                  action={handleDeselectFriend}
-                  actionIcon="fas fa-minus"
-                  actionColor="warning"
-                />
-                <hr />
-                <UserList
-                  users={friendListData.filter(
-                    ({ uid }) => selectedFriendData.indexOf(uid) < 0
-                  )}
-                  heading="Add Users"
-                  action={handleSelectFriend}
-                  actionIcon="fas fa-plus"
-                  actionColor="primary"
-                />
-              </ModalBody>
-              <ModalFooter>
-                <Button
-                  type="submit"
-                  color="primary"
-                  onClick={handleModalToggle}
-                >
-                  Done
-                </Button>{" "}
-                <Button color="danger" outline onClick={handleModalToggle}>
-                  Cancel
-                </Button>
-              </ModalFooter>
-            </Form>
-          </Modal>
           <Collapse isOpen={collapseOpen}>
             <UserList users={chatParticipantData} />
           </Collapse>
         </Jumbotron>
+
+        {/* modal to invite friends */}
+        <Modal
+          returnFocusAfterClose={false}
+          isOpen={modalOpen}
+          toggle={handleModalToggle}
+        >
+          <Form onSubmit={handleAddFriendToChat}>
+            <ModalHeader toggle={handleModalToggle}>Invite Friends</ModalHeader>
+            <ModalBody>
+              <UserList
+                users={friendListData.filter(
+                  ({ uid }) => selectedFriendData.indexOf(uid) > -1
+                )}
+                heading="Participants"
+                action={handleDeselectFriend}
+                actionIcon="fas fa-minus"
+                actionColor="warning"
+              />
+              <hr />
+              <UserList
+                users={friendListData.filter(
+                  ({ uid }) => selectedFriendData.indexOf(uid) < 0
+                )}
+                heading="Add Users"
+                action={handleSelectFriend}
+                actionIcon="fas fa-plus"
+                actionColor="primary"
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button type="submit" color="primary" onClick={handleModalToggle}>
+                Done
+              </Button>{" "}
+              <Button color="danger" outline onClick={handleModalToggle}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Form>
+        </Modal>
 
         <Container>
           <Row>
