@@ -16,7 +16,7 @@ import {
 import LoadingEventCard from "../Loading/LoadingEventCard";
 import ProfileHead from "../Profile/ProfileHead";
 
-const EventCard = ({ eid, searchString }) => {
+const EventCard = ({ eid, searchString, invited }) => {
   const { gymData } = useContext(GymContext);
   const { isPrimaryTheme } = useContext(ThemeContext);
   const { eventTypeData } = useContext(EventTypeContext);
@@ -151,6 +151,11 @@ const EventCard = ({ eid, searchString }) => {
           {eventParticipants.find((p) => p.uid === uid) && (
             <Badge pill color="info">
               Joined
+            </Badge>
+          )}
+          {invited && (
+            <Badge pill color="dark">
+              Invited
             </Badge>
           )}
           {eventData.isPublic || (
