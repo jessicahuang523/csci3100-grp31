@@ -136,7 +136,10 @@ const EventCard = ({ eid, searchString }) => {
         color={!isPrimaryTheme ? "dark" : null}
         style={{ marginBottom: "1rem" }}
       >
-        <CardTitle>
+        <CardSubtitle>
+          <Badge pill color="secondary">
+            <i className={foundTypeData.icon}></i> {foundTypeData.display}
+          </Badge>
           {eventParticipants.find((p) => p.uid === uid) && (
             <Badge pill color="info">
               Joined
@@ -151,9 +154,10 @@ const EventCard = ({ eid, searchString }) => {
             <Badge pill color="warning">
               Hosting
             </Badge>
-          )}{" "}
-          <i className={foundTypeData.icon}></i> [{foundTypeData.display}]{" "}
-          {eventName}
+          )}
+        </CardSubtitle>
+        <CardTitle>
+          <b>{eventName}</b>
         </CardTitle>
         <CardSubtitle>{foundLocationData.display_short}</CardSubtitle>
         <CardText>

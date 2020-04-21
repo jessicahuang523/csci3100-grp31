@@ -20,6 +20,7 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Badge,
 } from "reactstrap";
 import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -157,43 +158,57 @@ export const Chat = () => {
     }
   };
 
-  if (userLoading) {
-    return <Loading />;
-  } else if (!userData) {
-    return <Redirect to="/launch" />;
-  } else if (chatParticipants && !chatAuthorized) {
-    return <Redirect to="/c" />;
-  } else if (
+  // render
+  if (
+    userLoading ||
     !chatData ||
     !chatMessages ||
     !chatParticipantData ||
     !friendListData
   ) {
     return <Loading />;
+  } else if (!userData) {
+    return <Redirect to="/launch" />;
+  } else if (chatParticipants && !chatAuthorized) {
+    return <Redirect to="/c" />;
   } else {
+    const { type, icon, eid } = chatData;
     const title =
-      chatData.type === "private"
+      type === "private"
         ? chatParticipantData.find((p) => p.uid !== userData.uid).username
         : chatData.title;
     return (
       <div style={theme.background}>
         <Navbar />
         <Jumbotron style={theme.jumbotron}>
+          {type === "private" && (
+            <Badge pill color="success">
+              <i className={icon}></i> Private
+            </Badge>
+          )}
+          {type === "group" && (
+            <Badge pill color="info">
+              <i className={icon}></i> Group
+            </Badge>
+          )}
+          {type === "event" && (
+            <Badge pill color="warning">
+              <i className={icon}></i> Event
+            </Badge>
+          )}
           <h1>
-            <i className={chatData.icon}></i>
-            {title}{" "}
-            {chatData.type === "event" && (
-              <Button close tag={Link} to={`/e/${chatData.eid}`}>
+            {title}
+            {type === "event" && (
+              <Button close tag={Link} to={`/e/${eid}`}>
                 <i className="fas fa-info-circle"></i>
               </Button>
             )}
           </h1>
-          <hr />
           <ButtonGroup>
             <Button size="sm" color="success" onClick={handleCollapseToggle}>
               Participants
             </Button>
-            {chatData.type === "group" && (
+            {type === "group" && (
               <Button size="sm" onClick={handleModalToggle}>
                 Invite Friends
               </Button>

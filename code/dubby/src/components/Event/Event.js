@@ -129,25 +129,25 @@ const Event = () => {
       <div style={theme.background}>
         <NavBar />
         <Jumbotron style={theme.jumbotron}>
-          <h1>
-            <i className={foundTypeData.icon}></i> [{foundTypeData.display}]{" "}
-            {eventData.eventName}{" "}
-            {eventParticipants.find((x) => x.uid === uid) && (
-              <Badge pill color="info">
-                Joined
-              </Badge>
-            )}
-            {eventData.isPublic || (
-              <Badge pill color="success">
-                Private
-              </Badge>
-            )}
-            {hostUserData.uid === uid && (
-              <Badge pill color="warning">
-                Hosting
-              </Badge>
-            )}
-          </h1>
+          {eventParticipants.find((x) => x.uid === uid) && (
+            <Badge pill color="info">
+              Joined
+            </Badge>
+          )}
+          {eventData.isPublic || (
+            <Badge pill color="success">
+              Private
+            </Badge>
+          )}
+          {hostUserData.uid === uid && (
+            <Badge pill color="warning">
+              Hosting
+            </Badge>
+          )}
+          <Badge pill color="secondary">
+            <i className={foundTypeData.icon}></i> {foundTypeData.display}
+          </Badge>
+          <h1>{eventData.eventName}</h1>
         </Jumbotron>
         <Modal isOpen={deleteModalOpen} toggle={toggleDeleteModal}>
           <ModalHeader toggle={toggleDeleteModal}>Delete Event?</ModalHeader>
