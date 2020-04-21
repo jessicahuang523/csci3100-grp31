@@ -110,7 +110,6 @@ const ChatCard = ({ chatData }) => {
           >
             <div
               style={{
-                height: "100%",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
