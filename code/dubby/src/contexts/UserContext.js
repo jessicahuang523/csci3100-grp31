@@ -4,9 +4,13 @@ import { firestore, auth } from "firebase";
 export const UserContext = createContext();
 
 const UserContextProvider = (props) => {
+  // userLoading = true when fetching data from database
   const [userLoading, setUserLoading] = useState(true);
+  // userData contains data in /user_profile/{uid} if user exists and logged in
+  // if not logged in, userData = null
   const [userData, setUserData] = useState(null);
 
+  // subscribe to user data on initialization
   useEffect(() => {
     let unsubscribeUserData = () => {};
     const unsubscribeAuthStateListener = auth().onAuthStateChanged(
@@ -33,6 +37,7 @@ const UserContextProvider = (props) => {
   }, []);
 
   return (
+    // exports userData and boolean userLoading
     <UserContext.Provider value={{ userData, userLoading }}>
       {props.children}
     </UserContext.Provider>
