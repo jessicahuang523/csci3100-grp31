@@ -42,7 +42,7 @@ const GymPage = () => {
         <div style={theme.background}>
         <NavBar />
         <Container>
-          <Nav tabs>
+          <Nav tabs style = {{marginTop: "4rem"}}>
             <NavItem>
               <NavLink
                 style={{ backgroundColor: "#cc33ff" }}
@@ -115,7 +115,7 @@ const GymPage = () => {
 const GymListItem = ({ data }) => {
   const { display, image_main, description } = data;
   return (
-    <Card style = {{marginTop: "3rem"}}>
+    <Card style = {{marginBottom: "3rem"}}>
       <CardHeader>{display}</CardHeader>
       <CardBody>{description}</CardBody>
       <CardFooter style={{ boxShadow: "5px 10px #999999", textAlign: "center" }}>
