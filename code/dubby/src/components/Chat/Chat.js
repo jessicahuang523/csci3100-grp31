@@ -205,9 +205,11 @@ export const Chat = () => {
             )}
           </h1>
           <ButtonGroup>
-            <Button size="sm" color="success" onClick={handleCollapseToggle}>
-              Participants
-            </Button>
+            {type !== "private" && (
+              <Button size="sm" color="success" onClick={handleCollapseToggle}>
+                Participants
+              </Button>
+            )}
             {type === "group" && (
               <Button size="sm" onClick={handleModalToggle}>
                 Invite Friends
