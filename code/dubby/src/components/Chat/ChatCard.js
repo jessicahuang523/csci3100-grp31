@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { firestore } from "firebase";
-import { Card, CardHeader, CardText, CardBody } from "reactstrap";
+import { Card, CardHeader, CardText, CardBody, Badge } from "reactstrap";
 import LoadingChatCard from "../Loading/LoadingChatCard";
 import ProfileHead from "../Profile/ProfileHead";
 
@@ -91,25 +91,59 @@ const ChatCard = ({ chatData }) => {
         ? chatParticipantData.find((p) => p.uid !== userData.uid).username
         : chatData.title;
     return (
-      <div className="chat-card">
-        <Card tag={Link} to={`/c/${cid}`}>
-          <CardHeader>
-            <i className={icon}></i>
-            {title}
-          </CardHeader>
-          <CardBody>
-            <CardText>
-              {chatSenderData && (
-                <ProfileHead
-                  src={chatSenderData.profileImageSrc}
-                  size="inline"
-                />
-              )}
-              {chatMessage
-                ? ` ${chatSenderData.username}: ${chatMessage.text}`
-                : "Wow, such empty"}
-            </CardText>
-          </CardBody>
+      <div className="chat-card" style={{ marginBottom: "0.5rem" }}>
+        <Card body tag={Link} to={`/c/${cid}`}>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "2rem 1fr",
+              columnGap: "1rem",
+            }}
+          >
+            <div
+              style={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignContent: "center",
+              }}
+            >
+              <ProfileHead
+                src={chatSenderData ? chatSenderData.profileImageSrc : null}
+                size="friend"
+              />
+            </div>
+            <div>
+              <CardText>
+                <span
+                  style={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <b>{title}</b>
+                  <span>
+                    {chatData.type === "private" && (
+                      <Badge pill color="primary">
+                        <i className={icon}></i> Private
+                      </Badge>
+                    )}
+                    {chatData.type === "group" && (
+                      <Badge pill color="info">
+                        <i className={icon}></i> Group
+                      </Badge>
+                    )}
+                    {chatData.type === "event" && (
+                      <Badge pill color="warning">
+                        <i className={icon}></i> Event
+                      </Badge>
+                    )}
+                  </span>
+                </span>
+                {chatMessage
+                  ? ` ${chatSenderData.username}: ${chatMessage.text}`
+                  : "Wow, such empty"}
+              </CardText>
+            </div>
+          </div>
         </Card>
       </div>
     );
