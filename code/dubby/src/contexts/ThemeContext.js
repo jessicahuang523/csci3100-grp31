@@ -56,8 +56,8 @@ const ThemeContextProvider = (props) => {
   };
 
   return (
+    // exports toggle function, isPrimaryTheme boolean, and theme object
     <ThemeContext.Provider
-      // exports toggle function, isPrimaryTheme boolean, and theme object
       value={{
         toggleTheme,
         isPrimaryTheme,

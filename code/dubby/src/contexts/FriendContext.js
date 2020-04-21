@@ -7,17 +7,24 @@ export const FriendContext = createContext();
 const FriendContextProvider = (props) => {
   const { userData } = useContext(UserContext);
 
+  // lists of friend contexts from current user
   const [sentRequests, setSentRequests] = useState(null);
   const [receivedRequests, setReceivedRequests] = useState(null);
   const [friendList, setFriendList] = useState(null);
+  // (exported) given above list, fetched user data from each user in list
   const [sentRequestData, setSentRequestData] = useState(null);
   const [receivedRequestData, setReceivedRequestData] = useState(null);
   const [friendListData, setFriendListData] = useState(null);
+  // information on whether data are loaded
   const [srLoaded, setSrLoaded] = useState(false);
   const [rrLoaded, setRrLoaded] = useState(false);
   const [flLoaded, setFlLoaded] = useState(false);
+  // (exported) true when all data are loaded
   const [friendContextLoaded, setFriendContextLoaded] = useState(false);
 
+  // given userData, subscribe to requests
+  // in /user_profile/{uid}/sent_friend_requests
+  // updates sentRequests
   useEffect(() => {
     if (userData) {
       const { uid } = auth().currentUser;
@@ -42,6 +49,9 @@ const FriendContextProvider = (props) => {
     }
   }, [userData]);
 
+  // given userData, subscribe to requests
+  // in /user_profile/{uid}/received_friend_requests
+  // updates receivedRequests
   useEffect(() => {
     if (userData) {
       const { uid } = auth().currentUser;
@@ -66,6 +76,8 @@ const FriendContextProvider = (props) => {
     }
   }, [userData]);
 
+  // given userData, subscribe to friend data in /user_profile/{uid}/friend_list
+  // updates friendList
   useEffect(() => {
     if (userData) {
       const { uid } = auth().currentUser;
@@ -88,6 +100,9 @@ const FriendContextProvider = (props) => {
     }
   }, [userData]);
 
+  // given sentRequests (or lack thereof),
+  // fetch user data of receivers from /user_profile/{uid}
+  // updates srLoaded and sentRequestData
   useEffect(() => {
     let data = [];
     if (sentRequests) {
@@ -109,6 +124,9 @@ const FriendContextProvider = (props) => {
     }
   }, [sentRequests]);
 
+  // given receivedRequests (or lack thereof),
+  // fetch user data of sender from /user_profile/{uid}
+  // updates rrLoaded and receivedRequestData
   useEffect(() => {
     let data = [];
     if (receivedRequests) {
@@ -130,6 +148,9 @@ const FriendContextProvider = (props) => {
     }
   }, [receivedRequests]);
 
+  // given friendList (or lack thereof),
+  // fetch user data of friends from /user_profile/{uid}
+  // updates flLoaded and friendListData
   useEffect(() => {
     let data = [];
     if (friendList) {
@@ -151,6 +172,8 @@ const FriendContextProvider = (props) => {
     }
   }, [friendList]);
 
+  // set friendContextLoaded (exported boolean) = true only when all
+  // sent/received requests and friend list are loaded
   useEffect(() => {
     if (srLoaded && rrLoaded && flLoaded) {
       setFriendContextLoaded(true);
@@ -158,6 +181,8 @@ const FriendContextProvider = (props) => {
   }, [srLoaded, rrLoaded, flLoaded]);
 
   return (
+    // exports boolean friendContextLoaded, lists of user data in
+    // sentRequestData, receivedRequestData, and friendListData
     <FriendContext.Provider
       value={{
         sentRequestData,

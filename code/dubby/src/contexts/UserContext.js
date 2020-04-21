@@ -10,7 +10,7 @@ const UserContextProvider = (props) => {
   // if not logged in, userData = null
   const [userData, setUserData] = useState(null);
 
-  // subscribe to user data on initialization
+  // subscribe to user data (/user_profile) on initialization
   useEffect(() => {
     let unsubscribeUserData = () => {};
     const unsubscribeAuthStateListener = auth().onAuthStateChanged(

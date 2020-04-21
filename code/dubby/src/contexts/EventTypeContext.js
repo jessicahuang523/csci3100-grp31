@@ -4,9 +4,12 @@ import { firestore } from "firebase";
 export const EventTypeContext = createContext();
 
 const EventTypeContextProvider = (props) => {
+  // eventTypeLoading = true when fetching data from database
   const [eventTypeLoading, setEventTypeLoading] = useState(true);
+  // eventTypeData contains list of event type data in /event_types
   const [eventTypeData, setEventTypeData] = useState(null);
 
+  // order events but put "others" at last
   const compare = (a, b) => {
     if (a.value === "others") {
       return 1;
@@ -17,6 +20,7 @@ const EventTypeContextProvider = (props) => {
     }
   };
 
+  // subscribe to event type data (/event_types) on initialization
   useEffect(() => {
     const unsubscribeEventType = firestore()
       .collection("event_types")
@@ -33,6 +37,7 @@ const EventTypeContextProvider = (props) => {
   }, []);
 
   return (
+    // exports eventTypeData and boolean eventTypeLoading
     <EventTypeContext.Provider value={{ eventTypeData, eventTypeLoading }}>
       {props.children}
     </EventTypeContext.Provider>
