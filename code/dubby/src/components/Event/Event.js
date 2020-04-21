@@ -179,6 +179,20 @@ const Event = () => {
     }
   };
 
+  const parseTimeDisplay = (time) => {
+    const st = new Date(time);
+    const stt = st.toLocaleTimeString();
+    const std = st.toLocaleDateString();
+    const isToday =
+      new Date(Date.now()).toLocaleDateString() === st.toLocaleDateString();
+    const parsedTime =
+      (isToday ? "Today" : std.substring(0, std.length - 5)) +
+      ", " +
+      stt.substring(0, stt.length - 6) +
+      stt.substring(stt.length - 2);
+    return parsedTime;
+  };
+
   // render
   if (
     userLoading ||
@@ -196,17 +210,16 @@ const Event = () => {
   } else if (noEventRedirect) {
     return <Redirect to="/e" />;
   } else {
+    const { eventName, startingTime, allowedPeople, isPublic, cid } = eventData;
     const { uid } = userData;
     const vacancy =
-      eventData.allowedPeople -
+      allowedPeople -
         (eventParticipants.length ? eventParticipants.length : 0) >
       0
-        ? eventData.allowedPeople -
+        ? allowedPeople -
           (eventParticipants.length ? eventParticipants.length : 0)
         : 0;
-    const parsedStartingTime = new Date(
-      eventData.startingTime
-    ).toLocaleString();
+    const parsedStartingTime = parseTimeDisplay(startingTime);
 
     return (
       <div style={theme.background}>
@@ -225,7 +238,7 @@ const Event = () => {
               Invited
             </Badge>
           )}
-          {eventData.isPublic || (
+          {isPublic || (
             <Badge pill color="success">
               Private
             </Badge>
@@ -235,26 +248,30 @@ const Event = () => {
               Hosting
             </Badge>
           )}
-          <h1>{eventData.eventName}</h1>
-          {eventParticipants.find((x) => x.uid === uid) && (
-            <ButtonGroup>
-              <Button
-                size="sm"
-                color="success"
-                onClick={toggleParticipantCollapse}
-              >
-                Participants
-              </Button>
-              <Button size="sm" onClick={toggleInviteModal}>
-                Invite Friends
-              </Button>
-            </ButtonGroup>
-          )}
-          {eventParticipants.find((x) => x.uid === uid) && (
-            <Collapse isOpen={participantCollapse}>
-              <UserList users={eventParticipants} />
-            </Collapse>
-          )}
+          <h1>{eventName}</h1>
+          {eventParticipants.find((x) => x.uid === uid) &&
+            eventParticipants.find((p) => p.uid === uid).status ===
+              "joined" && (
+              <ButtonGroup>
+                <Button
+                  size="sm"
+                  color="success"
+                  onClick={toggleParticipantCollapse}
+                >
+                  Participants
+                </Button>
+                <Button size="sm" onClick={toggleInviteModal}>
+                  Invite Friends
+                </Button>
+              </ButtonGroup>
+            )}
+          {eventParticipants.find((x) => x.uid === uid) &&
+            eventParticipants.find((p) => p.uid === uid).status ===
+              "joined" && (
+              <Collapse isOpen={participantCollapse}>
+                <UserList users={eventParticipants} />
+              </Collapse>
+            )}
         </Jumbotron>
 
         {/* modal to confirm delete event*/}
@@ -325,7 +342,7 @@ const Event = () => {
           <p>Location: {foundLocationData.display}</p>
           <p>Starting at {parsedStartingTime}</p>
           <p>
-            Vacancy: {vacancy}/{eventData.allowedPeople}
+            Vacancy: {vacancy}/{allowedPeople}
           </p>
           <Row>
             <Col sm={{ size: 6 }}>
@@ -336,12 +353,7 @@ const Event = () => {
             </Col>
             <Col sm={{ size: 6 }}>
               {eventParticipants.find((x) => x.uid === uid) ? (
-                <Button
-                  block
-                  color="success"
-                  tag={Link}
-                  to={`/c/${eventData.cid}`}
-                >
+                <Button block color="success" tag={Link} to={`/c/${cid}`}>
                   <i className="fas fa-comment-dots"></i>
                   Chat!
                 </Button>

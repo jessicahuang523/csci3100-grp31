@@ -16,7 +16,7 @@ import {
 import LoadingEventCard from "../Loading/LoadingEventCard";
 import ProfileHead from "../Profile/ProfileHead";
 
-const EventCard = ({ eid, searchString, invited }) => {
+const EventCard = ({ eid, searchString }) => {
   const { gymData } = useContext(GymContext);
   const { isPrimaryTheme } = useContext(ThemeContext);
   const { eventTypeData } = useContext(EventTypeContext);
@@ -112,6 +112,20 @@ const EventCard = ({ eid, searchString, invited }) => {
     foundLocationData,
   ]);
 
+  const parseTimeDisplay = (time) => {
+    const st = new Date(time);
+    const stt = st.toLocaleTimeString();
+    const std = st.toLocaleDateString();
+    const isToday =
+      new Date(Date.now()).toLocaleDateString() === st.toLocaleDateString();
+    const parsedTime =
+      (isToday ? "Today" : std.substring(0, std.length - 5)) +
+      ", " +
+      stt.substring(0, stt.length - 6) +
+      stt.substring(stt.length - 2);
+    return parsedTime;
+  };
+
   // render
   if (
     !eventData ||
@@ -137,6 +151,8 @@ const EventCard = ({ eid, searchString, invited }) => {
         ? allowedPeople -
           (eventParticipants.length ? eventParticipants.length : 0)
         : 0;
+    const parsedStartingTime = parseTimeDisplay(startingTime);
+
     return (
       <Card
         body
@@ -173,9 +189,7 @@ const EventCard = ({ eid, searchString, invited }) => {
           <b>{eventName}</b>
         </CardTitle>
         <CardSubtitle>{foundLocationData.display_short}</CardSubtitle>
-        <CardText>
-          Starting at {new Date(startingTime).toLocaleString()}
-        </CardText>
+        <CardText>Starting at {parsedStartingTime}</CardText>
         <CardText>
           Vacancy: {vacancy}/{allowedPeople}
         </CardText>
