@@ -19,6 +19,7 @@ const jumbotronStyle = {
   marginTop: "3rem",
   width: "100%",
 };
+const mainContainerStyle = { padding: "1rem" };
 const loadingStyle = {
   width: "100vw",
   height: "80vh",
@@ -35,6 +36,7 @@ const themes = {
   primary: {
     background: { ...backgroundStyle, backgroundColor: yellow },
     jumbotron: { ...jumbotronStyle, backgroundColor: jumbotron_yellow },
+    mainContainer: mainContainerStyle,
     loading: loadingStyle,
     spinnerColor: "dark",
   },
@@ -42,6 +44,7 @@ const themes = {
   secondary: {
     background: { ...backgroundStyle, backgroundColor: purple },
     jumbotron: { ...jumbotronStyle, backgroundColor: jumbotron_purple },
+    mainContainer: mainContainerStyle,
     loading: loadingStyle,
     spinnerColor: "light",
   },

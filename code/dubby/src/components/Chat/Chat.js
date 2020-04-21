@@ -243,6 +243,7 @@ export const Chat = () => {
             <UserList users={chatParticipantData} />
           </Collapse>
         </Jumbotron>
+
         <Container>
           <Row>
             <Col sm={12}>
@@ -283,11 +284,7 @@ export const Chat = () => {
   }
 };
 
-const containerStyle = {
-  margin: "40px",
-  display: "grid",
-  columnGap: "20px",
-};
+const containerStyle = { margin: "40px", display: "grid", columnGap: "20px" };
 
 const messageStyle = {
   left: {

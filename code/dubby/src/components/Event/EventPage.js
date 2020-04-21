@@ -3,40 +3,42 @@ import { Redirect } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
-import { Jumbotron, Input, Form } from "reactstrap";
+import { Jumbotron, Input } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
-import EventCard from "../Event/EventCard";
+import EventCard from "./EventCard";
 
-const MainFeed = () => {
+const EventPage = () => {
   const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
 
   const [eventList, setEventList] = useState();
   const [searchEvent, setSearchEvent] = useState();
 
+  // subscribe to events whose startingTime is later than now
   useEffect(() => {
-    const eventRef = firestore()
-      .collection("event")
-      .where("startingTime", ">=", Date.now())
-      .orderBy("startingTime")
-      .limitToLast(100);
-    const unsubscribeEventList = eventRef.onSnapshot((snap) => {
-      let tmp = [];
-      snap.forEach((doc) => tmp.push(doc.id));
-      setEventList(tmp);
-    });
-    return () => {
-      unsubscribeEventList();
-    };
-  }, []);
+    if (userData) {
+      const eventRef = firestore()
+        .collection("event")
+        .where("startingTime", ">=", Date.now())
+        .orderBy("startingTime")
+        .limitToLast(100);
+      const unsubscribeEventList = eventRef.onSnapshot((snap) => {
+        let tmp = [];
+        snap.forEach((doc) => tmp.push(doc.id));
+        setEventList(tmp);
+      });
+      return () => {
+        unsubscribeEventList();
+      };
+    }
+  }, [userData]);
 
-  if (userLoading) {
+  // render
+  if (userLoading || !eventList) {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
-  } else if (!eventList) {
-    return <Loading />;
   } else {
     return (
       <div style={theme.background}>
@@ -44,16 +46,15 @@ const MainFeed = () => {
         <Jumbotron style={theme.jumbotron}>
           <h1>Dubby</h1>
           <p>Find an event to join!</p>
-          <Form onSubmit={(e) => e.preventDefault()}>
-            <Input
-              placeholder="Type in the type of sports you want to search..."
-              onChange={(e) => setSearchEvent(e.target.value)}
-            />
-          </Form>
+          <Input
+            bsSize="sm"
+            placeholder="Type in the type of sports you want to search..."
+            onChange={(e) => setSearchEvent(e.target.value)}
+          />
         </Jumbotron>
-        <div style={{ padding: "1rem" }}>
-          {eventList &&
-            eventList.length > 0 &&
+
+        <div style={theme.mainContainer}>
+          {eventList.length > 0 &&
             eventList.map((eid) => (
               <EventCard searchString={searchEvent} key={eid} eid={eid} />
             ))}
@@ -63,4 +64,4 @@ const MainFeed = () => {
   }
 };
 
-export default MainFeed;
+export default EventPage;

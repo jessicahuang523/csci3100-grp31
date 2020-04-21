@@ -8,12 +8,13 @@ import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import EventCard from "../Event/EventCard";
 
-const EventPage = () => {
+const MainFeed = () => {
   const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
 
   const [userEventList, setUserEventList] = useState();
 
+  // subscribe to events user participate in from /user_profile/{uid}/events
   useEffect(() => {
     if (userData) {
       const { uid } = userData;
@@ -33,12 +34,11 @@ const EventPage = () => {
     }
   }, [userData]);
 
-  if (userLoading) {
+  // render
+  if (userLoading || !userEventList) {
     return <Loading />;
   } else if (!userData) {
     return <Redirect to="/launch" />;
-  } else if (!userEventList) {
-    return <Loading />;
   } else {
     return (
       <div style={theme.background}>
@@ -46,15 +46,13 @@ const EventPage = () => {
         <Jumbotron style={theme.jumbotron}>
           <h1>My Events</h1>
           <p>Events I joined or hosted by me!</p>
-          <hr />
-          <Button block color="primary" tag={Link} to="/e/add">
-            Create a new event!
+          <Button size="sm" color="success" tag={Link} to="/e/add">
+            <i className="fas fa-plus"></i> New Event!
           </Button>
         </Jumbotron>
 
-        <div style={{ padding: "1rem" }}>
-          {userEventList &&
-            userEventList.length > 0 &&
+        <div style={theme.mainContainer}>
+          {userEventList.length > 0 &&
             userEventList.map((event) => (
               <EventCard key={event.eid} eid={event.eid} />
             ))}
@@ -64,4 +62,4 @@ const EventPage = () => {
   }
 };
 
-export default EventPage;
+export default MainFeed;
