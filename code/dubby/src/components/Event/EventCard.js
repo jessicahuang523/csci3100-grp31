@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { GymContext } from "../../contexts/GymContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
 import { Link } from "react-router-dom";
 import { firestore, auth } from "firebase";
@@ -17,6 +18,7 @@ import ProfileHead from "../Profile/ProfileHead";
 
 const EventCard = ({ eid, searchString }) => {
   const { gymData } = useContext(GymContext);
+  const { isPrimaryTheme } = useContext(ThemeContext);
   const { eventTypeData } = useContext(EventTypeContext);
 
   const [eventData, setEventData] = useState();
@@ -128,7 +130,12 @@ const EventCard = ({ eid, searchString }) => {
     const { eventName, startingTime, allowedPeople, eid } = eventData;
     const { uid } = auth().currentUser;
     return (
-      <Card body style={{ marginBottom: "1rem" }}>
+      <Card
+        body
+        inverse={!isPrimaryTheme}
+        color={!isPrimaryTheme ? "dark" : null}
+        style={{ marginBottom: "1rem" }}
+      >
         <CardTitle>
           {eventParticipants.find((p) => p.uid === uid) && (
             <Badge pill color="info">

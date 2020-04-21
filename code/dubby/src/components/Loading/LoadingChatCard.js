@@ -1,17 +1,16 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { Card } from "reactstrap";
 
 const LoadingChatCard = () => {
+  const { isPrimaryTheme } = useContext(ThemeContext);
+
   return (
     <Card
       body
-      inverse
-      style={{
-        backgroundColor: "#eee",
-        height: "100px",
-        border: "none",
-        marginBottom: "1rem"
-      }}
+      inverse={!isPrimaryTheme}
+      color={!isPrimaryTheme ? "dark" : null}
+      style={{ height: "90px", marginBottom: "0.5rem" }}
     ></Card>
   );
 };

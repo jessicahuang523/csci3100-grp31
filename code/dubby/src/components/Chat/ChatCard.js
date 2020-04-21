@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import { firestore } from "firebase";
 import { Card, CardText, Badge } from "reactstrap";
 import LoadingChatCard from "../Loading/LoadingChatCard";
@@ -8,6 +9,7 @@ import ProfileHead from "../Profile/ProfileHead";
 
 const ChatCard = ({ chatData }) => {
   const { userData } = useContext(UserContext);
+  const { isPrimaryTheme } = useContext(ThemeContext);
 
   const [chatParticipants, setChatParticipants] = useState();
   const [chatParticipantData, setchatParticipantData] = useState();
@@ -92,7 +94,13 @@ const ChatCard = ({ chatData }) => {
         : chatData.title;
     return (
       <div className="chat-card" style={{ marginBottom: "0.5rem" }}>
-        <Card body tag={Link} to={`/c/${cid}`}>
+        <Card
+          body
+          inverse={!isPrimaryTheme}
+          color={!isPrimaryTheme ? "dark" : null}
+          tag={Link}
+          to={`/c/${cid}`}
+        >
           <div
             style={{
               display: "grid",
