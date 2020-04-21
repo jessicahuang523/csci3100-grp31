@@ -39,20 +39,23 @@ const EditGymImage = ({ image_main }) => {
   };
 
   return (
-    <div style = {{display: "flex"}}>
+    <div style = {{display: "relative"}}>
       <Form onSubmit={handleUploadImage}>
-        <Input style = {{margin: "15px", width: "300px"}}
+        <label htmlFor="gmypic">Upload a picture and let your mates see how crowded the gym is:</label>
+        <Input id = "gympic" style = {{margin: "15px", width: "300px"}}
           type="file"
           accept="image/x-png,image/gif,image/jpeg"
           onChange={handleImageInputChange}
         />
-        <Button color="primary" type="submit" style = {{margin: "25px", padding: "10 15 10 50px"}}>
+        <Button color="info" block size = "sm" type="submit" style = {{marginBottom: "1rem"}}>
           Upload
         </Button>
       </Form>
+      <div style = {{display: "inline-block"}}>
       {url ? (
-        <Media src={url} alt={image_main} style={{ width: "15rem", position: "right", borderStyle: "outset",}} />
+        <Media src={url} alt={image_main} style={{ width: "15rem", position: "inline-block", borderStyle: "outset",}} />
       ) : null}
+      </div>
     </div>
   );
 };
