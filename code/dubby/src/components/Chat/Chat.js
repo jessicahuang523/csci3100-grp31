@@ -214,7 +214,11 @@ export const Chat = () => {
               </Button>
             )}
           </ButtonGroup>
-          <Modal isOpen={modalOpen} toggle={handleModalToggle}>
+          <Modal
+            returnFocusAfterClose={false}
+            isOpen={modalOpen}
+            toggle={handleModalToggle}
+          >
             <Form onSubmit={handleAddFriendToChat}>
               <ModalHeader toggle={handleModalToggle}>
                 Invite Friends

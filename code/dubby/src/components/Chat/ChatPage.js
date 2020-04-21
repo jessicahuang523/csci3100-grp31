@@ -147,7 +147,11 @@ const ChatPage = () => {
           </ButtonGroup>
 
           {/* modal for creating private chat */}
-          <Modal isOpen={privateModalOpen} toggle={togglePrivateModalOpen}>
+          <Modal
+            returnFocusAfterClose={false}
+            isOpen={privateModalOpen}
+            toggle={togglePrivateModalOpen}
+          >
             <ModalHeader toggle={togglePrivateModalOpen}>
               Private Chat
             </ModalHeader>
@@ -168,12 +172,20 @@ const ChatPage = () => {
           </Modal>
 
           {/* modal when chat is being created so users won't click on other things */}
-          <Modal isOpen={creatingOpen} fade={false}>
+          <Modal
+            returnFocusAfterClose={false}
+            isOpen={creatingOpen}
+            fade={false}
+          >
             <ModalBody>Creating...</ModalBody>
           </Modal>
 
           {/* modal for creating group chat */}
-          <Modal isOpen={groupModalOpen} toggle={toggleGroupModalOpen}>
+          <Modal
+            returnFocusAfterClose={false}
+            isOpen={groupModalOpen}
+            toggle={toggleGroupModalOpen}
+          >
             <Form onSubmit={handleGroupCreateChat}>
               <ModalHeader toggle={toggleGroupModalOpen}>
                 Group Chat
