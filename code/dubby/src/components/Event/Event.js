@@ -23,8 +23,9 @@ import {
 import Loading from "../Loading/Loading";
 import NavBar from "../Navbar/Navbar";
 import {
-  addParticipantToEvent,
   deleteEvent,
+  addParticipantToEvent,
+  inviteParticipantToEvent,
 } from "../../utilityfunctions/Utilities";
 import ProfileHead from "../Profile/ProfileHead";
 import UserList from "../Friend/UserList";
@@ -152,7 +153,7 @@ const Event = () => {
     e.preventDefault();
     setAddParticipantLoading(true);
     for (const uid of selectedFriendData) {
-      await addParticipantToEvent({ eid, uid, status: "joined" });
+      await inviteParticipantToEvent({ eid, uid });
     }
     setSelectedFriendData([]);
     toggleInviteModal();
@@ -214,9 +215,14 @@ const Event = () => {
           <Badge pill color="secondary">
             <i className={foundTypeData.icon}></i> {foundTypeData.display}
           </Badge>
-          {eventParticipants.find((x) => x.uid === uid) && (
+          {eventParticipants.find((p) => p.uid === uid) &&
+          eventParticipants.find((p) => p.uid === uid).status === "joined" ? (
             <Badge pill color="info">
               Joined
+            </Badge>
+          ) : (
+            <Badge pill color="dark">
+              Invited
             </Badge>
           )}
           {eventData.isPublic || (
@@ -230,21 +236,25 @@ const Event = () => {
             </Badge>
           )}
           <h1>{eventData.eventName}</h1>
-          <ButtonGroup>
-            <Button
-              size="sm"
-              color="success"
-              onClick={toggleParticipantCollapse}
-            >
-              Participants
-            </Button>
-            <Button size="sm" onClick={toggleInviteModal}>
-              Invite Friends
-            </Button>
-          </ButtonGroup>
-          <Collapse isOpen={participantCollapse}>
-            <UserList users={eventParticipants} />
-          </Collapse>
+          {eventParticipants.find((x) => x.uid === uid) && (
+            <ButtonGroup>
+              <Button
+                size="sm"
+                color="success"
+                onClick={toggleParticipantCollapse}
+              >
+                Participants
+              </Button>
+              <Button size="sm" onClick={toggleInviteModal}>
+                Invite Friends
+              </Button>
+            </ButtonGroup>
+          )}
+          {eventParticipants.find((x) => x.uid === uid) && (
+            <Collapse isOpen={participantCollapse}>
+              <UserList users={eventParticipants} />
+            </Collapse>
+          )}
         </Jumbotron>
 
         {/* modal to confirm delete event*/}

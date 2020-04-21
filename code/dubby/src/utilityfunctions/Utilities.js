@@ -274,6 +274,36 @@ export const addParticipantToEvent = async ({ eid, uid, status }) => {
   }
 };
 
+// same as addParticipantToEvent, but
+// does not write user to event participants
+// this only adds event data to target user's event data
+// with status "invited"
+export const inviteParticipantToEvent = async ({ eid, uid }) => {
+  if (auth().currentUser && eid && uid) {
+    const eventDataRef = firestore().collection("event").doc(eid);
+    const userDataRef = firestore().collection("user_profile").doc(uid);
+    const eventDataSnap = await eventDataRef.get();
+    const userDataSnap = await userDataRef.get();
+    if (eventDataSnap.exists && userDataSnap.exists) {
+      const { username, uid } = userDataSnap.data();
+      // const { cid } = eventDataSnap.data();
+      await eventDataRef
+        .collection("participants")
+        .doc(uid)
+        .set({ username, uid, status: "invited" });
+      await userDataRef
+        .collection("events")
+        .doc(eid)
+        .set({
+          eid,
+          status: "invited",
+          ...eventDataSnap.data(),
+        });
+      // await addParticipantToChat({ cid, uid });
+    }
+  }
+};
+
 // sends friend request and writes friend data in sent_friend_request of user,
 // writes user data in received_friend_request of target
 // this now makes sure request is sent only once
@@ -443,6 +473,9 @@ export const uploadProfileImage = async ({ imageFile, setUploadProgress }) => {
   }
 };
 
+// sends chat message given cid and inputMessage
+// checks if chatParticipants contain sender by uid
+// updates lastModified in chatData
 export const sendChatMessage = async ({
   cid,
   inputMessage,
@@ -455,9 +488,7 @@ export const sendChatMessage = async ({
       const toSend = {
         text: inputMessage.trim(),
         created_at: Date.now(),
-        sender: {
-          uid,
-        },
+        sender: { uid },
       };
       firestore()
         .collection("chat")
