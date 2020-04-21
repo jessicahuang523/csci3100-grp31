@@ -17,6 +17,8 @@ import {
   unfriendFriend,
   removeFriendRequest,
 } from "../../utilityfunctions/Utilities";
+import FormGroup from "reactstrap/es/FormGroup";
+import Label from "reactstrap/es/Label";
 
 const ProfilePage = () => {
   const { uid } = useParams();
@@ -65,11 +67,29 @@ const ProfilePage = () => {
     setProfileData(newProfileData);
   };
 
-  const handleInterestedSportsEdit = (e) => {
-    const selected = e.target.querySelectorAll("option:checked");
-    const values = Array.from(selected).map((o) => o.label);
-    handleProfileDataEdit("interested_sports", values);
+  // const handleInterestedSportsEdit = (e) => {
+  //   const selected = e.target.querySelectorAll("option:checked");
+  //   const values = Array.from(selected).map((o) => o.label);
+  //   handleProfileDataEdit("interested_sports", values);
+  // };
+
+  const values = []
+  const handleInterestedSportsEdit2 = (e) => {
+    let index
+
+    if (e.target.checked) {
+      values.push(e.target.value)
+    } else {
+      index = values.indexOf(e.target.value)
+      values.splice(index, 1)
+    }
+    console.log(values)
+
   };
+
+  const saveListener = (e) => {
+    handleProfileDataEdit("interested_sports", values);
+  }
 
   if (userLoading) {
     return <Loading />;
@@ -114,22 +134,31 @@ const ProfilePage = () => {
                 />
                 <h2 style={{ marginTop: "50px" }}>Sports</h2>
                 <hr />
-                <Input
-                  type="select"
-                  multiple="multiple"
-                  onChange={handleInterestedSportsEdit}
-                >
+                {/*<Input*/}
+                {/*  type="select"*/}
+                {/*  multiple="multiple"*/}
+                {/*  onChange={handleInterestedSportsEdit}*/}
+                {/*>*/}
+                {/*  {eventTypeData.map(({ value, display }) => (*/}
+                {/*    <option key={value} value={value}>*/}
+                {/*      {display}*/}
+                {/*    </option>*/}
+                {/*  ))}*/}
+                {/*</Input>*/}
+                <FormGroup style = {{ textAlign: "left", display: "relative"}}>
                   {eventTypeData.map(({ value, display }) => (
-                    <option key={value} value={value}>
-                      {display}
-                    </option>
+                      <ul key={value.toString()}>
+                        <Label check key={value.toString()} style = {{ textAlign: "left", display: "inline-block"}}>
+                          <Input type="checkbox" onChange={handleInterestedSportsEdit2} key = {value} value={value} /> {display}
+                        </Label>
+                      </ul>
                   ))}
-                </Input>
+                </FormGroup>
                 <hr />
                 <EditProfileImage />
                 <hr />
-                <Button block type="submit">
-                  {profileData !== userData ? "Save" : "Cancel"}
+                <Button block type="submit" onClick={saveListener}>
+                  {"Save"}
                 </Button>
               </Form>
             </Col>
