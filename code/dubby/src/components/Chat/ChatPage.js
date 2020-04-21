@@ -34,6 +34,7 @@ const ChatPage = () => {
   // modal open data for chat creation
   const [privateModalOpen, setPrivateModalOpen] = useState(false);
   const [groupModalOpen, setGroupModalOpen] = useState(false);
+  const [creatingOpen, setCreatingOpen] = useState(false);
   // select friends when creating group chat
   const [selectedFriendData, setSelectedFriendData] = useState([]);
   // chat name for group chat
@@ -66,10 +67,13 @@ const ChatPage = () => {
   // toggles for chat creation modals
   const togglePrivateModalOpen = () => setPrivateModalOpen(!privateModalOpen);
   const toggleGroupModalOpen = () => setGroupModalOpen(!groupModalOpen);
+  const toggleCreatingOpen = () => setCreatingOpen(!creatingOpen);
 
   const handlePrivateCreateChat = async ({ targetUid }) => {
     if (targetUid) {
+      toggleCreatingOpen();
       const { cid } = await setupFirestoreForNewPrivateChat({ targetUid });
+      toggleCreatingOpen();
       setChatCreatedCid(cid);
     }
   };
@@ -78,8 +82,10 @@ const ChatPage = () => {
     e.preventDefault();
     if (selectedFriendData && chatName) {
       setCreateChatPrompt(" Creating...");
+      toggleCreatingOpen();
       const users = [userData, ...selectedFriendData.map((d) => ({ uid: d }))];
       const { cid } = await setupFirestoreForNewGroupChat({ users, chatName });
+      toggleCreatingOpen();
       setChatCreatedCid(cid);
     }
   };
@@ -116,7 +122,6 @@ const ChatPage = () => {
         <Navbar />
         <Jumbotron style={theme.jumbotron}>
           <h1>Chats</h1>
-          <hr />
           {/* <button
             onClick={(e) => {
               console.log("begin delete");
@@ -132,12 +137,12 @@ const ChatPage = () => {
           </button> */}
 
           {/* top chat creation buttons */}
-          <ButtonGroup>
-            <Button color="primary" onClick={togglePrivateModalOpen}>
-              New Private Chat
+          <ButtonGroup size="sm">
+            <Button color="success" onClick={togglePrivateModalOpen}>
+              <i className="fas fa-plus"></i> Private Chat
             </Button>
             <Button color="info" onClick={toggleGroupModalOpen}>
-              New Group Chat
+              <i className="fas fa-plus"></i> Group Chat
             </Button>
           </ButtonGroup>
 
@@ -149,7 +154,7 @@ const ChatPage = () => {
             <ModalBody>
               <UserList
                 users={friendListData}
-                heading="To..."
+                heading="Click to chat"
                 action={handlePrivateCreateChat}
                 actionIcon="fas fa-comment-dots"
                 actionColor="primary"
@@ -157,9 +162,14 @@ const ChatPage = () => {
             </ModalBody>
             <ModalFooter>
               <Button color="secondary" onClick={togglePrivateModalOpen}>
-                Done
+                Cancel
               </Button>
             </ModalFooter>
+          </Modal>
+
+          {/* modal when chat is being created so users won't click on other things */}
+          <Modal isOpen={creatingOpen} fade={false}>
+            <ModalBody>Creating...</ModalBody>
           </Modal>
 
           {/* modal for creating group chat */}

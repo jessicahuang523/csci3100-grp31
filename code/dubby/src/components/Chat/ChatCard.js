@@ -129,7 +129,7 @@ const ChatCard = ({ chatData }) => {
                   <b>{title}</b>
                   <span>
                     {chatData.type === "private" && (
-                      <Badge pill color="primary">
+                      <Badge pill color="success">
                         <i className={icon}></i> Private
                       </Badge>
                     )}
