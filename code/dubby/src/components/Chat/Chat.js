@@ -26,7 +26,7 @@ import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import UserList from "../Friend/UserList";
 import ProfileHead from "../Profile/ProfileHead";
-import { sendChatMessage } from "../../utilityfunctions/Utilities";
+import { sendChatMessage, addParticipantToChat } from "../../utilityfunctions/Utilities";
 
 export const Chat = () => {
   const { cid } = useParams();
@@ -130,15 +130,10 @@ export const Chat = () => {
 
   const handleAddFriendToChat = (e) => {
     e.preventDefault();
-    console.log(
-      friendListData.map(({ uid }) => uid),
-      chatParticipantData.map(({ uid }) => uid),
-      friendListData.filter(
-        (f) =>
-          typeof chatParticipantData.find((p) => f.uid === p.uid) ===
-          "undefined"
-      )
-    );
+    for (const uid of selectedFriendData){
+      addParticipantToChat({ cid, uid });
+    }
+    setSelectedFriendData([]);
   };
 
   const handleSelectFriend = ({ targetUid }) => {
