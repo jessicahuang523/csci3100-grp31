@@ -36,7 +36,7 @@ const Event = () => {
   const { theme } = useContext(ThemeContext);
   const { gymData } = useContext(GymContext);
   const { eventTypeData } = useContext(EventTypeContext);
-  const { userData, userLoading } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const { friendListData } = useContext(FriendContext);
 
   // fetched event data from /event/{eid}
@@ -195,7 +195,6 @@ const Event = () => {
 
   // render
   if (
-    userLoading ||
     eventDeleteLoading ||
     joinLoading ||
     addParticipantLoading ||
@@ -205,8 +204,6 @@ const Event = () => {
     !friendListData
   ) {
     return <Loading />;
-  } else if (!userData) {
-    return <Redirect to="/launch" />;
   } else if (noEventRedirect) {
     return <Redirect to="/e" />;
   } else {

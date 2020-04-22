@@ -26,13 +26,16 @@ import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import UserList from "../Friend/UserList";
 import ProfileHead from "../Profile/ProfileHead";
-import { sendChatMessage, addParticipantToChat } from "../../utilityfunctions/Utilities";
+import {
+  sendChatMessage,
+  addParticipantToChat,
+} from "../../utilityfunctions/Utilities";
 
 export const Chat = () => {
   const { cid } = useParams();
 
   const { theme } = useContext(ThemeContext);
-  const { userData, userLoading } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const { friendListData } = useContext(FriendContext);
 
   const [chatData, setChatData] = useState();
@@ -130,7 +133,7 @@ export const Chat = () => {
 
   const handleAddFriendToChat = (e) => {
     e.preventDefault();
-    for (const uid of selectedFriendData){
+    for (const uid of selectedFriendData) {
       addParticipantToChat({ cid, uid });
     }
     setSelectedFriendData([]);
@@ -154,16 +157,8 @@ export const Chat = () => {
   };
 
   // render
-  if (
-    userLoading ||
-    !chatData ||
-    !chatMessages ||
-    !chatParticipantData ||
-    !friendListData
-  ) {
+  if (!chatData || !chatMessages || !chatParticipantData || !friendListData) {
     return <Loading />;
-  } else if (!userData) {
-    return <Redirect to="/launch" />;
   } else if (chatParticipants && !chatAuthorized) {
     return <Redirect to="/c" />;
   } else {

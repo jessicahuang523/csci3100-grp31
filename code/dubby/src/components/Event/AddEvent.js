@@ -41,7 +41,7 @@ const AddEvent = () => {
   const { theme } = useContext(ThemeContext);
   const { gymData } = useContext(GymContext);
   const { eventTypeData } = useContext(EventTypeContext);
-  const { userData, userLoading } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   // data to be submitted
   const [allowedPeople, setAllowedPeople] = useState();
@@ -116,13 +116,7 @@ const AddEvent = () => {
   };
 
   // render
-  if (userLoading) {
-    return <Loading />;
-  } else if (!userData) {
-    return <Redirect to="/launch" />;
-  } else if (!gymData || !eventTypeData) {
-    return <Loading />;
-  } else if (submittingEventData) {
+  if (!gymData || !eventTypeData || submittingEventData) {
     return <Loading />;
   } else if (eventSubmittedEid) {
     return <Redirect to={`/e/${eventSubmittedEid}`} />;

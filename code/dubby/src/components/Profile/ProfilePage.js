@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { auth, firestore } from "firebase";
-import { useParams, Redirect } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { FriendContext } from "../../contexts/FriendContext";
@@ -37,7 +37,7 @@ const ProfilePage = () => {
 
   const { theme } = useContext(ThemeContext);
   const { eventTypeData } = useContext(EventTypeContext);
-  const { userData, userLoading } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const { friendContextLoaded } = useContext(FriendContext);
 
   // loaded user data which gets updated in editing mode
@@ -115,11 +115,7 @@ const ProfilePage = () => {
   };
 
   // render
-  if (userLoading) {
-    return <Loading />;
-  } else if (!userData) {
-    return <Redirect to="/launch" />;
-  } else if (!profileData || !eventTypeData || !friendContextLoaded) {
+  if (!profileData || !eventTypeData || !friendContextLoaded) {
     return <Loading />;
   } else if (uid !== auth().currentUser.uid && isEditable) {
     // Editing mode

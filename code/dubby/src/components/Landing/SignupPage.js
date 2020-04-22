@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { auth } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
@@ -23,7 +23,7 @@ import LoadingUserCreation from "../Loading/LoadingUserCreation";
 
 const SignupPage = () => {
   const { theme } = useContext(ThemeContext);
-  const { userData, userLoading } = useContext(UserContext);
+  const { userLoading } = useContext(UserContext);
 
   // inputs updated from form
   const [inputEmail, setInputEmail] = useState();
@@ -54,9 +54,7 @@ const SignupPage = () => {
 
   // render
   if (userLoading) {
-    return <Loading />;
-  } else if (userData) {
-    return <Redirect to="/" />;
+    return <Loading to="/" />;
   } else if (dataCreationLoading) {
     return <LoadingUserCreation />;
   } else {

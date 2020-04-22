@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
@@ -10,7 +10,7 @@ import EventCard from "../Event/EventCard";
 
 const MainFeed = () => {
   const { theme } = useContext(ThemeContext);
-  const { userData, userLoading } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   // list of events for current user from /user_profile/{uid}/events
   const [userEventList, setUserEventList] = useState();
@@ -36,10 +36,8 @@ const MainFeed = () => {
   }, [userData]);
 
   // render
-  if (userLoading || !userEventList) {
+  if (!userEventList) {
     return <Loading />;
-  } else if (!userData) {
-    return <Redirect to="/launch" />;
   } else {
     return (
       <div style={theme.background}>

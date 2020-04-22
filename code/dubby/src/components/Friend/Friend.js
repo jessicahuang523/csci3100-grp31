@@ -1,7 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Redirect } from "react-router-dom";
 import { firestore } from "firebase";
-import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { FriendContext } from "../../contexts/FriendContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
@@ -29,7 +27,6 @@ import {
 const Friend = () => {
   const { theme } = useContext(ThemeContext);
   const { eventTypeData } = useContext(EventTypeContext);
-  const { userData, userLoading } = useContext(UserContext);
   const {
     sentRequestData,
     receivedRequestData,
@@ -78,11 +75,7 @@ const Friend = () => {
   };
 
   // render
-  if (userLoading) {
-    return <Loading />;
-  } else if (!userData) {
-    return <Redirect to="/launch" />;
-  } else if (!friendContextLoaded || !eventTypeData) {
+  if (!friendContextLoaded || !eventTypeData) {
     return <Loading />;
   } else {
     return (

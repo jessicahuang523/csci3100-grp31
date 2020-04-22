@@ -22,7 +22,7 @@ import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import EditGymImage from "./EditGymImage";
 import EditScheduleImage from "./EditScheduleImage";
-import {ThemeContext} from "../../contexts/ThemeContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 
 const GymPage = () => {
   const { theme } = useContext(ThemeContext);
@@ -36,13 +36,13 @@ const GymPage = () => {
   };
 
   if (!gymData) {
-    return <Loading />;
+    return <Loading noauth />;
   } else {
     return (
-        <div style={theme.background}>
+      <div style={theme.background}>
         <NavBar />
         <Container>
-          <Nav tabs style = {{marginTop: "4rem"}}>
+          <Nav tabs style={{ marginTop: "4rem" }}>
             <NavItem>
               <NavLink
                 style={{ backgroundColor: "#cc33ff" }}
@@ -76,7 +76,7 @@ const GymPage = () => {
               <Row>
                 <Col sm={12}>
                   {gymData.map((data) => (
-                    <GymListItem key={data.value} data={data}/>
+                    <GymListItem key={data.value} data={data} />
                   ))}
                 </Col>
               </Row>
@@ -115,16 +115,17 @@ const GymPage = () => {
 const GymListItem = ({ data }) => {
   const { display, image_main, description } = data;
   return (
-    <Card style = {{marginBottom: "3rem"}}>
+    <Card style={{ marginBottom: "3rem" }}>
       <CardHeader>{display}</CardHeader>
       <CardBody>{description}</CardBody>
-      <CardFooter style={{ boxShadow: "5px 10px #999999", textAlign: "center" }}>
+      <CardFooter
+        style={{ boxShadow: "5px 10px #999999", textAlign: "center" }}
+      >
         <EditGymImage image_main={image_main} />
         <EditScheduleImage image_main={image_main} />
       </CardFooter>
     </Card>
   );
 };
-
 
 export default GymPage;

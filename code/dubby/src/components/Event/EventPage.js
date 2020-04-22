@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Redirect } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
@@ -16,7 +15,7 @@ import EventCard from "./EventCard";
 
 const EventPage = () => {
   const { theme } = useContext(ThemeContext);
-  const { userData, userLoading } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   const [eventList, setEventList] = useState();
   const [searchEvent, setSearchEvent] = useState();
@@ -41,10 +40,8 @@ const EventPage = () => {
   }, [userData]);
 
   // render
-  if (userLoading || !eventList) {
+  if (!eventList) {
     return <Loading />;
-  } else if (!userData) {
-    return <Redirect to="/launch" />;
   } else {
     return (
       <div style={theme.background}>

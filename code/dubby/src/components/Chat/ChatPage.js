@@ -28,7 +28,7 @@ import {
 const ChatPage = () => {
   const { theme } = useContext(ThemeContext);
   const { friendListData } = useContext(FriendContext);
-  const { userData, userLoading } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   const [chatListData, setChatListData] = useState();
   // modal open data for chat creation
@@ -110,10 +110,8 @@ const ChatPage = () => {
   };
 
   // render
-  if (userLoading || !chatListData || !friendListData) {
+  if (!chatListData || !friendListData) {
     return <Loading />;
-  } else if (!userData) {
-    return <Redirect to="/launch" />;
   } else if (chatCreatedCid) {
     return <Redirect to={`/c/${chatCreatedCid}`} />;
   } else {
