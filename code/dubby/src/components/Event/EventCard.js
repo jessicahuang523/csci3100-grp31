@@ -168,46 +168,55 @@ const EventCard = ({ eid, searchString }) => {
     const parsedStartingTime = parseTimeDisplay(startingTime);
 
     return (
-      <Card
-        body
-        inverse={!isPrimaryTheme}
-        color={!isPrimaryTheme ? "dark" : null}
-        style={{ marginBottom: "1rem" }}
-      >
-        <CardSubtitle>
-          <Badge pill color="secondary">
-            <i className={foundTypeData.icon}></i> {foundTypeData.display}
-          </Badge>
-          {eventParticipants.find((p) => p.uid === uid) &&
-          eventParticipants.find((p) => p.uid === uid).status === "joined" ? (
-            <Badge pill color="info">
-              Joined
+      <div className="event-card" style={{ marginBottom: "1rem" }}>
+        <Card
+          body
+          tag={Link}
+          to={`/e/${eid}`}
+          inverse={!isPrimaryTheme}
+          color={!isPrimaryTheme ? "dark" : null}
+        >
+          <CardSubtitle>
+            <Badge pill color="secondary">
+              <i className={foundTypeData.icon}></i> {foundTypeData.display}
             </Badge>
-          ) : (
-            <Badge pill color="dark">
-              Invited
-            </Badge>
-          )}
-          {eventData.isPublic || (
-            <Badge pill color="success">
-              Private
-            </Badge>
-          )}
-          {hostUserData.uid === uid && (
-            <Badge pill color="warning">
-              Hosting
-            </Badge>
-          )}
-        </CardSubtitle>
-        <CardTitle>
-          <b>{eventName}</b>
-        </CardTitle>
-        <CardSubtitle>{foundLocationData.display_short}</CardSubtitle>
-        <CardText>Starting at {parsedStartingTime}</CardText>
-        <CardText>
-          Vacancy: {vacancy}/{allowedPeople}
-        </CardText>
-        <ButtonGroup size="sm">
+            {eventParticipants.find((p) => p.uid === uid) &&
+            eventParticipants.find((p) => p.uid === uid).status === "joined" ? (
+              <Badge pill color="info">
+                Joined
+              </Badge>
+            ) : (
+              <Badge pill color="dark">
+                Invited
+              </Badge>
+            )}
+            {eventData.isPublic || (
+              <Badge pill color="success">
+                Private
+              </Badge>
+            )}
+            {hostUserData.uid === uid && (
+              <Badge pill color="warning">
+                Hosting
+              </Badge>
+            )}
+          </CardSubtitle>
+          <br />
+          <CardTitle tag="h3">
+            <b>{eventName}</b>
+          </CardTitle>
+          <CardText>
+            {foundLocationData.display_short}
+            <br />
+            Starting at {parsedStartingTime}
+            <br />
+            Vacancy: {vacancy}/{allowedPeople}
+          </CardText>
+          <CardSubtitle>
+            <ProfileHead size="inline" src={hostUserData.profileImageSrc} />{" "}
+            {hostUserData.username}
+          </CardSubtitle>
+          {/* <ButtonGroup size="sm">
           <Button
             tag={Link}
             to={`/e/${eid}`}
@@ -223,8 +232,9 @@ const EventCard = ({ eid, searchString }) => {
             <ProfileHead size="inline" src={hostUserData.profileImageSrc} />{" "}
             {hostUserData.username}
           </Button>
-        </ButtonGroup>
-      </Card>
+        </ButtonGroup> */}
+        </Card>
+      </div>
     );
   }
 };

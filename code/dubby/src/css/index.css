@@ -23,6 +23,12 @@ i {
   display: none;
 }
 
+/* EventCard link */
+.event-card a {
+  color: currentColor;
+  text-decoration: none;
+}
+
 /* ChatCard link */
 .chat-card a {
   color: currentColor;
