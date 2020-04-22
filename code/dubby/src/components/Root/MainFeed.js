@@ -54,11 +54,7 @@ const MainFeed = () => {
         <div style={theme.mainContainer}>
           {userEventList.length > 0 &&
             userEventList.map((event) => (
-              <EventCard
-                key={event.eid}
-                eid={event.eid}
-                invited={event.status === "invited"}
-              />
+              <EventCard key={event.eid} eid={event.eid} />
             ))}
         </div>
       </div>

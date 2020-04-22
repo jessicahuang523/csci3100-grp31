@@ -28,6 +28,9 @@ const EventCard = ({ eid, searchString }) => {
   const [foundLocationData, setFoundLocationData] = useState();
   const [matchSearchResult, setMatchSearchResult] = useState(true);
 
+  // subscribe to event data from /event/{eid}
+  // and participant data from /event/{eid}/participants
+  // updates eventData and eventParticipants
   useEffect(() => {
     if (eid) {
       const eventRef = firestore().collection("event").doc(eid);
@@ -48,6 +51,8 @@ const EventCard = ({ eid, searchString }) => {
     }
   }, [eid]);
 
+  // loads data for type and location given eventData and type/gym contexts
+  // updates foundTypeData and foundLocationData
   useEffect(() => {
     if (eventData && eventTypeData && gymData) {
       setFoundTypeData(
@@ -57,6 +62,8 @@ const EventCard = ({ eid, searchString }) => {
     }
   }, [eventData, eventTypeData, gymData]);
 
+  // subscribe to data for host user from /user_profile/{eventData.hostUid}
+  // updates hostUserData
   useEffect(() => {
     if (eventData) {
       const userRef = firestore()
@@ -71,6 +78,8 @@ const EventCard = ({ eid, searchString }) => {
     }
   }, [eventData]);
 
+  // checks if this event should be displayed given search string
+  // updates matchSearchResult
   useEffect(() => {
     setMatchSearchResult(true);
     try {
@@ -112,6 +121,7 @@ const EventCard = ({ eid, searchString }) => {
     foundLocationData,
   ]);
 
+  // display string given event starting time
   const parseTimeDisplay = (time) => {
     const st = new Date(time);
     const stt = st.toLocaleTimeString();
@@ -137,6 +147,7 @@ const EventCard = ({ eid, searchString }) => {
     return <LoadingEventCard />;
   } else if (
     !matchSearchResult ||
+    // don't display if private and participants doesn't contain current user
     (!eventParticipants.find((p) => p.uid === auth().currentUser.uid) &&
       !eventData.isPublic)
   ) {
@@ -144,12 +155,15 @@ const EventCard = ({ eid, searchString }) => {
   } else {
     const { eventName, startingTime, allowedPeople, eid } = eventData;
     const { uid } = auth().currentUser;
+    const joinedParticipants = eventParticipants.filter(
+      ({ status }) => status !== "invited"
+    );
     const vacancy =
       allowedPeople -
-        (eventParticipants.length ? eventParticipants.length : 0) >
+        (joinedParticipants.length ? joinedParticipants.length : 0) >
       0
         ? allowedPeople -
-          (eventParticipants.length ? eventParticipants.length : 0)
+          (joinedParticipants.length ? joinedParticipants.length : 0)
         : 0;
     const parsedStartingTime = parseTimeDisplay(startingTime);
 

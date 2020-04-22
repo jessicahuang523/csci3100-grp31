@@ -212,12 +212,15 @@ const Event = () => {
   } else {
     const { eventName, startingTime, allowedPeople, isPublic, cid } = eventData;
     const { uid } = userData;
+    const joinedParticipants = eventParticipants.filter(
+      ({ status }) => status !== "invited"
+    );
     const vacancy =
       allowedPeople -
-        (eventParticipants.length ? eventParticipants.length : 0) >
+        (joinedParticipants.length ? joinedParticipants.length : 0) >
       0
         ? allowedPeople -
-          (eventParticipants.length ? eventParticipants.length : 0)
+          (joinedParticipants.length ? joinedParticipants.length : 0)
         : 0;
     const parsedStartingTime = parseTimeDisplay(startingTime);
 
@@ -352,19 +355,20 @@ const Event = () => {
               </Button>
             </Col>
             <Col sm={{ size: 6 }}>
-              {eventParticipants.find((x) => x.uid === uid) ? (
+              {eventParticipants.find((x) => x.uid === uid) &&
+              eventParticipants.find((p) => p.uid === uid).status ===
+                "joined" ? (
                 <Button block color="success" tag={Link} to={`/c/${cid}`}>
-                  <i className="fas fa-comment-dots"></i>
-                  Chat!
+                  <i className="fas fa-comment-dots"></i> Chat!
                 </Button>
               ) : (
                 <Button block onClick={handleJoinButtonClick}>
-                  Join
+                  <i className="fas fa-plus"></i> Join
                 </Button>
               )}
             </Col>
           </Row>
-          <hr />{" "}
+          <hr />
           {uid === hostUserData.uid ? (
             <Row>
               <Col>
