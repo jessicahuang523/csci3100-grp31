@@ -5,7 +5,7 @@ import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { FriendContext } from "../../contexts/FriendContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
-import { Button, Input, Form, Row, Col } from "reactstrap";
+import { Button, Input, Label, Form, FormGroup, Row, Col } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import ProfileHead from "./ProfileHead";
 import Loading from "../Loading/Loading";
@@ -17,25 +17,28 @@ import {
   unfriendFriend,
   removeFriendRequest,
 } from "../../utilityfunctions/Utilities";
-import FormGroup from "reactstrap/es/FormGroup";
-import Label from "reactstrap/es/Label";
 
 const ProfilePage = () => {
   const { uid } = useParams();
 
-  const { userData, userLoading } = useContext(UserContext);
+  const { theme } = useContext(ThemeContext);
   const { eventTypeData } = useContext(EventTypeContext);
+  const { userData, userLoading } = useContext(UserContext);
   const {
     sentRequestData,
     receivedRequestData,
     friendListData,
     friendContextLoaded,
   } = useContext(FriendContext);
-  const { theme } = useContext(ThemeContext);
 
+  // loaded user data which gets updated in editing mode
   const [profileData, setProfileData] = useState();
+  // switch between viewing and editing mode
   const [isEditable, setIsEditable] = useState(false);
 
+  // subscribe to user data from /user_profile/{uid} if uid is provided
+  // else loads data from user context
+  // updates profileData
   useEffect(() => {
     if (uid) {
       firestore()
@@ -52,13 +55,17 @@ const ProfilePage = () => {
 
   const toggleIsEditable = () => setIsEditable(!isEditable);
 
-  const handleProfileDataSubmit = async () => {
+  // writes edit to database if there's any change
+  // (profileData is different from userData)
+  const handleProfileDataSubmit = async (e) => {
+    e.preventDefault();
     toggleIsEditable();
     if (profileData !== userData) {
       await updateProfileData({ profileData });
     }
   };
 
+  // updates profileData given new keys and value
   const handleProfileDataEdit = (key, value) => {
     const newProfileData = {
       ...profileData,
@@ -67,30 +74,32 @@ const ProfilePage = () => {
     setProfileData(newProfileData);
   };
 
-  // const handleInterestedSportsEdit = (e) => {
-  //   const selected = e.target.querySelectorAll("option:checked");
-  //   const values = Array.from(selected).map((o) => o.label);
-  //   handleProfileDataEdit("interested_sports", values);
-  // };
+  // pushes checked input value into profileData.interested_sports
+  // or removes unchecked input value from it
+  // calls handleProfileDataEdit() to update profileData
+  const handleInterestedSportsEdit = (e) => {
+    const compare = (a, b) => {
+      if (a === "Others") {
+        return 1;
+      } else if (b === "Others") {
+        return -1;
+      } else {
+        return a.localeCompare(b);
+      }
+    };
 
-  const values = []
-  const handleInterestedSportsEdit2 = (e) => {
-    let index
-
+    let tmp = profileData.interested_sports || [];
     if (e.target.checked) {
-      values.push(e.target.value)
+      tmp.push(e.target.value);
+      tmp = tmp.filter((display, index, a) => a.indexOf(display) === index);
+      tmp.sort(compare);
     } else {
-      index = values.indexOf(e.target.value)
-      values.splice(index, 1)
+      tmp.splice(tmp.indexOf(e.target.value), 1);
     }
-    console.log(values)
-
+    handleProfileDataEdit("interested_sports", tmp);
   };
 
-  const saveListener = (e) => {
-    handleProfileDataEdit("interested_sports", values);
-  }
-
+  // render
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -98,7 +107,7 @@ const ProfilePage = () => {
   } else if (!profileData || !eventTypeData || !friendContextLoaded) {
     return <Loading />;
   } else if (uid !== auth().currentUser.uid && isEditable) {
-    // in editing mode
+    // Editing mode
     const { username, description, university, profileImageSrc } = profileData;
     return (
       <div style={theme.background}>
@@ -132,34 +141,35 @@ const ProfilePage = () => {
                   }
                   value={university}
                 />
-                <h2 style={{ marginTop: "50px" }}>Sports</h2>
+                <h2 style={{ marginTop: "50px" }}>Interested In</h2>
                 <hr />
-                {/*<Input*/}
-                {/*  type="select"*/}
-                {/*  multiple="multiple"*/}
-                {/*  onChange={handleInterestedSportsEdit}*/}
-                {/*>*/}
-                {/*  {eventTypeData.map(({ value, display }) => (*/}
-                {/*    <option key={value} value={value}>*/}
-                {/*      {display}*/}
-                {/*    </option>*/}
-                {/*  ))}*/}
-                {/*</Input>*/}
-                <FormGroup style = {{ textAlign: "left", display: "relative"}}>
-                  {eventTypeData.map(({ value, display }) => (
-                      <ul key={value.toString()}>
-                        <Label check key={value.toString()} style = {{ textAlign: "left", display: "inline-block"}}>
-                          <Input type="checkbox" onChange={handleInterestedSportsEdit2} key = {value} value={value} /> {display}
-                        </Label>
-                      </ul>
-                  ))}
-                </FormGroup>
+                {eventTypeData.map(({ display, icon }) => (
+                  <FormGroup check key={display}>
+                    <Label check>
+                      <Input
+                        type="checkbox"
+                        checked={
+                          profileData.interested_sports.indexOf(display) > -1
+                        }
+                        value={display}
+                        onChange={handleInterestedSportsEdit}
+                      />
+                      <i className={icon}></i> {display}
+                    </Label>
+                  </FormGroup>
+                ))}
                 <hr />
                 <EditProfileImage />
                 <hr />
-                <Button block type="submit" onClick={saveListener}>
-                  {"Save"}
-                </Button>
+                {profileData === userData ? (
+                  <Button block type="submit">
+                    <i className="fas fa-times"></i> Cancel
+                  </Button>
+                ) : (
+                  <Button block type="submit">
+                    <i className="fas fa-save"></i> Save
+                  </Button>
+                )}
               </Form>
             </Col>
           </Row>
@@ -167,8 +177,7 @@ const ProfilePage = () => {
       </div>
     );
   } else {
-    // in viewing mode
-    // button shows "add friend" if not self, otherwise show "edit"
+    // Viewing mode
     const {
       username,
       description,
@@ -230,6 +239,7 @@ const ProfilePage = () => {
   }
 };
 
+// calculates and renders correct action button on the bottom of profile page
 const ProfileActionButton = ({
   uid,
   toggleIsEditable,
@@ -245,7 +255,7 @@ const ProfileActionButton = ({
           color="danger"
           onClick={() => unfriendFriend({ targetUid: uid })}
         >
-          Unfriend
+          <i className="fas fa-trash"></i> Unfriend
         </Button>
       );
     } else if (sentRequestData && sentRequestData.find((p) => p.uid === uid)) {
@@ -255,7 +265,7 @@ const ProfileActionButton = ({
           color="warning"
           onClick={() => removeFriendRequest({ targetUid: uid })}
         >
-          Unrequest
+          <i className="fas fa-minus"></i> Unrequest
         </Button>
       );
     } else if (
@@ -268,7 +278,7 @@ const ProfileActionButton = ({
           color="primary"
           onClick={() => acceptFriendRequest({ targetUid: uid })}
         >
-          Confirm Friend
+          <i className="fas fa-user-friends"></i> Accept Request
         </Button>
       );
     } else {
@@ -278,14 +288,14 @@ const ProfileActionButton = ({
           color="primary"
           onClick={() => sendFriendRequest({ targetUid: uid })}
         >
-          Add Friend
+          <i className="fas fa-plus"></i> Add Friend
         </Button>
       );
     }
   } else
     return (
       <Button block onClick={() => toggleIsEditable()}>
-        Edit
+        <i className="fas fa-edit"></i> Edit
       </Button>
     );
 };
