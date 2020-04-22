@@ -52,19 +52,21 @@ const EventPage = () => {
         <Jumbotron style={theme.jumbotron}>
           <h1>Dubby</h1>
           <p>Find an event to join!</p>
+          {/* input bar to search for event */}
           <InputGroup size="sm">
             <Input
               placeholder="Type in the type of sports you want to search..."
               onChange={(e) => setSearchEvent(e.target.value)}
             />
             <InputGroupAddon addonType="append">
-              <Button>
+              <Button color="dark">
                 <i className="fas fa-search"></i>
               </Button>
             </InputGroupAddon>
           </InputGroup>
         </Jumbotron>
 
+        {/* list of loaded events */}
         <div style={theme.mainContainer}>
           {eventList.length > 0 &&
             eventList.map((eid) => (

@@ -213,7 +213,7 @@ const Event = () => {
     const { eventName, startingTime, allowedPeople, isPublic, cid } = eventData;
     const { uid } = userData;
     const joinedParticipants = eventParticipants.filter(
-      ({ status }) => status !== "invited"
+      ({ status }) => status === "joined"
     );
     const vacancy =
       allowedPeople -

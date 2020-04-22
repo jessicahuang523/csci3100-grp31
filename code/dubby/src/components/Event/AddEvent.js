@@ -19,6 +19,7 @@ import Navbar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import { setupFirestoreForNewEvent } from "../../utilityfunctions/Utilities";
 
+// calculates current date and returns iso string
 const calculateDate = () => {
   const date = new Date(Date.now());
   const dateLocal = new Date(
@@ -27,6 +28,7 @@ const calculateDate = () => {
   return dateLocal.toISOString().substr(0, 10);
 };
 
+// calculates current time and returns iso string
 const calculateTime = () => {
   const date = new Date(Date.now());
   const dateLocal = new Date(
@@ -41,36 +43,51 @@ const AddEvent = () => {
   const { eventTypeData } = useContext(EventTypeContext);
   const { userData, userLoading } = useContext(UserContext);
 
+  // data to be submitted
   const [allowedPeople, setAllowedPeople] = useState();
   const [eventName, setEventName] = useState();
   const [eventType, setEventType] = useState();
   const [isPublic, setIsPublic] = useState(true);
   const [location, setLocation] = useState();
   const [startingTime, setStartingTime] = useState();
+  // input date and time
   const [eventStartingDate, setEventStartingDate] = useState(calculateDate());
   const [eventStartingTime, setEventStartingTime] = useState(calculateTime());
+  // boolean whether data is being submitted, will render loading when true
   const [submittingEventData, setSubmittingEventData] = useState(false);
+  // message for top alert
   const [errorMessage, setErrorMessage] = useState();
+  // when event submitted, will redirect to event based on value of eid
   const [eventSubmittedEid, setEventSubmittedEid] = useState(false);
 
+  // calculate starting time from inputs eventStartingDate and eventStartingTime
+  // updates eventStartingTime
   useEffect(() => {
     setStartingTime(
       new Date(eventStartingDate + "T" + eventStartingTime + ":00").getTime()
     );
   }, [eventStartingDate, eventStartingTime]);
 
+  // loads event location data from gymData and
+  // updates location
   useEffect(() => {
     if (gymData) {
       setLocation(gymData[0].value);
     }
   }, [gymData]);
 
+  // loads event type data from eventTypeData and
+  // updates eventType
   useEffect(() => {
     if (eventTypeData) {
       setEventType(eventTypeData[0].value);
     }
   }, [eventTypeData]);
 
+  // checks starting time, whether all fields are filled
+  // then creates new event in database
+  // finally sets eventSubmittedEid for redirection
+  // updates errorMessage, submittingEventData, eventSubmittedEid
   const handleEventSubmit = async (e) => {
     e.preventDefault();
     if (startingTime < Date.now()) {
@@ -98,6 +115,7 @@ const AddEvent = () => {
     }
   };
 
+  // render
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {

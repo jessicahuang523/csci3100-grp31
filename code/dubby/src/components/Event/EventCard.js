@@ -156,7 +156,7 @@ const EventCard = ({ eid, searchString }) => {
     const { eventName, startingTime, allowedPeople, eid } = eventData;
     const { uid } = auth().currentUser;
     const joinedParticipants = eventParticipants.filter(
-      ({ status }) => status !== "invited"
+      ({ status }) => status === "joined"
     );
     const vacancy =
       allowedPeople -
@@ -208,10 +208,18 @@ const EventCard = ({ eid, searchString }) => {
           Vacancy: {vacancy}/{allowedPeople}
         </CardText>
         <ButtonGroup size="sm">
-          <Button tag={Link} to={`/e/${eid}`}>
+          <Button
+            tag={Link}
+            to={`/e/${eid}`}
+            color={isPrimaryTheme ? "dark" : "light"}
+          >
             <i className="fas fa-plus"></i> More
           </Button>
-          <Button outline tag={Link} to={`/u/${hostUserData.uid}`}>
+          <Button
+            tag={Link}
+            to={`/u/${hostUserData.uid}`}
+            color={isPrimaryTheme ? "light" : "secondary"}
+          >
             <ProfileHead size="inline" src={hostUserData.profileImageSrc} />{" "}
             {hostUserData.username}
           </Button>
