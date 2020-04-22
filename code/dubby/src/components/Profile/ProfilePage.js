@@ -279,7 +279,7 @@ const ProfileDataCard = ({ profileData, uid, toggleIsEditable }) => {
   } = profileData;
   return (
     <Card inverse={!isPrimaryTheme} color={!isPrimaryTheme ? "dark" : null}>
-      <CardBody className="text-center">
+      <CardBody style={{ padding: "5rem 1.25rem" }} className="text-center">
         <ProfileHead src={profileImageSrc} size="profile" />
         <CardTitle tag="h2">
           <b>{username}</b>
@@ -292,17 +292,19 @@ const ProfileDataCard = ({ profileData, uid, toggleIsEditable }) => {
         {interested_sports.map !== undefined && interested_sports.length > 0 ? (
           <ul>
             {interested_sports.map((value) => {
-              const { display, icon } = eventTypeData.find(
+              const eventType = eventTypeData.find(
                 (type) => type.value === value
               );
-              return (
-                display &&
-                icon && (
+              if (eventType) {
+                const { display, icon } = eventType;
+                return (
                   <li key={value}>
                     <i className={icon}></i> {display}
                   </li>
-                )
-              );
+                );
+              } else {
+                return null;
+              }
             })}
           </ul>
         ) : (
