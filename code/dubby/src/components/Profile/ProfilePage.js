@@ -111,7 +111,7 @@ const ProfilePage = () => {
     } else {
       tmp.splice(tmp.indexOf(e.target.value), 1);
     }
-    handleProfileDataEdit("interested_sports", tmp);
+    handleProfileDataEdit({ target: { value: tmp } }, "interested_sports");
   };
 
   // render
@@ -174,136 +174,20 @@ const ProfilePage = () => {
             </Col>
           </Row>
         </div>
-        {/* <div style={{ marginBottom: "2rem", marginTop: "6rem" }}>
-          <ProfileHead src={profileImageSrc} size="profile" />
-          <Row>
-            <Col sm={{ size: 8, offset: 2 }}>
-              <Form onSubmit={handleProfileDataSubmit}>
-                <h2 style={{ marginTop: "50px" }}>Username</h2>
-                <hr />
-                <Input
-                  onChange={(e) =>
-                    handleProfileDataEdit("username", e.target.value)
-                  }
-                  value={username}
-                />
-                <h2 style={{ marginTop: "50px" }}>Personal Description</h2>
-                <hr />
-                <Input
-                  onChange={(e) =>
-                    handleProfileDataEdit("description", e.target.value)
-                  }
-                  value={description}
-                />
-                <h2 style={{ marginTop: "50px" }}>University</h2>
-                <hr />
-                <Input
-                  onChange={(e) =>
-                    handleProfileDataEdit("university", e.target.value)
-                  }
-                  value={university}
-                />
-                <h2 style={{ marginTop: "50px" }}>Interested In</h2>
-                <hr />
-                {eventTypeData.map(({ value, display, icon }) => (
-                  <FormGroup check key={display}>
-                    <Label check>
-                      <Input
-                        type="checkbox"
-                        checked={
-                          profileData.interested_sports.indexOf(value) > -1
-                        }
-                        value={value}
-                        onChange={handleInterestedSportsEdit}
-                      />
-                      <i className={icon}></i> {display}
-                    </Label>
-                  </FormGroup>
-                ))}
-                <hr />
-                <EditProfileImage />
-                <hr />
-                {profileData === userData ? (
-                  <Button block type="submit">
-                    <i className="fas fa-times"></i> Cancel
-                  </Button>
-                ) : (
-                  <Button block type="submit">
-                    <i className="fas fa-save"></i> Save
-                  </Button>
-                )}
-              </Form>
-            </Col>
-          </Row>
-        </div> */}
       </div>
     );
   } else {
     // Viewing mode
-    // const {
-    //   username,
-    //   description,
-    //   interested_sports,
-    //   university,
-    //   profileImageSrc,
-    // } = profileData;
-
     return (
       <div style={theme.background}>
         <NavBar />
         <div style={theme.profileContainer}>
           <ProfileDataCard
-            profileData={profileData}
             uid={uid}
+            profileData={profileData}
             toggleIsEditable={toggleIsEditable}
           />
         </div>
-        {/* <div style={{ marginBottom: "2rem", marginTop: "6rem" }}>
-          <ProfileHead src={profileImageSrc} size="profile" />
-          <Row>
-            <Col sm={{ size: 10, offset: 1 }}>
-              <h2 style={{ marginTop: "50px" }}>Username</h2>
-              <hr />
-              <p>{username}</p>
-              <h2 style={{ marginTop: "50px" }}>Personal Description</h2>
-              <hr />
-              <p>{description}</p>
-              <h2 style={{ marginTop: "50px" }}>University</h2>
-              <hr />
-              <p>{university}</p>
-              <h2 style={{ marginTop: "50px" }}>Interested In</h2>
-              <hr />{" "}
-              {interested_sports.length &&
-              interested_sports.length > 0 &&
-              interested_sports.map !== undefined ? (
-                <ul>
-                  {interested_sports.map((s) => (
-                    <li key={s}>
-                      {eventTypeData.find((c) => c.display === s) && (
-                        <i
-                          className={
-                            eventTypeData.find((c) => c.display === s).icon
-                          }
-                        ></i>
-                      )}{" "}
-                      {s}
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p>{interested_sports}</p>
-              )}
-              <hr />
-              <ProfileActionButton
-                uid={uid}
-                toggleIsEditable={toggleIsEditable}
-                friendListData={friendListData}
-                sentRequestData={sentRequestData}
-                receivedRequestData={receivedRequestData}
-              />
-            </Col>
-          </Row>
-        </div> */}
       </div>
     );
   }
