@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Input, Button, Progress } from "reactstrap";
+import { Input, Button, Progress, FormGroup, Label } from "reactstrap";
 import { uploadProfileImage } from "../../utilityfunctions/Utilities";
 
 const EditProfileImage = () => {
@@ -20,9 +20,10 @@ const EditProfileImage = () => {
 
   // render
   return (
-    <div>
-      <h2>Profile Image</h2>
+    <FormGroup>
+      <Label for="profile_image">Profile Image</Label>
       <Input
+        id="profile_image"
         accept="image/x-png,image/gif,image/jpeg"
         type="file"
         onChange={handleProfileImageInputChange}
@@ -33,7 +34,7 @@ const EditProfileImage = () => {
       </Button>
       <br />
       {uploadProgress && <Progress color="info" value={uploadProgress} />}
-    </div>
+    </FormGroup>
   );
 };
 

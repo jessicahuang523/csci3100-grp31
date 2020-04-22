@@ -35,20 +35,15 @@ import {
 const ProfilePage = () => {
   const { uid } = useParams();
 
-  const { theme, isPrimaryTheme } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const { eventTypeData } = useContext(EventTypeContext);
   const { userData, userLoading } = useContext(UserContext);
-  const {
-    sentRequestData,
-    receivedRequestData,
-    friendListData,
-    friendContextLoaded,
-  } = useContext(FriendContext);
+  const { friendContextLoaded } = useContext(FriendContext);
 
   // loaded user data which gets updated in editing mode
   const [profileData, setProfileData] = useState();
   // switch between viewing and editing mode
-  const [isEditable, setIsEditable] = useState(false);
+  const [isEditable, setIsEditable] = useState(true);
 
   // subscribe to user data from /user_profile/{uid} if uid is provided
   // else loads data from user context
@@ -80,11 +75,13 @@ const ProfilePage = () => {
   };
 
   // updates profileData given new keys and value
-  const handleProfileDataEdit = (key, value) => {
+  const handleProfileDataEdit = (e, key) => {
     const newProfileData = {
       ...profileData,
-      [key]: value,
+      [key]: e.target.value,
     };
+    console.log({ newProfileData });
+
     setProfileData(newProfileData);
   };
 
@@ -126,11 +123,62 @@ const ProfilePage = () => {
     return <Loading />;
   } else if (uid !== auth().currentUser.uid && isEditable) {
     // Editing mode
-    const { username, description, university, profileImageSrc } = profileData;
+    const { interested_sports, profileImageSrc } = profileData;
+
     return (
       <div style={theme.background}>
         <NavBar />
         <div style={{ marginBottom: "2rem", marginTop: "6rem" }}>
+          <ProfileHead src={profileImageSrc} size="profile" />
+          <Row>
+            <Col sm={{ size: 10, offset: 1 }}>
+              <Form onSubmit={handleProfileDataSubmit}>
+                {["username", "description", "university"].map((id) => (
+                  <FormGroup key={id}>
+                    <Label for={id} style={{ textTransform: "capitalize" }}>
+                      {id}
+                    </Label>
+                    <Input
+                      id={id}
+                      required
+                      value={profileData[id]}
+                      onChange={(e) => handleProfileDataEdit(e, id)}
+                    />
+                  </FormGroup>
+                ))}
+                <FormGroup>
+                  <Label for="interested_sports">Interested In</Label>
+                  {eventTypeData.map(({ value, display, icon }) => (
+                    <FormGroup check key={display}>
+                      <Label check>
+                        <Input
+                          value={value}
+                          type="checkbox"
+                          onChange={handleInterestedSportsEdit}
+                          checked={interested_sports.indexOf(value) > -1}
+                        />
+                        <i className={icon}></i> {display}
+                      </Label>
+                    </FormGroup>
+                  ))}
+                </FormGroup>
+                <hr />
+                <EditProfileImage />
+                <hr />
+                {profileData === userData ? (
+                  <Button block type="submit">
+                    <i className="fas fa-times"></i> Cancel
+                  </Button>
+                ) : (
+                  <Button block type="submit">
+                    <i className="fas fa-save"></i> Save
+                  </Button>
+                )}
+              </Form>
+            </Col>
+          </Row>
+        </div>
+        {/* <div style={{ marginBottom: "2rem", marginTop: "6rem" }}>
           <ProfileHead src={profileImageSrc} size="profile" />
           <Row>
             <Col sm={{ size: 8, offset: 2 }}>
@@ -191,7 +239,7 @@ const ProfilePage = () => {
               </Form>
             </Col>
           </Row>
-        </div>
+        </div> */}
       </div>
     );
   } else {
@@ -203,6 +251,7 @@ const ProfilePage = () => {
     //   university,
     //   profileImageSrc,
     // } = profileData;
+
     return (
       <div style={theme.background}>
         <NavBar />
@@ -264,12 +313,14 @@ const ProfilePage = () => {
   }
 };
 
-const ProfileDataCard = ({ profileData, uid, toggleIsEditable }) => {
+// card in rendering profile data
+const ProfileDataCard = ({ uid, profileData, toggleIsEditable }) => {
   const { isPrimaryTheme } = useContext(ThemeContext);
   const { eventTypeData } = useContext(EventTypeContext);
   const { sentRequestData, receivedRequestData, friendListData } = useContext(
     FriendContext
   );
+
   const {
     username,
     description,
@@ -277,6 +328,8 @@ const ProfileDataCard = ({ profileData, uid, toggleIsEditable }) => {
     university,
     profileImageSrc,
   } = profileData;
+
+  // render
   return (
     <Card inverse={!isPrimaryTheme} color={!isPrimaryTheme ? "dark" : null}>
       <CardBody style={{ padding: "5rem 1.25rem" }} className="text-center">
@@ -323,6 +376,7 @@ const ProfileDataCard = ({ profileData, uid, toggleIsEditable }) => {
     </Card>
   );
 };
+
 // calculates and renders correct action button on the bottom of profile page
 const ProfileActionButton = ({
   uid,
