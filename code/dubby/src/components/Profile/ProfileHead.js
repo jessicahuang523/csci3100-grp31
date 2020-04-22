@@ -13,12 +13,12 @@ const styles = {
     },
   },
   profile: {
-    container: { textAlign: "center", display: "block" },
+    container: { textAlign: "center", display: "block", margin: "1rem" },
     img: {
-      width: "300px",
-      height: "300px",
+      width: "200px",
+      height: "200px",
       overflow: "hidden",
-      borderRadius: "150px",
+      borderRadius: "100px",
       border: "5px solid #eee",
     },
   },

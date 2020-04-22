@@ -5,7 +5,21 @@ import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
 import { FriendContext } from "../../contexts/FriendContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
-import { Button, Input, Label, Form, FormGroup, Row, Col } from "reactstrap";
+import {
+  Button,
+  Input,
+  Label,
+  Form,
+  FormGroup,
+  Row,
+  Col,
+  Card,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  CardText,
+  CardFooter,
+} from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import ProfileHead from "./ProfileHead";
 import Loading from "../Loading/Loading";
@@ -21,7 +35,7 @@ import {
 const ProfilePage = () => {
   const { uid } = useParams();
 
-  const { theme } = useContext(ThemeContext);
+  const { theme, isPrimaryTheme } = useContext(ThemeContext);
   const { eventTypeData } = useContext(EventTypeContext);
   const { userData, userLoading } = useContext(UserContext);
   const {
@@ -79,9 +93,9 @@ const ProfilePage = () => {
   // calls handleProfileDataEdit() to update profileData
   const handleInterestedSportsEdit = (e) => {
     const compare = (a, b) => {
-      if (a === "Others") {
+      if (a === "others") {
         return 1;
-      } else if (b === "Others") {
+      } else if (b === "others") {
         return -1;
       } else {
         return a.localeCompare(b);
@@ -91,7 +105,11 @@ const ProfilePage = () => {
     let tmp = profileData.interested_sports || [];
     if (e.target.checked) {
       tmp.push(e.target.value);
-      tmp = tmp.filter((display, index, a) => a.indexOf(display) === index);
+      tmp = tmp.filter(
+        (value, index, a) =>
+          a.indexOf(value) === index &&
+          eventTypeData.find((t) => t.value === value)
+      );
       tmp.sort(compare);
     } else {
       tmp.splice(tmp.indexOf(e.target.value), 1);
@@ -143,15 +161,15 @@ const ProfilePage = () => {
                 />
                 <h2 style={{ marginTop: "50px" }}>Interested In</h2>
                 <hr />
-                {eventTypeData.map(({ display, icon }) => (
+                {eventTypeData.map(({ value, display, icon }) => (
                   <FormGroup check key={display}>
                     <Label check>
                       <Input
                         type="checkbox"
                         checked={
-                          profileData.interested_sports.indexOf(display) > -1
+                          profileData.interested_sports.indexOf(value) > -1
                         }
-                        value={display}
+                        value={value}
                         onChange={handleInterestedSportsEdit}
                       />
                       <i className={icon}></i> {display}
@@ -188,11 +206,57 @@ const ProfilePage = () => {
     return (
       <div style={theme.background}>
         <NavBar />
-        <div style={{ marginBottom: "2rem", marginTop: "6rem" }}>
-          <ProfileHead src={profileImageSrc} size="profile" />
-          <Row>
-            <Col sm={{ size: 8, offset: 2 }}>
-              <h2 style={{ marginTop: "50px" }}>Username</h2>
+        {/* <div style={{ marginBottom: "2rem", marginTop: "6rem" }}>
+          <ProfileHead src={profileImageSrc} size="profile" /> */}
+        <div style={theme.profileContainer}>
+          {/* <Row>
+            <Col sm={{ size: 10, offset: 1 }}> */}
+          <Card
+            inverse={!isPrimaryTheme}
+            color={!isPrimaryTheme ? "dark" : null}
+          >
+            <CardBody className="text-center">
+              <ProfileHead src={profileImageSrc} size="profile" />
+              <CardTitle tag="h2">
+                <b>{username}</b>
+              </CardTitle>
+              <CardSubtitle>
+                <i>{description}</i>
+              </CardSubtitle>
+              <hr />
+              <CardText>From {university}</CardText>
+              {interested_sports.map !== undefined &&
+              interested_sports.length > 0 ? (
+                <ul>
+                  {interested_sports.map((value) => {
+                    const { display, icon } = eventTypeData.find(
+                      (type) => type.value === value
+                    );
+                    return (
+                      display &&
+                      icon && (
+                        <li key={value}>
+                          <i className={icon}></i> {display}
+                        </li>
+                      )
+                    );
+                  })}
+                </ul>
+              ) : (
+                <CardText>(this person likes nothing)</CardText>
+              )}
+            </CardBody>
+            <CardFooter>
+              <ProfileActionButton
+                uid={uid}
+                toggleIsEditable={toggleIsEditable}
+                friendListData={friendListData}
+                sentRequestData={sentRequestData}
+                receivedRequestData={receivedRequestData}
+              />
+            </CardFooter>
+          </Card>
+          {/* <h2 style={{ marginTop: "50px" }}>Username</h2>
               <hr />
               <p>{username}</p>
               <h2 style={{ marginTop: "50px" }}>Personal Description</h2>
@@ -230,9 +294,9 @@ const ProfilePage = () => {
                 friendListData={friendListData}
                 sentRequestData={sentRequestData}
                 receivedRequestData={receivedRequestData}
-              />
-            </Col>
-          </Row>
+              /> */}
+          {/* </Col>
+          </Row> */}
         </div>
       </div>
     );
