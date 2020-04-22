@@ -3,7 +3,13 @@ import { Redirect } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
-import { Jumbotron, Input } from "reactstrap";
+import {
+  Jumbotron,
+  Input,
+  InputGroup,
+  InputGroupAddon,
+  Button,
+} from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import EventCard from "./EventCard";
@@ -46,11 +52,17 @@ const EventPage = () => {
         <Jumbotron style={theme.jumbotron}>
           <h1>Dubby</h1>
           <p>Find an event to join!</p>
-          <Input
-            bsSize="sm"
-            placeholder="Type in the type of sports you want to search..."
-            onChange={(e) => setSearchEvent(e.target.value)}
-          />
+          <InputGroup size="sm">
+            <Input
+              placeholder="Type in the type of sports you want to search..."
+              onChange={(e) => setSearchEvent(e.target.value)}
+            />
+            <InputGroupAddon addonType="append">
+              <Button>
+                <i className="fas fa-search"></i>
+              </Button>
+            </InputGroupAddon>
+          </InputGroup>
         </Jumbotron>
 
         <div style={theme.mainContainer}>

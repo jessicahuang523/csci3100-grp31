@@ -103,7 +103,7 @@ const Friend = () => {
                 isOpen={eventTypeDropdownOpen}
                 toggle={toggleEventTypeDropdown}
               >
-                <DropdownToggle caret color="secondary">
+                <DropdownToggle caret outline color="secondary">
                   <i className="fas fa-search"></i>
                   search by {searchUserInterest || "interested sports"}
                 </DropdownToggle>
@@ -124,7 +124,7 @@ const Friend = () => {
                 </DropdownMenu>
               </InputGroupButtonDropdown>
               <InputGroupAddon addonType="append">
-                <Button color="primary" type="submit">
+                <Button color="secondary" type="submit">
                   <i className="fas fa-search"></i>
                 </Button>
               </InputGroupAddon>
