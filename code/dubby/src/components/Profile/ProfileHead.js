@@ -49,6 +49,8 @@ const styles = {
 };
 
 const ProfileHead = ({ src, size }) => {
+  // src = profileImageSrc in user data
+  // size = any of "chat", "profile", "friend", "inline"
   let style;
   switch (size) {
     case "chat":
@@ -68,6 +70,7 @@ const ProfileHead = ({ src, size }) => {
       break;
   }
 
+  // render
   return (
     <span style={style.container}>
       <img src={src || User} style={style.img} alt="" />

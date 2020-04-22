@@ -12,6 +12,7 @@ const MainFeed = () => {
   const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
 
+  // list of events for current user from /user_profile/{uid}/events
   const [userEventList, setUserEventList] = useState();
 
   // subscribe to events user participate in from /user_profile/{uid}/events
