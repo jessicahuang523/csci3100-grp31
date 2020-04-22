@@ -4,15 +4,7 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
 import { Link } from "react-router-dom";
 import { firestore, auth } from "firebase";
-import {
-  Card,
-  CardTitle,
-  CardSubtitle,
-  CardText,
-  Button,
-  ButtonGroup,
-  Badge,
-} from "reactstrap";
+import { Card, CardTitle, CardSubtitle, CardText, Badge } from "reactstrap";
 import LoadingEventCard from "../Loading/LoadingEventCard";
 import ProfileHead from "../Profile/ProfileHead";
 
@@ -201,38 +193,22 @@ const EventCard = ({ eid, searchString }) => {
               </Badge>
             )}
           </CardSubtitle>
-          <br />
           <CardTitle tag="h3">
             <b>{eventName}</b>
           </CardTitle>
+          <CardText>{foundLocationData.display_short}</CardText>
           <CardText>
-            {foundLocationData.display_short}
-            <br />
             Starting at {parsedStartingTime}
             <br />
             Vacancy: {vacancy}/{allowedPeople}
           </CardText>
           <CardSubtitle>
+            <Badge pill color={isPrimaryTheme ? "dark" : "light"}>
+              Host
+            </Badge>{" "}
             <ProfileHead size="inline" src={hostUserData.profileImageSrc} />{" "}
             {hostUserData.username}
           </CardSubtitle>
-          {/* <ButtonGroup size="sm">
-          <Button
-            tag={Link}
-            to={`/e/${eid}`}
-            color={isPrimaryTheme ? "dark" : "light"}
-          >
-            <i className="fas fa-plus"></i> More
-          </Button>
-          <Button
-            tag={Link}
-            to={`/u/${hostUserData.uid}`}
-            color={isPrimaryTheme ? "light" : "secondary"}
-          >
-            <ProfileHead size="inline" src={hostUserData.profileImageSrc} />{" "}
-            {hostUserData.username}
-          </Button>
-        </ButtonGroup> */}
         </Card>
       </div>
     );
