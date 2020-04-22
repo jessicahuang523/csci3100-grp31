@@ -18,9 +18,11 @@ const UserList = ({
 }) => (
   <ListGroup>
     {heading && <ListGroupItemHeading>{heading}</ListGroupItemHeading>}
+    {/* display list of user when not empty, or "Wow, such empty" */}
     {users && users.length > 0 ? (
       users.map((u) => (
         <ListGroupItem key={u.uid}>
+          {/* displays action button when an action is provided */}
           {action && (actionIcon || actionText) && (
             <Button
               size="sm"
@@ -32,6 +34,7 @@ const UserList = ({
               {actionText}
             </Button>
           )}
+          {/* display for user profile image and link to profile */}
           {"  "}
           <ProfileHead src={u.profileImageSrc} size="friend" />
           {"  "}

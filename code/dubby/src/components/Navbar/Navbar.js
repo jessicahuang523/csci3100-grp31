@@ -19,25 +19,26 @@ import {
 import logo from "../../image/Dubby_logo.png";
 
 const NavBar = () => {
-  const { isPrimaryTheme, toggleTheme } = useContext(ThemeContext);
+  const { theme, isPrimaryTheme, toggleTheme } = useContext(ThemeContext);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [collapseIsOpen, setCollapseIsOpen] = useState(false);
 
-  const toggle = () => setIsOpen(!isOpen);
+  const toggleCollapse = () => setCollapseIsOpen(!collapseIsOpen);
   const handleSignOutClick = () => auth().signOut();
 
+  // render
   return (
-    <Navbar
-      color="dark"
-      dark
-      expand="sm"
-      style={{ position: "fixed", top: 0, zIndex: 10, width: "100%" }}
-    >
+    <Navbar dark color="dark" expand="sm" style={theme.navbar}>
+      {/* logo */}
       <NavbarBrand tag={Link} to="/">
-        <Media src={logo} style={{ height: "1rem" }} alt="logo" />
+        <Media src={logo} style={{ height: "1rem" }} alt="Dubby" />
       </NavbarBrand>
-      <NavbarToggler onClick={toggle} />
-      <Collapse isOpen={isOpen} navbar>
+
+      {/* toggles item for navbar if size = sm */}
+      <NavbarToggler onClick={toggleCollapse} />
+
+      {/* main navbar by collapse */}
+      <Collapse isOpen={collapseIsOpen} navbar>
         <Nav className="mr-auto" navbar>
           <NavItem>
             <NavLink tag={Link} to="/e">
@@ -59,6 +60,8 @@ const NavBar = () => {
               Profile
             </NavLink>
           </NavItem>
+
+          {/* secondary navbar */}
           <UncontrolledDropdown nav inNavbar>
             <DropdownToggle nav caret>
               Menu

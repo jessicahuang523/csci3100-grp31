@@ -26,6 +26,7 @@ const profileContainerStyle = {
   flexDirection: "column",
   justifyContent: "center",
 };
+const navbarStyle = { position: "fixed", top: 0, zIndex: 10, width: "100%" };
 const mainContainerStyle = { padding: "1rem" };
 const loadingStyle = {
   width: "100vw",
@@ -45,6 +46,7 @@ const themes = {
     jumbotron: { ...jumbotronStyle, backgroundColor: jumbotron_yellow },
     profileContainer: profileContainerStyle,
     mainContainer: mainContainerStyle,
+    navbar: navbarStyle,
     loading: loadingStyle,
     spinnerColor: "dark",
   },
@@ -54,6 +56,7 @@ const themes = {
     jumbotron: { ...jumbotronStyle, backgroundColor: jumbotron_purple },
     profileContainer: profileContainerStyle,
     mainContainer: mainContainerStyle,
+    navbar: navbarStyle,
     loading: loadingStyle,
     spinnerColor: "light",
   },

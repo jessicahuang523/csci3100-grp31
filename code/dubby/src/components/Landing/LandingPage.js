@@ -24,10 +24,13 @@ const LandingPage = () => {
   const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
 
+  // inputs updated from form
   const [inputEmail, setInputEmail] = useState();
   const [inputPassword, setInputPassword] = useState();
+  // header text that acts as a warning and message display
   const [alertSignin, setAlertSignin] = useState("Sign in!");
 
+  // signin when checks for email and password is valid
   const handleEmailLoginFormSubmit = async (e) => {
     e.preventDefault();
     setAlertSignin("Loading...");
@@ -42,6 +45,7 @@ const LandingPage = () => {
     }
   };
 
+  // render
   if (userLoading) {
     return <Loading />;
   } else if (userData) {

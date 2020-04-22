@@ -8,6 +8,8 @@ const Loading = () => {
   const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
 
+  // render
+  // renders nothing when user logged in state is undetermined
   if (userLoading || !userData) {
     return null;
   } else {

@@ -43,7 +43,7 @@ const ProfilePage = () => {
   // loaded user data which gets updated in editing mode
   const [profileData, setProfileData] = useState();
   // switch between viewing and editing mode
-  const [isEditable, setIsEditable] = useState(true);
+  const [isEditable, setIsEditable] = useState(false);
 
   // subscribe to user data from /user_profile/{uid} if uid is provided
   // else loads data from user context

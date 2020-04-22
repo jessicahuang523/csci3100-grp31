@@ -17,6 +17,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "reactstrap";
+import UserList from "./UserList";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import {
@@ -24,7 +25,6 @@ import {
   removeFriendRequest,
   unfriendFriend,
 } from "../../utilityfunctions/Utilities";
-import UserList from "./UserList";
 
 const Friend = () => {
   const { theme } = useContext(ThemeContext);
@@ -37,15 +37,22 @@ const Friend = () => {
     friendContextLoaded,
   } = useContext(FriendContext);
 
+  // input for searching user
   const [searchUserString, setSearchUserString] = useState();
+  // input for searching user by event type, updated from dropdown
   const [searchUserInterest, setSearchUserInterest] = useState();
+  // list of user data as search result
   const [searchUserResult, setSearchUserResult] = useState();
+  // dropdown state for searching by event type
   const [eventTypeDropdownOpen, setEventTypeDropdownOpen] = useState(false);
 
-  const handleToggleEventTypeDropdown = () => {
+  const toggleEventTypeDropdown = () => {
     setEventTypeDropdownOpen(!eventTypeDropdownOpen);
   };
 
+  // fetch data from database in /user_profile
+  // given searchUserString and/or searchUserInterest
+  // updates searchUserResult
   const handleSearchUseSubmit = (e) => {
     e.preventDefault();
     const fetchResult = async () => {
@@ -70,6 +77,7 @@ const Friend = () => {
     }
   };
 
+  // render
   if (userLoading) {
     return <Loading />;
   } else if (!userData) {
@@ -81,54 +89,53 @@ const Friend = () => {
       <div style={theme.background}>
         <NavBar />
         <Jumbotron style={theme.jumbotron}>
-          <div style={{ textAlign: "center" }}>
-            <h1>Friends</h1>
-            <Form onSubmit={handleSearchUseSubmit}>
-              <InputGroup>
-                <Input
-                  placeholder="search for a user..."
-                  onChange={(e) => setSearchUserString(e.target.value)}
-                />
-                <InputGroupButtonDropdown
-                  addonType="append"
-                  isOpen={eventTypeDropdownOpen}
-                  toggle={handleToggleEventTypeDropdown}
-                >
-                  <DropdownToggle caret>
-                    <i className="fas fa-search"></i>
-                    Search by {searchUserInterest || "interested sports"}
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem onClick={() => setSearchUserInterest(null)}>
-                      <i className="fas fa-times"></i>
-                      None
+          <h1>Friends</h1>
+          <p>We all love friends... right?</p>
+          {/* input bar to search for user */}
+          <Form onSubmit={handleSearchUseSubmit}>
+            <InputGroup size="sm">
+              <Input
+                placeholder="Search for a user..."
+                onChange={(e) => setSearchUserString(e.target.value)}
+              />
+              <InputGroupButtonDropdown
+                addonType="append"
+                isOpen={eventTypeDropdownOpen}
+                toggle={toggleEventTypeDropdown}
+              >
+                <DropdownToggle caret color="secondary">
+                  <i className="fas fa-search"></i>
+                  search by {searchUserInterest || "interested sports"}
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem onClick={() => setSearchUserInterest(null)}>
+                    <i className="fas fa-times"></i>
+                    None
+                  </DropdownItem>
+                  {eventTypeData.map(({ value, display, icon }) => (
+                    <DropdownItem
+                      key={value}
+                      onClick={() => setSearchUserInterest(display)}
+                    >
+                      <i className={icon}></i>
+                      {display}
                     </DropdownItem>
-                    {eventTypeData.map(({ value, display, icon }) => (
-                      <DropdownItem
-                        key={value}
-                        onClick={() => setSearchUserInterest(display)}
-                      >
-                        <i className={icon}></i>
-                        {display}
-                      </DropdownItem>
-                    ))}
-                  </DropdownMenu>
-                </InputGroupButtonDropdown>
-                <InputGroupAddon addonType="append">
-                  <Button color="primary" type="submit">
-                    <i className="fas fa-search"></i>
-                  </Button>
-                </InputGroupAddon>
-              </InputGroup>
-            </Form>
-            <hr /> {searchUserResult && <UserList users={searchUserResult} />}
-          </div>
+                  ))}
+                </DropdownMenu>
+              </InputGroupButtonDropdown>
+              <InputGroupAddon addonType="append">
+                <Button color="primary" type="submit">
+                  <i className="fas fa-search"></i>
+                </Button>
+              </InputGroupAddon>
+            </InputGroup>
+          </Form>
+          <hr />
+          {searchUserResult && <UserList users={searchUserResult} />}
         </Jumbotron>
-        <div
-          style={{
-            padding: "1rem",
-          }}
-        >
+
+        <div style={theme.mainContainer}>
+          {/* display lists of friends, sent requests and received requests */}
           <UserList
             users={friendListData}
             heading="Friends"
