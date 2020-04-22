@@ -196,67 +196,28 @@ const ProfilePage = () => {
     );
   } else {
     // Viewing mode
-    const {
-      username,
-      description,
-      interested_sports,
-      university,
-      profileImageSrc,
-    } = profileData;
+    // const {
+    //   username,
+    //   description,
+    //   interested_sports,
+    //   university,
+    //   profileImageSrc,
+    // } = profileData;
     return (
       <div style={theme.background}>
         <NavBar />
-        {/* <div style={{ marginBottom: "2rem", marginTop: "6rem" }}>
-          <ProfileHead src={profileImageSrc} size="profile" /> */}
         <div style={theme.profileContainer}>
-          {/* <Row>
-            <Col sm={{ size: 10, offset: 1 }}> */}
-          <Card
-            inverse={!isPrimaryTheme}
-            color={!isPrimaryTheme ? "dark" : null}
-          >
-            <CardBody className="text-center">
-              <ProfileHead src={profileImageSrc} size="profile" />
-              <CardTitle tag="h2">
-                <b>{username}</b>
-              </CardTitle>
-              <CardSubtitle>
-                <i>{description}</i>
-              </CardSubtitle>
-              <hr />
-              <CardText>From {university}</CardText>
-              {interested_sports.map !== undefined &&
-              interested_sports.length > 0 ? (
-                <ul>
-                  {interested_sports.map((value) => {
-                    const { display, icon } = eventTypeData.find(
-                      (type) => type.value === value
-                    );
-                    return (
-                      display &&
-                      icon && (
-                        <li key={value}>
-                          <i className={icon}></i> {display}
-                        </li>
-                      )
-                    );
-                  })}
-                </ul>
-              ) : (
-                <CardText>(this person likes nothing)</CardText>
-              )}
-            </CardBody>
-            <CardFooter>
-              <ProfileActionButton
-                uid={uid}
-                toggleIsEditable={toggleIsEditable}
-                friendListData={friendListData}
-                sentRequestData={sentRequestData}
-                receivedRequestData={receivedRequestData}
-              />
-            </CardFooter>
-          </Card>
-          {/* <h2 style={{ marginTop: "50px" }}>Username</h2>
+          <ProfileDataCard
+            profileData={profileData}
+            uid={uid}
+            toggleIsEditable={toggleIsEditable}
+          />
+        </div>
+        {/* <div style={{ marginBottom: "2rem", marginTop: "6rem" }}>
+          <ProfileHead src={profileImageSrc} size="profile" />
+          <Row>
+            <Col sm={{ size: 10, offset: 1 }}>
+              <h2 style={{ marginTop: "50px" }}>Username</h2>
               <hr />
               <p>{username}</p>
               <h2 style={{ marginTop: "50px" }}>Personal Description</h2>
@@ -294,15 +255,72 @@ const ProfilePage = () => {
                 friendListData={friendListData}
                 sentRequestData={sentRequestData}
                 receivedRequestData={receivedRequestData}
-              /> */}
-          {/* </Col>
-          </Row> */}
-        </div>
+              />
+            </Col>
+          </Row>
+        </div> */}
       </div>
     );
   }
 };
 
+const ProfileDataCard = ({ profileData, uid, toggleIsEditable }) => {
+  const { isPrimaryTheme } = useContext(ThemeContext);
+  const { eventTypeData } = useContext(EventTypeContext);
+  const { sentRequestData, receivedRequestData, friendListData } = useContext(
+    FriendContext
+  );
+  const {
+    username,
+    description,
+    interested_sports,
+    university,
+    profileImageSrc,
+  } = profileData;
+  return (
+    <Card inverse={!isPrimaryTheme} color={!isPrimaryTheme ? "dark" : null}>
+      <CardBody className="text-center">
+        <ProfileHead src={profileImageSrc} size="profile" />
+        <CardTitle tag="h2">
+          <b>{username}</b>
+        </CardTitle>
+        <CardSubtitle>
+          <i>{description}</i>
+        </CardSubtitle>
+        <hr />
+        <CardText>From {university}</CardText>
+        {interested_sports.map !== undefined && interested_sports.length > 0 ? (
+          <ul>
+            {interested_sports.map((value) => {
+              const { display, icon } = eventTypeData.find(
+                (type) => type.value === value
+              );
+              return (
+                display &&
+                icon && (
+                  <li key={value}>
+                    <i className={icon}></i> {display}
+                  </li>
+                )
+              );
+            })}
+          </ul>
+        ) : (
+          <CardText>(this person likes nothing)</CardText>
+        )}
+      </CardBody>
+      <CardFooter>
+        <ProfileActionButton
+          uid={uid}
+          toggleIsEditable={toggleIsEditable}
+          friendListData={friendListData}
+          sentRequestData={sentRequestData}
+          receivedRequestData={receivedRequestData}
+        />
+      </CardFooter>
+    </Card>
+  );
+};
 // calculates and renders correct action button on the bottom of profile page
 const ProfileActionButton = ({
   uid,

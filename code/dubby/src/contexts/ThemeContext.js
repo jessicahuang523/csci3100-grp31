@@ -11,7 +11,6 @@ const jumbotron_yellow = "#F2CD93";
 // common container styles
 const backgroundStyle = {
   minHeight: "100vh",
-  paddingBottom: "1rem",
   overflowX: "hidden",
 };
 const jumbotronStyle = {
@@ -19,7 +18,14 @@ const jumbotronStyle = {
   marginTop: "3rem",
   width: "100%",
 };
-const profileContainerStyle = { margin: "1rem", marginTop: "4.5rem" };
+const profileContainerStyle = {
+  padding: "2rem",
+  paddingTop: "4.5rem",
+  minHeight: "100vh",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+};
 const mainContainerStyle = { padding: "1rem" };
 const loadingStyle = {
   width: "100vw",
