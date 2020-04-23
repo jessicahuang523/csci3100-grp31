@@ -11,12 +11,17 @@ const ChatCard = ({ chatData }) => {
   const { userData } = useContext(UserContext);
   const { isPrimaryTheme } = useContext(ThemeContext);
 
+  // latest message for this chat
+  const [chatMessage, setChatMessage] = useState();
+  // sender data (username) for latest chat
+  const [chatSenderData, setChatSenderData] = useState();
+  // (for private chat)
+  // participant and username to determine chat name
   const [chatParticipants, setChatParticipants] = useState();
   const [chatParticipantData, setchatParticipantData] = useState();
-  const [chatMessage, setChatMessage] = useState();
-  const [chatSenderData, setChatSenderData] = useState();
 
-  // subscribe to latest chat message
+  // subscribe to latest chat message given chat data
+  // updates chatMessage
   useEffect(() => {
     if (chatData) {
       const { cid } = chatData;
@@ -35,6 +40,7 @@ const ChatCard = ({ chatData }) => {
   }, [chatData]);
 
   // given latest message, subscribe to sender username
+  // updates chatSenderData
   useEffect(() => {
     if (chatMessage && chatMessage.sender) {
       const { uid } = chatMessage.sender;
@@ -49,6 +55,7 @@ const ChatCard = ({ chatData }) => {
   }, [chatMessage]);
 
   // (for private chat) get participant list to determine chat name
+  // updates chatParticipants
   useEffect(() => {
     if (userData && chatData && chatData.type === "private") {
       const { cid } = chatData;
@@ -65,6 +72,7 @@ const ChatCard = ({ chatData }) => {
   }, [userData, chatData]);
 
   // (for private chat) get data of participants
+  // updates chatParticipantData
   useEffect(() => {
     let pData = [];
     if (chatParticipants) {
@@ -80,6 +88,7 @@ const ChatCard = ({ chatData }) => {
     }
   }, [chatParticipants]);
 
+  // render
   if (
     !chatData ||
     (chatMessage && !chatSenderData) ||
@@ -92,6 +101,7 @@ const ChatCard = ({ chatData }) => {
       chatData.type === "private"
         ? chatParticipantData.find((p) => p.uid !== userData.uid).username
         : chatData.title;
+
     return (
       <div className="chat-card" style={{ marginBottom: "0.5rem" }}>
         <Card
@@ -108,6 +118,7 @@ const ChatCard = ({ chatData }) => {
               columnGap: "1rem",
             }}
           >
+            {/* left, display profile image */}
             <div
               style={{
                 display: "flex",
@@ -121,6 +132,7 @@ const ChatCard = ({ chatData }) => {
                 size="friend"
               />
             </div>
+            {/* right, display chat name and latest message */}
             <div>
               <CardText>
                 <span

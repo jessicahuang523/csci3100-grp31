@@ -120,19 +120,6 @@ const ChatPage = () => {
         <Navbar />
         <Jumbotron style={theme.jumbotron}>
           <h1>Chats</h1>
-          {/* <button
-            onClick={(e) => {
-              console.log("begin delete");
-              firestore()
-                .collection("user_profile")
-                .where("username", "==", "Lil Potato")
-                .get()
-                .then((s) => s.forEach((d) => d.ref.delete()))
-                .then(() => console.log("delete complete"));
-            }}
-          >
-            delete empty user
-          </button> */}
 
           {/* top chat creation buttons */}
           <ButtonGroup size="sm">

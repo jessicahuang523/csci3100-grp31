@@ -19,10 +19,13 @@ const EventPage = () => {
   const { theme } = useContext(ThemeContext);
   const { userData } = useContext(UserContext);
 
+  // list of data for events to be displayed
   const [eventList, setEventList] = useState();
+  // search string for events
   const [searchEvent, setSearchEvent] = useState();
 
   // subscribe to events whose startingTime is later than now
+  // updates eventList
   useEffect(() => {
     if (userData) {
       const eventRef = firestore()
