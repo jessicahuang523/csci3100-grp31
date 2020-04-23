@@ -11,11 +11,10 @@ const Loading = ({ to, noauth }) => {
 
   // render
   // renders nothing when user logged in state is undetermined
+  // redirects to /launch when no user data and requires authentication
   if (userLoading) {
     return null;
-  } else if (noauth === true && !userData) {
-    return <Redirect to={to || "/launch"} />;
-  } else {
+  } else if (userData || noauth) {
     return (
       <div style={theme.background}>
         <NavBar />
@@ -24,6 +23,8 @@ const Loading = ({ to, noauth }) => {
         </div>
       </div>
     );
+  } else {
+    return <Redirect to={to || "/launch"} />;
   }
 };
 

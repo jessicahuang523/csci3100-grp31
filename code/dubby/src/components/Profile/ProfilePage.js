@@ -222,7 +222,9 @@ const ProfileDataCard = ({ uid, profileData, toggleIsEditable }) => {
         </CardSubtitle>
         <hr />
         <CardText>From {university}</CardText>
-        {interested_sports.map !== undefined && interested_sports.length > 0 ? (
+        {interested_sports &&
+        typeof interested_sports.map !== "undefined" &&
+        interested_sports.length > 0 ? (
           <ul>
             {interested_sports.map((value) => {
               const eventType = eventTypeData.find(
