@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { firestore } from "firebase";
 import { UserContext } from "../../contexts/UserContext";
 import { ThemeContext } from "../../contexts/ThemeContext";
-import { Jumbotron, Button } from "reactstrap";
+import { Jumbotron, Button, Row, Col } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
 import EventCard from "../Event/EventCard";
@@ -51,10 +51,15 @@ const MainFeed = () => {
         </Jumbotron>
 
         <div style={theme.mainContainer}>
-          {userEventList.length > 0 &&
-            userEventList.map((event) => (
-              <EventCard key={event.eid} eid={event.eid} />
-            ))}
+          {userEventList.length > 0 && (
+            <Row xs="1" sm="2" md="3">
+              {userEventList.map((event) => (
+                <Col>
+                  <EventCard key={event.eid} eid={event.eid} />
+                </Col>
+              ))}
+            </Row>
+          )}
         </div>
       </div>
     );

@@ -16,7 +16,6 @@ const backgroundStyle = {
 const jumbotronStyle = {
   textAlign: "center",
   marginTop: "3rem",
-  width: "100%",
 };
 const profileContainerStyle = {
   padding: "2rem",

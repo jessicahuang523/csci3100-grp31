@@ -8,6 +8,8 @@ import {
   InputGroup,
   InputGroupAddon,
   Button,
+  Row,
+  Col,
 } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -65,10 +67,15 @@ const EventPage = () => {
 
         {/* list of loaded events */}
         <div style={theme.mainContainer}>
-          {eventList.length > 0 &&
-            eventList.map((eid) => (
-              <EventCard searchString={searchEvent} key={eid} eid={eid} />
-            ))}
+          {eventList.length > 0 && (
+            <Row xs="1" sm="2" md="3">
+              {eventList.map((eid) => (
+                <Col>
+                  <EventCard searchString={searchEvent} key={eid} eid={eid} />
+                </Col>
+              ))}
+            </Row>
+          )}
         </div>
       </div>
     );

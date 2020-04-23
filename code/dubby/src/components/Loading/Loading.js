@@ -5,7 +5,7 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 import { Spinner } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 
-const Loading = ({ to, noauth }) => {
+const Loading = ({ noauth }) => {
   const { theme } = useContext(ThemeContext);
   const { userData, userLoading } = useContext(UserContext);
 
@@ -24,7 +24,7 @@ const Loading = ({ to, noauth }) => {
       </div>
     );
   } else {
-    return <Redirect to={to || "/launch"} />;
+    return <Redirect to="/launch" />;
   }
 };
 
