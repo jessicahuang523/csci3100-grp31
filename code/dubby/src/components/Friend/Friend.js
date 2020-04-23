@@ -108,7 +108,7 @@ const Friend = () => {
                   {eventTypeData.map(({ value, display, icon }) => (
                     <DropdownItem
                       key={value}
-                      onClick={() => setSearchUserInterest(display)}
+                      onClick={() => setSearchUserInterest(value)}
                     >
                       <i className={icon}></i>
                       {display}

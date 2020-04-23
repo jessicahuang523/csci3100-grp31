@@ -33,11 +33,10 @@ const GymItemCard = ({ data }) => {
         header: "Welcome to",
         caption: data.display,
       });
-      scheduleImageRef
+      const unsubscribeScheduleImage = scheduleImageRef
         .orderBy("timestamp", "desc")
         .limitToLast(3)
-        .get()
-        .then((snap) => {
+        .onSnapshot((snap) => {
           let tmp = [];
           snap.forEach((d) => {
             const { src, timestamp } = d.data();
@@ -51,6 +50,9 @@ const GymItemCard = ({ data }) => {
           });
           setScheduleImage(tmp);
         });
+      return () => {
+        unsubscribeScheduleImage();
+      };
     }
   }, [data, scheduleImageRef]);
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Button, Form, FormGroup, Label, Progress } from "reactstrap";
 import { uploadGymScheduleImage } from "../../utilityfunctions/Utilities";
 
@@ -7,6 +7,15 @@ const EditScheduleImage = ({ id }) => {
   const [imageFile, setImageFile] = useState();
   // 0~100, will be updated by uploadGymScheduleImage()
   const [uploadProgress, setUploadProgress] = useState(0);
+
+  // reset when progress >= 100 and removes input image
+  useEffect(() => {
+    if (uploadProgress >= 100) {
+      alert("Upload complete!");
+      setImageFile(null);
+      setUploadProgress(0);
+    }
+  }, [uploadProgress]);
 
   const handleImageInputChange = (e) => setImageFile(e.target.files[0]);
 

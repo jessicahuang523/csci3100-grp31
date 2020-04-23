@@ -265,13 +265,11 @@ const Event = () => {
                 </Button>
               </ButtonGroup>
             )}
-          {eventParticipants.find((x) => x.uid === uid) &&
-            eventParticipants.find((p) => p.uid === uid).status ===
-              "joined" && (
-              <Collapse isOpen={participantCollapse}>
-                <UserList users={eventParticipants} />
-              </Collapse>
-            )}
+          {joinedParticipants && (
+            <Collapse isOpen={participantCollapse}>
+              <UserList users={joinedParticipants} />
+            </Collapse>
+          )}
         </Jumbotron>
 
         {/* modal to confirm delete event*/}
@@ -359,7 +357,11 @@ const Event = () => {
                   <i className="fas fa-comment-dots"></i> Chat!
                 </Button>
               ) : (
-                <Button block onClick={handleJoinButtonClick}>
+                <Button
+                  block
+                  disabled={vacancy <= 0}
+                  onClick={handleJoinButtonClick}
+                >
                   <i className="fas fa-plus"></i> Join
                 </Button>
               )}
