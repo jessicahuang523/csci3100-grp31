@@ -60,7 +60,7 @@ const ProfilePage = () => {
     } else {
       setProfileData(userData);
     }
-  }, [userData, uid]);
+  }, [userData, uid, profileData]);
 
   const toggleIsEditable = () => setIsEditable(!isEditable);
 
@@ -128,7 +128,10 @@ const ProfilePage = () => {
           <ProfileHead src={profileImageSrc} size="profile" />
           <Row>
             <Col sm={{ size: 10, offset: 1 }}>
-              <Form onSubmit={handleProfileDataSubmit}>
+              <Form
+                onSubmit={handleProfileDataSubmit}
+                onReset={() => toggleIsEditable()}
+              >
                 {["username", "description", "university"].map((id) => (
                   <FormGroup key={id}>
                     <Label for={id} style={{ textTransform: "capitalize" }}>
@@ -161,15 +164,12 @@ const ProfilePage = () => {
                 <hr />
                 <EditProfileImage />
                 <hr />
-                {profileData === userData ? (
-                  <Button block type="submit">
-                    <i className="fas fa-times"></i> Cancel
-                  </Button>
-                ) : (
-                  <Button block type="submit">
-                    <i className="fas fa-save"></i> Save
-                  </Button>
-                )}
+                <Button block type="reset">
+                  <i className="fas fa-times"></i> Cancel
+                </Button>
+                <Button block type="submit">
+                  <i className="fas fa-save"></i> Save
+                </Button>
               </Form>
             </Col>
           </Row>
