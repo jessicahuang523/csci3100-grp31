@@ -37,7 +37,7 @@ const Event = () => {
   const { gymData } = useContext(GymContext);
   const { eventTypeData } = useContext(EventTypeContext);
   const { userData } = useContext(UserContext);
-  const { friendListData } = useContext(FriendContext);
+  const { friendListData, friendContextLoaded } = useContext(FriendContext);
 
   // fetched event data from /event/{eid}
   const [eventData, setEventData] = useState();
@@ -201,7 +201,7 @@ const Event = () => {
     !eventData ||
     !eventParticipants ||
     !hostUserData ||
-    !friendListData
+    !friendContextLoaded
   ) {
     return <Loading />;
   } else if (noEventRedirect) {

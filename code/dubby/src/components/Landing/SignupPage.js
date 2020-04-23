@@ -55,10 +55,10 @@ const SignupPage = () => {
   // render
   if (userLoading) {
     return <Loading />;
-  } else if (dataCreationLoading) {
-    return <LoadingUserCreation />;
   } else if (userData) {
     return <Redirect to="/" />;
+  } else if (dataCreationLoading) {
+    return <LoadingUserCreation />;
   } else {
     return (
       <div style={theme.background}>

@@ -9,7 +9,6 @@ import {
   InputGroupAddon,
   Button,
   Row,
-  Col,
 } from "reactstrap";
 import NavBar from "../Navbar/Navbar";
 import Loading from "../Loading/Loading";
@@ -73,9 +72,7 @@ const EventPage = () => {
           {eventList.length > 0 && (
             <Row xs="1" sm="2" md="3">
               {eventList.map((eid) => (
-                <Col key={eid}>
-                  <EventCard searchString={searchEvent} eid={eid} />
-                </Col>
+                <EventCard key={eid} searchString={searchEvent} eid={eid} />
               ))}
             </Row>
           )}

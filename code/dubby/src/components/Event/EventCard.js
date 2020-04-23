@@ -4,7 +4,14 @@ import { ThemeContext } from "../../contexts/ThemeContext";
 import { EventTypeContext } from "../../contexts/EventTypeContext";
 import { Link } from "react-router-dom";
 import { firestore, auth } from "firebase";
-import { Card, CardTitle, CardSubtitle, CardText, Badge } from "reactstrap";
+import {
+  Card,
+  CardTitle,
+  CardSubtitle,
+  CardText,
+  Badge,
+  Col,
+} from "reactstrap";
 import LoadingEventCard from "../Loading/LoadingEventCard";
 import ProfileHead from "../Profile/ProfileHead";
 
@@ -160,57 +167,63 @@ const EventCard = ({ eid, searchString }) => {
     const parsedStartingTime = parseTimeDisplay(startingTime);
 
     return (
-      <div className="event-card" style={{ marginBottom: "1rem" }}>
-        <Card
-          body
-          tag={Link}
-          to={`/e/${eid}`}
-          inverse={!isPrimaryTheme}
-          color={!isPrimaryTheme ? "dark" : null}
-        >
-          <CardSubtitle>
-            <Badge pill color="secondary">
-              <i className={foundTypeData.icon}></i> {foundTypeData.display}
-            </Badge>
-            {eventParticipants.find((p) => p.uid === uid) &&
-            eventParticipants.find((p) => p.uid === uid).status === "joined" ? (
-              <Badge pill color="info">
-                Joined
+      <Col>
+        <div className="event-card" style={{ marginBottom: "1rem" }}>
+          <Card
+            body
+            tag={Link}
+            to={`/e/${eid}`}
+            inverse={!isPrimaryTheme}
+            color={!isPrimaryTheme ? "dark" : null}
+          >
+            <CardSubtitle>
+              <Badge pill color="secondary">
+                <i className={foundTypeData.icon}></i> {foundTypeData.display}
               </Badge>
-            ) : (
-              <Badge pill color="dark">
-                Invited
-              </Badge>
-            )}
-            {eventData.isPublic || (
-              <Badge pill color="success">
-                Private
-              </Badge>
-            )}
-            {hostUserData.uid === uid && (
-              <Badge pill color="warning">
-                Hosting
-              </Badge>
-            )}
-          </CardSubtitle>
-          <CardTitle tag="h3">
-            <b>{eventName}</b>
-          </CardTitle>
-          <CardText>{foundLocationData.display_short}</CardText>
-          <CardText>
-            Starting at {parsedStartingTime}
-            <br />
-            Vacancy: {vacancy}/{allowedPeople}
-          </CardText>
-          <CardSubtitle>
-            <Badge pill color={isPrimaryTheme ? "dark" : "light"}>
-              Host
-            </Badge>{" "}
-            <ProfileHead size="inline" src={hostUserData.profileImageSrc} />{" "}
-            {hostUserData.username}
-          </CardSubtitle>
-        </Card>
-      </div>
+              {eventParticipants.find((p) => p.uid === uid) &&
+                eventParticipants.find((p) => p.uid === uid).status ===
+                  "joined" && (
+                  <Badge pill color="info">
+                    Joined
+                  </Badge>
+                )}
+              {eventParticipants.find((p) => p.uid === uid) &&
+                eventParticipants.find((p) => p.uid === uid).status ===
+                  "invited" && (
+                  <Badge pill color="dark">
+                    Invited
+                  </Badge>
+                )}
+              {eventData.isPublic || (
+                <Badge pill color="success">
+                  Private
+                </Badge>
+              )}
+              {hostUserData.uid === uid && (
+                <Badge pill color="warning">
+                  Hosting
+                </Badge>
+              )}
+            </CardSubtitle>
+            <CardTitle tag="h3">
+              <b>{eventName}</b>
+            </CardTitle>
+            <CardText>{foundLocationData.display_short}</CardText>
+            <CardText>
+              Starting at {parsedStartingTime}
+              <br />
+              Vacancy: {vacancy}/{allowedPeople}
+            </CardText>
+            <CardSubtitle>
+              <Badge pill color={isPrimaryTheme ? "dark" : "light"}>
+                Host
+              </Badge>{" "}
+              <ProfileHead size="inline" src={hostUserData.profileImageSrc} />{" "}
+              {hostUserData.username}
+            </CardSubtitle>
+          </Card>
+        </div>
+      </Col>
     );
   }
 };

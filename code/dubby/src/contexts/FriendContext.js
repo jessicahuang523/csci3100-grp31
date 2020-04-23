@@ -107,7 +107,7 @@ const FriendContextProvider = (props) => {
     let data = [];
     if (sentRequests) {
       if (sentRequests === "none") {
-        setSentRequestData(null);
+        setSentRequestData([]);
         setSrLoaded(true);
         return;
       }
@@ -131,7 +131,7 @@ const FriendContextProvider = (props) => {
     let data = [];
     if (receivedRequests) {
       if (receivedRequests === "none") {
-        setReceivedRequestData(null);
+        setReceivedRequestData([]);
         setRrLoaded(true);
         return;
       }
@@ -155,7 +155,7 @@ const FriendContextProvider = (props) => {
     let data = [];
     if (friendList) {
       if (friendList === "none") {
-        setFriendListData(null);
+        setFriendListData([]);
         setFlLoaded(true);
         return;
       }
