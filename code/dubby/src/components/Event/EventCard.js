@@ -123,10 +123,11 @@ const EventCard = ({ eid, searchString }) => {
   // display string given event starting time
   const parseTimeDisplay = (time) => {
     const st = new Date(time);
-    const stt = st.toLocaleTimeString();
-    const std = st.toLocaleDateString();
+    const stt = st.toLocaleTimeString("en-US");
+    const std = st.toLocaleDateString("en-US");
     const isToday =
-      new Date(Date.now()).toLocaleDateString() === st.toLocaleDateString();
+      new Date(Date.now()).toLocaleDateString("en-US") ===
+      st.toLocaleDateString("en-US");
     const parsedTime =
       (isToday ? "Today" : std.substring(0, std.length - 5)) +
       ", " +

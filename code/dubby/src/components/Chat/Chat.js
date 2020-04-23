@@ -224,9 +224,10 @@ const Message = ({ senderData, message }) => {
   const { profileImageSrc } = senderData;
   const time = new Date(created_at);
   const displayTime =
-    time.toLocaleDateString() === new Date(Date.now()).toLocaleDateString()
-      ? time.toLocaleTimeString()
-      : time.toLocaleDateString();
+    time.toLocaleDateString("en-US") ===
+    new Date(Date.now()).toLocaleDateString("en-US")
+      ? time.toLocaleTimeString("en-US")
+      : time.toLocaleDateString("en-US");
 
   const style =
     userData.uid === sender.uid ? messageStyle.right : messageStyle.left;
