@@ -166,6 +166,7 @@ const EventCard = ({ eid, searchString }) => {
           (joinedParticipants.length ? joinedParticipants.length : 0)
         : 0;
     const parsedStartingTime = parseTimeDisplay(startingTime);
+    const isFuture = startingTime > Date.now();
 
     return (
       <Col>
@@ -209,11 +210,27 @@ const EventCard = ({ eid, searchString }) => {
             <CardTitle tag="h3">
               <b>{eventName}</b>
             </CardTitle>
-            <CardText>{foundLocationData.display_short}</CardText>
             <CardText>
-              Starting at {parsedStartingTime}
+              <Badge pill color="warning">
+                Location
+              </Badge>{" "}
+              {foundLocationData.display_short}
+            </CardText>
+            <CardText>
+              <Badge
+                pill
+                color={
+                  isFuture ? (isPrimaryTheme ? "dark" : "light") : "secondary"
+                }
+              >
+                {isFuture ? "Starting" : "Started"}
+              </Badge>{" "}
+              {parsedStartingTime}
               <br />
-              Vacancy: {vacancy}/{allowedPeople}
+              <Badge pill color="success">
+                Vacancy
+              </Badge>{" "}
+              {vacancy}/{allowedPeople}
             </CardText>
             <CardSubtitle>
               <Badge pill color={isPrimaryTheme ? "dark" : "light"}>

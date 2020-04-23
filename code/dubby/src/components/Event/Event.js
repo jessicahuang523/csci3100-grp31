@@ -19,6 +19,8 @@ import {
   Collapse,
   Form,
   ModalBody,
+  Card,
+  CardText,
 } from "reactstrap";
 import Loading from "../Loading/Loading";
 import NavBar from "../Navbar/Navbar";
@@ -33,10 +35,10 @@ import UserList from "../Friend/UserList";
 const Event = () => {
   const { eid } = useParams();
 
-  const { theme } = useContext(ThemeContext);
   const { gymData } = useContext(GymContext);
-  const { eventTypeData } = useContext(EventTypeContext);
   const { userData } = useContext(UserContext);
+  const { eventTypeData } = useContext(EventTypeContext);
+  const { theme, isPrimaryTheme } = useContext(ThemeContext);
   const { friendListData, friendContextLoaded } = useContext(FriendContext);
 
   // fetched event data from /event/{eid}
@@ -221,6 +223,7 @@ const Event = () => {
           (joinedParticipants.length ? joinedParticipants.length : 0)
         : 0;
     const parsedStartingTime = parseTimeDisplay(startingTime);
+    const isFuture = startingTime > Date.now();
 
     return (
       <div style={theme.background}>
@@ -338,70 +341,68 @@ const Event = () => {
         </Modal>
 
         <div style={theme.mainContainer}>
-          <p>Location: {foundLocationData.display}</p>
-          <p>Starting at {parsedStartingTime}</p>
-          <p>
-            Vacancy: {vacancy}/{allowedPeople}
-          </p>
-          <Row>
-            <Col sm={{ size: 6 }}>
-              <Button block outline tag={Link} to={`/u/${hostUserData.uid}`}>
+          <Card body style={{ padding: "5rem 2rem" }}>
+            <CardText>
+              <Badge pill color="warning">
+                Location
+              </Badge>{" "}
+              {foundLocationData.display}
+              <br />
+              <Badge
+                pill
+                color={
+                  isFuture ? (isPrimaryTheme ? "dark" : "light") : "secondary"
+                }
+              >
+                {isFuture ? "Starting" : "Started"}
+              </Badge>{" "}
+              {parsedStartingTime}
+              <br />
+              <Badge pill color="success">
+                Vacancy
+              </Badge>{" "}
+              {vacancy}/{allowedPeople}
+            </CardText>
+
+            <ButtonGroup>
+              {uid === hostUserData.uid ? (
+                <Button color="dark" tag={Link} to="/">
+                  <i className="fas fa-chevron-left"></i> My Events
+                </Button>
+              ) : (
+                <Button color="dark" tag={Link} to="/e">
+                  <i className="fas fa-chevron-left"></i> Events
+                </Button>
+              )}
+              <Button outline tag={Link} to={`/u/${hostUserData.uid}`}>
+                <Badge pill color={isPrimaryTheme ? "dark" : "light"}>
+                  Host
+                </Badge>{" "}
                 <ProfileHead size="inline" src={hostUserData.profileImageSrc} />{" "}
                 {hostUserData.username}
               </Button>
-            </Col>
-            <Col sm={{ size: 6 }}>
+            </ButtonGroup>
+            <hr />
+            <ButtonGroup>
               {eventParticipants.find((x) => x.uid === uid) &&
               eventParticipants.find((p) => p.uid === uid).status ===
                 "joined" ? (
-                <Button block color="success" tag={Link} to={`/c/${cid}`}>
+                <Button color="success" tag={Link} to={`/c/${cid}`}>
                   <i className="fas fa-comment-dots"></i> Chat!
                 </Button>
               ) : (
-                <Button
-                  block
-                  disabled={vacancy <= 0}
-                  onClick={handleJoinButtonClick}
-                >
+                <Button disabled={vacancy <= 0} onClick={handleJoinButtonClick}>
                   <i className="fas fa-plus"></i> Join
                 </Button>
               )}
-            </Col>
-          </Row>
-          <hr />
-          {uid === hostUserData.uid ? (
-            <Row>
-              <Col>
-                <Button block tag={Link} to="/">
-                  <i className="fas fa-undo"></i> Back to My Events
-                </Button>
-              </Col>
-            </Row>
-          ) : (
-            <Row>
-              <Col>
-                <Button block tag={Link} to="/e">
-                  <i className="fas fa-undo"></i> Back to Events Page
-                </Button>
-              </Col>
-            </Row>
-          )}
-          <hr />
-          {uid === hostUserData.uid && (
-            <Row>
-              <Col>
-                <Button
-                  block
-                  outline
-                  color="danger"
-                  onClick={handleDeleteEventButtonClick}
-                >
+              {uid === hostUserData.uid && (
+                <Button color="danger" onClick={handleDeleteEventButtonClick}>
                   <i className="fas fa-trash"></i>
                   Delete
                 </Button>
-              </Col>
-            </Row>
-          )}
+              )}
+            </ButtonGroup>
+          </Card>
         </div>
       </div>
     );
