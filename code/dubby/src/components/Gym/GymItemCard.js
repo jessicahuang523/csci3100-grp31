@@ -38,7 +38,7 @@ const GymItemCard = ({ data }) => {
           setScheduleImage(tmp);
         });
     }
-  }, [data]);
+  }, [data, scheduleImageRef]);
 
   useEffect(() => {
     let tmp = [];
