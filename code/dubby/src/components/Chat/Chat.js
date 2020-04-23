@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useContext, useRef} from "react";
-import {useParams, Redirect, Link} from "react-router-dom";
+import {useParams, Redirect} from "react-router-dom";
 import {firestore} from "firebase";
 import {UserContext} from "../../contexts/UserContext";
 import {ThemeContext} from "../../contexts/ThemeContext";

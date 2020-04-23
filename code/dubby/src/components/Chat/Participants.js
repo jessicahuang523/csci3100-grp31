@@ -5,16 +5,10 @@ import {UserContext} from "../../contexts/UserContext";
 import {ThemeContext} from "../../contexts/ThemeContext";
 import {FriendContext} from "../../contexts/FriendContext";
 import {
-  Container,
-  Row,
-  Col,
   Form,
-  Input,
   Button,
   Jumbotron,
   Collapse,
-  InputGroup,
-  InputGroupAddon,
   ButtonGroup,
   Modal,
   ModalHeader,
