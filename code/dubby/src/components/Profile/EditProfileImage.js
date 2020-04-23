@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input, Button, Progress, FormGroup, Label } from "reactstrap";
 import { uploadProfileImage } from "../../utilityfunctions/Utilities";
 
@@ -7,6 +7,15 @@ const EditProfileImage = () => {
   const [imageFile, setImageFile] = useState();
   // 0~100, will be updated by uploadProfileImage()
   const [uploadProgress, setUploadProgress] = useState();
+
+  // reset when progress >= 100 and removes input image
+  useEffect(() => {
+    if (uploadProgress >= 100) {
+      alert("Upload complete!");
+      setImageFile(null);
+      setUploadProgress(0);
+    }
+  }, [uploadProgress]);
 
   const handleProfileImageInputChange = (e) => setImageFile(e.target.files[0]);
 

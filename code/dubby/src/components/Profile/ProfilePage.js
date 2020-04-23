@@ -58,9 +58,16 @@ const ProfilePage = () => {
           setProfileData(s.data());
         });
     } else {
-      setProfileData(userData);
+      if (!profileData) {
+        setProfileData(userData);
+      } else if (profileData.profileImageSrc !== userData.profileImageSrc) {
+        setProfileData({
+          ...profileData,
+          profileImageSrc: userData.profileImageSrc,
+        });
+      }
     }
-  }, [userData, uid]);
+  }, [userData, uid, profileData]);
 
   const toggleIsEditable = () => setIsEditable(!isEditable);
 
@@ -80,8 +87,6 @@ const ProfilePage = () => {
       ...profileData,
       [key]: e.target.value,
     };
-    console.log({ newProfileData });
-
     setProfileData(newProfileData);
   };
 
