@@ -1,9 +1,12 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { firestore } from "firebase";
+import { UserContext } from "./UserContext";
 
 export const EventTypeContext = createContext();
 
 const EventTypeContextProvider = (props) => {
+  const { userData } = useContext(UserContext);
+
   // eventTypeLoading = true when fetching data from database
   const [eventTypeLoading, setEventTypeLoading] = useState(true);
   // eventTypeData contains list of event type data in /event_types
@@ -22,19 +25,21 @@ const EventTypeContextProvider = (props) => {
 
   // subscribe to event type data (/event_types) on initialization
   useEffect(() => {
-    const unsubscribeEventType = firestore()
-      .collection("event_types")
-      .onSnapshot((snap) => {
-        let tmp = [];
-        snap.forEach((d) => tmp.push(d.data()));
-        tmp.sort(compare);
-        setEventTypeData(tmp);
-        setEventTypeLoading(false);
-      });
-    return () => {
-      unsubscribeEventType();
-    };
-  }, []);
+    if (userData) {
+      const unsubscribeEventType = firestore()
+        .collection("event_types")
+        .onSnapshot((snap) => {
+          let tmp = [];
+          snap.forEach((d) => tmp.push(d.data()));
+          tmp.sort(compare);
+          setEventTypeData(tmp);
+          setEventTypeLoading(false);
+        });
+      return () => {
+        unsubscribeEventType();
+      };
+    }
+  }, [userData]);
 
   return (
     // exports eventTypeData and boolean eventTypeLoading
