@@ -11,8 +11,6 @@ import {
   ButtonGroup,
   Button,
   Badge,
-  Row,
-  Col,
   Modal,
   ModalHeader,
   ModalFooter,
