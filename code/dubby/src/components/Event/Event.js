@@ -231,15 +231,19 @@ const Event = () => {
             <i className={foundTypeData.icon}></i> {foundTypeData.display}
           </Badge>
           {eventParticipants.find((p) => p.uid === uid) &&
-          eventParticipants.find((p) => p.uid === uid).status === "joined" ? (
-            <Badge pill color="info">
-              Joined
-            </Badge>
-          ) : (
-            <Badge pill color="dark">
-              Invited
-            </Badge>
-          )}
+            eventParticipants.find((p) => p.uid === uid).status ===
+              "joined" && (
+              <Badge pill color="info">
+                Joined
+              </Badge>
+            )}
+          {eventParticipants.find((p) => p.uid === uid) &&
+            eventParticipants.find((p) => p.uid === uid).status ===
+              "invited" && (
+              <Badge pill color="dark">
+                Invited
+              </Badge>
+            )}
           {isPublic || (
             <Badge pill color="success">
               Private
