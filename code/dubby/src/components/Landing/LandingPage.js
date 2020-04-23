@@ -51,7 +51,7 @@ const LandingPage = () => {
   } else {
     return (
       <div style={theme.background}>
-        <Jumbotron style={theme.jumbotron}>
+        <Jumbotron style={theme.launchJumbotron}>
           <Media middle src={logo} style={{ width: "10rem" }} />
           <hr />
           <p>

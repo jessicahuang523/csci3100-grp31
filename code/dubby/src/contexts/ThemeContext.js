@@ -36,6 +36,7 @@ const loadingStyle = {
   alignItems: "center",
   justifyContent: "space-around",
 };
+const launchJumbotronStyle = { ...jumbotronStyle, marginTop: 0 };
 
 // combine above variables to theme selections
 // themes.primary (yellow based, light) or
@@ -44,6 +45,10 @@ const themes = {
   primary: {
     background: { ...backgroundStyle, backgroundColor: yellow },
     jumbotron: { ...jumbotronStyle, backgroundColor: jumbotron_yellow },
+    launchJumbotron: {
+      ...launchJumbotronStyle,
+      backgroundColor: jumbotron_yellow,
+    },
     profileContainer: profileContainerStyle,
     mainContainer: mainContainerStyle,
     navbar: navbarStyle,
@@ -54,7 +59,11 @@ const themes = {
   secondary: {
     background: { ...backgroundStyle, backgroundColor: purple },
     jumbotron: { ...jumbotronStyle, backgroundColor: jumbotron_purple },
-    profileContainer: profileContainerStyle,
+    launchJumbotron: {
+      ...launchJumbotronStyle,
+      backgroundColor: jumbotron_purple,
+    },
+    launchJumbotron: launchJumbotronStyle,
     mainContainer: mainContainerStyle,
     navbar: navbarStyle,
     loading: loadingStyle,
