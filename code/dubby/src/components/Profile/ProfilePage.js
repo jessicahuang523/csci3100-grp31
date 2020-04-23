@@ -60,7 +60,7 @@ const ProfilePage = () => {
     } else {
       setProfileData(userData);
     }
-  }, [userData, uid, profileData]);
+  }, [userData, uid]);
 
   const toggleIsEditable = () => setIsEditable(!isEditable);
 
