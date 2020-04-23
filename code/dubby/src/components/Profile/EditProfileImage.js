@@ -33,7 +33,7 @@ const EditProfileImage = () => {
         <i className="fas fa-upload"></i> Upload
       </Button>
       <br />
-      {uploadProgress && <Progress color="info" value={uploadProgress} />}
+      <Progress color="info" value={uploadProgress} />
     </FormGroup>
   );
 };

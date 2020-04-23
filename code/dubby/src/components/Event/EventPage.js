@@ -73,8 +73,8 @@ const EventPage = () => {
           {eventList.length > 0 && (
             <Row xs="1" sm="2" md="3">
               {eventList.map((eid) => (
-                <Col>
-                  <EventCard searchString={searchEvent} key={eid} eid={eid} />
+                <Col key={eid}>
+                  <EventCard searchString={searchEvent} eid={eid} />
                 </Col>
               ))}
             </Row>

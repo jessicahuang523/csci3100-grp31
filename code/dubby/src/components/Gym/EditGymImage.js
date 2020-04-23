@@ -3,9 +3,14 @@ import { Button, Input, Form, FormGroup, Label, Progress } from "reactstrap";
 import { uploadGymImage } from "../../utilityfunctions/Utilities";
 
 const EditGymImage = ({ id }) => {
+  // file object to be uploaded
   const [imageFile, setImageFile] = useState();
-  const [uploadProgress, setUploadProgress] = useState();
+  // 0~100, will be updated by uploadGymImage()
+  const [uploadProgress, setUploadProgress] = useState(0);
 
+  const handleImageInputChange = (e) => setImageFile(e.target.files[0]);
+
+  // invokes uploadGymImage() to upload image if present
   const handleUploadImage = async (e) => {
     e.preventDefault();
     if (imageFile) {
@@ -13,13 +18,7 @@ const EditGymImage = ({ id }) => {
     }
   };
 
-  const handleImageInputChange = (e) => {
-    const newImage = e.target.files[0];
-    if (newImage) {
-      setImageFile(newImage);
-    }
-  };
-
+  // render
   return (
     <Form onSubmit={handleUploadImage}>
       <FormGroup>
@@ -31,11 +30,10 @@ const EditGymImage = ({ id }) => {
           onChange={handleImageInputChange}
         />
       </FormGroup>
-      <Button block color="info" size="sm" type="submit">
+      <Button block color="secondary" size="sm" type="submit">
         <i className="fas fa-upload"></i> Upload
       </Button>
-      <br />
-      {uploadProgress && <Progress color="info" value={uploadProgress} />}
+      <Progress color="success" value={uploadProgress} />
     </Form>
   );
 };

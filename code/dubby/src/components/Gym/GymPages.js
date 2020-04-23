@@ -19,9 +19,10 @@ import GymItemCard from "./GymItemCard";
 import Loading from "../Loading/Loading";
 
 const GymPage = () => {
-  const { theme } = useContext(ThemeContext);
   const { gymData } = useContext(GymContext);
+  const { theme, isPrimaryTheme } = useContext(ThemeContext);
 
+  // selected tab of university
   const [activeTab, setActiveTab] = useState("1");
 
   const toggleActiveTab = (tab) => {
@@ -31,6 +32,8 @@ const GymPage = () => {
   if (!gymData) {
     return <Loading noauth />;
   } else {
+    // list of universities that gets displayed on tabs and
+    // used for filtering gym data
     const universityList = [
       { tabid: "1", display: "CUHK", value: "cuhk", background: "#cc33ff" },
       { tabid: "2", display: "HKU", value: "hku", background: "#ffcc00" },
@@ -55,13 +58,14 @@ const GymPage = () => {
               </NavItem>
             ))}
           </Nav>
+
           {/* content for gyms per university */}
           <TabContent activeTab={activeTab}>
             {universityList.map(({ tabid, value }) => {
+              // list of cards for gym data (or lack thereof)
               const filteredData = gymData.filter(
                 (d) => d.value.substring(0, 4) === value
               );
-
               return (
                 <TabPane key={tabid} tabId={tabid}>
                   <Row>
@@ -71,7 +75,11 @@ const GymPage = () => {
                           <GymItemCard key={data.value} data={data} />
                         ))
                       ) : (
-                        <Card body>
+                        <Card
+                          body
+                          inverse={!isPrimaryTheme}
+                          color={!isPrimaryTheme ? "dark" : null}
+                        >
                           <CardText>Constructing...</CardText>
                         </Card>
                       )}

@@ -1,4 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
+import { UserContext } from "../../contexts/UserContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import {
   Row,
   Col,
@@ -9,19 +11,28 @@ import {
 } from "reactstrap";
 import EditGymImage from "./EditGymImage";
 import EditScheduleImage from "./EditScheduleImage";
-import { UserContext } from "../../contexts/UserContext";
 
 const GymItemCard = ({ data }) => {
   const { userData } = useContext(UserContext);
+  const { isPrimaryTheme } = useContext(ThemeContext);
+
   const { display, description, scheduleImageRef, id } = data;
 
+  // parsed image data from database/props
   const [mainImage, setMainImage] = useState();
   const [scheduleImage, setScheduleImage] = useState();
+  // list of images to be displayed. Contains header, caption and image src
   const [imageItems, setImageItems] = useState();
 
+  // fetch schedule images from database and main image
+  // updates mainImage and scheduleImage
   useEffect(() => {
     if (data) {
-      setMainImage({ src: data.image_main, caption: data.display });
+      setMainImage({
+        src: data.image_main,
+        header: "Welcome to",
+        caption: data.display,
+      });
       scheduleImageRef
         .orderBy("timestamp", "desc")
         .limitToLast(3)
@@ -32,7 +43,10 @@ const GymItemCard = ({ data }) => {
             const { src, timestamp } = d.data();
             tmp.push({
               src,
-              caption: new Date(timestamp).toLocaleDateString(),
+              header: "Is it open?",
+              caption:
+                "Schedule information on " +
+                new Date(timestamp).toLocaleDateString(),
             });
           });
           setScheduleImage(tmp);
@@ -40,6 +54,8 @@ const GymItemCard = ({ data }) => {
     }
   }, [data, scheduleImageRef]);
 
+  // mixes mainImage with scheduleImage to create list of images to be displayed
+  // updates imageItems
   useEffect(() => {
     let tmp = [];
     if (mainImage) {
@@ -51,12 +67,19 @@ const GymItemCard = ({ data }) => {
     setImageItems(tmp);
   }, [mainImage, scheduleImage]);
 
+  // render
   return (
-    <Card body style={{ marginBottom: "1rem" }}>
+    <Card
+      body
+      inverse={!isPrimaryTheme}
+      color={!isPrimaryTheme ? "dark" : null}
+      style={{ marginBottom: "1rem" }}
+    >
       <CardTitle tag="h4">{display}</CardTitle>
       <CardText>{description}</CardText>
       {imageItems && <UncontrolledCarousel items={imageItems} />}
       <hr />
+      {/* displays upload component only when authorized */}
       {userData && (
         <Row xs="1" sm="2">
           <Col>

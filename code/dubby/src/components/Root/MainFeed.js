@@ -54,8 +54,8 @@ const MainFeed = () => {
           {userEventList.length > 0 && (
             <Row xs="1" sm="2" md="3">
               {userEventList.map((event) => (
-                <Col>
-                  <EventCard key={event.eid} eid={event.eid} />
+                <Col key={event.eid}>
+                  <EventCard eid={event.eid} />
                 </Col>
               ))}
             </Row>
