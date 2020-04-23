@@ -62,7 +62,7 @@ const themes = {
       ...launchJumbotronStyle,
       backgroundColor: jumbotron_purple,
     },
-    launchJumbotron: launchJumbotronStyle,
+    profileContainer: profileContainerStyle,
     mainContainer: mainContainerStyle,
     navbar: navbarStyle,
     loading: loadingStyle,
