@@ -22,14 +22,12 @@ import {
   ModalFooter,
   Badge
 } from "reactstrap";
-import Navbar from "../Navbar/Navbar";
-import Participants from "./Participants"
 import Loading from "../Loading/Loading";
 import UserList from "../Friend/UserList";
 import ProfileHead from "../Profile/ProfileHead";
 import {sendChatMessage, addParticipantToChat} from "../../utilityfunctions/Utilities";
 
-export const Chat = () => {
+const Participants = () => {
   const {cid} = useParams();
 
   const {theme} = useContext(ThemeContext);
@@ -186,90 +184,70 @@ export const Chat = () => {
       ? chatParticipantData.find((p) => p.uid !== userData.uid).username
       : chatData.title;
 
-    return (<div style={theme.background}>
-      <Navbar/>
-      <Participants/> {/* modal to invite friends */}
-
-      <Container style={{
-          marginBottom: "1rem"
-        }}>
-        <Row>
-          <Col sm={12}>
-            <ul>
-              {chatMessages && chatMessages.length > 0 && chatMessages.map((message) => (<Message key={message.created_at} message={message} senderData={chatParticipantData.find(({uid}) => uid === message.sender.uid)}/>))}
-            </ul>
-            <Form onSubmit={handleSendMessage}>
-              <InputGroup>
-                <Input id="message" placeholder="message" value={inputMessage} onChange={handleInputChange}/>
-                <InputGroupAddon addonType="append">
-                  <Button color="primary" type="submit">
-                    <i className="fas fa-paper-plane"></i>
-                  </Button>
-                </InputGroupAddon>
-              </InputGroup>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
-      <div ref={divRef}/>
+    // render
+    return (<div>
+      <Jumbotron style={theme.jumbotron} expand="sm">
+        {
+          type === "private" && (<Badge pill="pill" color="success">
+            <i className={icon}></i>
+            Private
+          </Badge>)
+        }
+        {
+          type === "group" && (<Badge pill="pill" color="info">
+            <i className={icon}></i>
+            Group
+          </Badge>)
+        }
+        {
+          type === "event" && (<Badge pill="pill" color="warning">
+            <i className={icon}></i>
+            Event
+          </Badge>)
+        }
+        <h1>
+          {title}
+          {
+            type === "event" && (<Button close="close" tag={Link} to={`/e/${eid}`}>
+              <i className="fas fa-info-circle"></i>
+            </Button>)
+          }
+        </h1>
+        <ButtonGroup>
+          {
+            type !== "private" && (<Button size="sm" color="success" onClick={handleCollapseToggle}>
+              Participants
+            </Button>)
+          }
+          {
+            type === "group" && (<Button size="sm" onClick={handleModalToggle}>
+              Invite Friends
+            </Button>)
+          }
+        </ButtonGroup>
+        <Collapse isOpen={collapseOpen}>
+          <UserList users={chatParticipantData}/>
+        </Collapse>
+      </Jumbotron>
+      <Modal returnFocusAfterClose={false} isOpen={modalOpen} toggle={handleModalToggle}>
+        <Form onSubmit={handleAddFriendToChat}>
+          <ModalHeader toggle={handleModalToggle}>Invite Friends</ModalHeader>
+          <ModalBody>
+            <UserList users={friendListData.filter(({uid}) => selectedFriendData.indexOf(uid) > -1)} heading="Participants" action={handleDeselectFriend} actionIcon="fas fa-minus" actionColor="warning"/>
+            <hr/>
+            <UserList users={friendListData.filter(({uid}) => selectedFriendData.indexOf(uid) < 0)} heading="Add Users" action={handleSelectFriend} actionIcon="fas fa-plus" actionColor="primary"/>
+          </ModalBody>
+          <ModalFooter>
+            <Button type="submit" color="primary" onClick={handleModalToggle}>
+              Done
+            </Button>{" "}
+            <Button color="danger" outline="outline" onClick={handleModalToggle}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </Form>
+      </Modal>
     </div>);
-  }
-};
-
-const containerStyle = {
-  margin: "40px",
-  display: "grid",
-  columnGap: "20px"
-};
-
-const messageStyle = {
-  left: {
-    container: {
-      ...containerStyle,
-      textAlign: "left",
-      gridTemplateColumns: "70px 1fr"
-    },
-    bubbleClassName: "chat-bubble left",
-    textClassName: "chat-text-left"
-  },
-  right: {
-    container: {
-      ...containerStyle,
-      textAlign: "right",
-      gridTemplateColumns: "1fr 70px"
-    },
-    bubbleClassName: "chat-bubble right",
-    textClassName: "chat-text-right"
-  }
-};
-
-// displays individual chat message
-const Message = ({senderData, message}) => {
-  const {userData} = useContext(UserContext);
-
-  const {username} = senderData;
-  const {created_at, text, sender} = message;
-  const {profileImageSrc} = senderData;
-  const time = new Date(created_at);
-  const displayTime = time.toLocaleDateString() === new Date(Date.now()).toLocaleDateString()
-    ? time.toLocaleTimeString()
-    : time.toLocaleDateString();
-
-  const style = userData.uid === sender.uid
-    ? messageStyle.right
-    : messageStyle.left;
-
-  return (<li style={style.container}>
-    {userData.uid === sender.uid || (<ProfileHead src={profileImageSrc} size="chat"/>)}
-    <div className={style.bubbleClassName}>
-      <p>{username}</p>
-      <div className={style.textClassName}>
-        <p>{text}</p>
-      </div>
-      <p>{displayTime}</p>
-    </div>
-    {userData.uid === sender.uid && (<ProfileHead src={profileImageSrc} size="chat"/>)}
-  </li>);
-};
-
-export default Chat;
+  };
+}
+export default Participants;
