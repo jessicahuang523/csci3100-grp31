@@ -120,8 +120,10 @@ export const Chat = () => {
   // updates inputMessage (clears it)
   const handleSendMessage = (e) => {
     e.preventDefault();
-    sendChatMessage({ cid, inputMessage, chatParticipants });
-    setInputMessage("");
+    if (inputMessage) {
+      sendChatMessage({ cid, inputMessage, chatParticipants });
+      setInputMessage("");
+    }
   };
 
   const handleInputChange = (e) => {
@@ -151,6 +153,7 @@ export const Chat = () => {
         <Container style={{ marginBottom: "1rem" }}>
           <Row>
             <Col sm={12}>
+              {/* list of messages */}
               <ul>
                 {chatMessages &&
                   chatMessages.length > 0 &&
@@ -164,6 +167,8 @@ export const Chat = () => {
                     />
                   ))}
               </ul>
+
+              {/* message input */}
               <Form onSubmit={handleSendMessage}>
                 <InputGroup>
                   <Input

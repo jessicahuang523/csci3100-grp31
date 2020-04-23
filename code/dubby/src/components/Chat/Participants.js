@@ -43,6 +43,7 @@ const Participants = ({ chatParticipantData, chatData }) => {
       addParticipantToChat({ cid, uid });
     }
     setSelectedFriendData([]);
+    handleModalToggle();
   };
 
   // adds uid of selected friend to selectedFriendData
@@ -78,50 +79,57 @@ const Participants = ({ chatParticipantData, chatData }) => {
 
     // render
     return (
-      <div>
-        <Jumbotron style={theme.jumbotron} expand="sm">
-          {type === "private" && (
-            <Badge pill color="success">
-              <i className={icon}></i>
-              Private
-            </Badge>
+      <Jumbotron style={theme.jumbotron} expand="sm">
+        {/* Chat state badges */}
+        {type === "private" && (
+          <Badge pill color="success">
+            <i className={icon}></i>
+            Private
+          </Badge>
+        )}
+        {type === "group" && (
+          <Badge pill color="info">
+            <i className={icon}></i>
+            Group
+          </Badge>
+        )}
+        {type === "event" && (
+          <Badge pill color="warning">
+            <i className={icon}></i>
+            Event
+          </Badge>
+        )}
+
+        {/* title */}
+        <h1>
+          {title}
+          {type === "event" && (
+            <Button close tag={Link} to={`/e/${eid}`}>
+              <i className="fas fa-info-circle"></i>
+            </Button>
+          )}
+        </h1>
+
+        {/* Participants and Invite toggle buttons */}
+        <ButtonGroup>
+          {type !== "private" && (
+            <Button size="sm" color="success" onClick={handleCollapseToggle}>
+              Participants
+            </Button>
           )}
           {type === "group" && (
-            <Badge pill color="info">
-              <i className={icon}></i>
-              Group
-            </Badge>
+            <Button size="sm" onClick={handleModalToggle}>
+              Invite Friends
+            </Button>
           )}
-          {type === "event" && (
-            <Badge pill color="warning">
-              <i className={icon}></i>
-              Event
-            </Badge>
-          )}
-          <h1>
-            {title}
-            {type === "event" && (
-              <Button close tag={Link} to={`/e/${eid}`}>
-                <i className="fas fa-info-circle"></i>
-              </Button>
-            )}
-          </h1>
-          <ButtonGroup>
-            {type !== "private" && (
-              <Button size="sm" color="success" onClick={handleCollapseToggle}>
-                Participants
-              </Button>
-            )}
-            {type === "group" && (
-              <Button size="sm" onClick={handleModalToggle}>
-                Invite Friends
-              </Button>
-            )}
-          </ButtonGroup>
-          <Collapse isOpen={collapseOpen}>
-            <UserList users={chatParticipantData} />
-          </Collapse>
-        </Jumbotron>
+        </ButtonGroup>
+
+        {/* display participants */}
+        <Collapse isOpen={collapseOpen}>
+          <UserList users={chatParticipantData} />
+        </Collapse>
+
+        {/* (group chat) modal to add friends */}
         <Modal
           returnFocusAfterClose={false}
           isOpen={modalOpen}
@@ -153,16 +161,18 @@ const Participants = ({ chatParticipantData, chatData }) => {
               />
             </ModalBody>
             <ModalFooter>
-              <Button type="submit" color="primary" onClick={handleModalToggle}>
-                Done
-              </Button>{" "}
-              <Button color="danger" outline onClick={handleModalToggle}>
-                Cancel
-              </Button>
+              <ButtonGroup>
+                <Button outline onClick={handleModalToggle}>
+                  Cancel
+                </Button>
+                <Button type="submit" color="primary">
+                  Done
+                </Button>
+              </ButtonGroup>
             </ModalFooter>
           </Form>
         </Modal>
-      </div>
+      </Jumbotron>
     );
   }
 };

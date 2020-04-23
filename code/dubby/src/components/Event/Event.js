@@ -330,17 +330,20 @@ const Event = () => {
               />
             </ModalBody>
             <ModalFooter>
-              <Button type="submit" color="primary">
-                Done
-              </Button>{" "}
-              <Button color="danger" outline onClick={toggleInviteModal}>
-                Cancel
-              </Button>
+              <ButtonGroup>
+                <Button outline onClick={toggleInviteModal}>
+                  Cancel
+                </Button>
+                <Button type="submit" color="primary">
+                  Done
+                </Button>
+              </ButtonGroup>
             </ModalFooter>
           </Form>
         </Modal>
 
         <div style={theme.mainContainer}>
+          {/* main content */}
           <Card body style={{ padding: "5rem 2rem" }}>
             <CardText>
               <Badge pill color="warning">
