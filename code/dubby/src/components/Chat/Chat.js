@@ -38,42 +38,31 @@ export const Chat = () => {
   const { userData } = useContext(UserContext);
   const { friendListData } = useContext(FriendContext);
 
+  // data for chat from database
   const [chatData, setChatData] = useState();
   const [chatMessages, setChatMessages] = useState();
   const [chatParticipants, setChatParticipants] = useState();
   const [chatParticipantData, setchatParticipantData] = useState();
+  // redirects to /c if not authorized (uid not in chatParticipants)
   const [chatAuthorized, setChatAuthorized] = useState(false);
+  // new message input string
   const [inputMessage, setInputMessage] = useState("");
-  const [collapseOpen, setCollapseOpen] = useState(false);
+  // invite modal
   const [modalOpen, setModalOpen] = useState(false);
+  // participant list
+  const [collapseOpen, setCollapseOpen] = useState(false);
+  // (for group chat) array of uid of selected friends to invite to chat
   const [selectedFriendData, setSelectedFriendData] = useState([]);
 
+  // ref to bottom for auto scrolling
   const divRef = useRef(null);
 
   const handleCollapseToggle = () => setCollapseOpen(!collapseOpen);
   const handleModalToggle = () => setModalOpen(!modalOpen);
 
-  useEffect(() => {
-    if (chatAuthorized) {
-      const chatDataRef = firestore().collection("chat").doc(cid);
-      const chatMessagesRef = chatDataRef.collection("messages");
-      const unsubscribeChatData = chatDataRef.onSnapshot((snap) => {
-        setChatData(snap.data());
-      });
-      const unsubscribeChatMessages = chatMessagesRef
-        .orderBy("created_at", "asc")
-        .onSnapshot((snap) => {
-          let tmp = [];
-          snap.forEach((doc) => tmp.push(doc.data()));
-          setChatMessages(tmp);
-        });
-      return () => {
-        unsubscribeChatData();
-        unsubscribeChatMessages();
-      };
-    }
-  }, [chatAuthorized, cid]);
-
+  // loads participants and determines if user is authorized
+  // if not authorized, will redirect to /c
+  // updates chatParticipants and chatAuthorized
   useEffect(() => {
     if (userData) {
       const chatDataRef = firestore().collection("chat").doc(cid);
@@ -96,6 +85,31 @@ export const Chat = () => {
     }
   }, [userData, cid]);
 
+  // loads data for chat if authorized
+  // updates chatData and chatMessages
+  useEffect(() => {
+    if (chatAuthorized) {
+      const chatDataRef = firestore().collection("chat").doc(cid);
+      const chatMessagesRef = chatDataRef.collection("messages");
+      const unsubscribeChatData = chatDataRef.onSnapshot((snap) => {
+        setChatData(snap.data());
+      });
+      const unsubscribeChatMessages = chatMessagesRef
+        .orderBy("created_at", "asc")
+        .onSnapshot((snap) => {
+          let tmp = [];
+          snap.forEach((doc) => tmp.push(doc.data()));
+          setChatMessages(tmp);
+        });
+      return () => {
+        unsubscribeChatData();
+        unsubscribeChatMessages();
+      };
+    }
+  }, [chatAuthorized, cid]);
+
+  // fetches data for participants from database in chat given list of users
+  // updates chatParticipantData
   useEffect(() => {
     let pData = [];
     if (chatParticipants) {
@@ -111,16 +125,19 @@ export const Chat = () => {
     }
   }, [chatParticipants]);
 
+  // scroll to bottom automatically
+  useEffect(() => {
+    scrollToBottom();
+  });
+
   const scrollToBottom = () => {
     if (divRef.current) {
       divRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  });
-
+  // writes new message to database
+  // updates inputMessage (clears it)
   const handleSendMessage = (e) => {
     e.preventDefault();
     sendChatMessage({ cid, inputMessage, chatParticipants });
@@ -131,6 +148,8 @@ export const Chat = () => {
     setInputMessage(e.target.value);
   };
 
+  // (for group chat) adds list of uids to group chat
+  // updates selectedFriendData (clears it)
   const handleAddFriendToChat = (e) => {
     e.preventDefault();
     for (const uid of selectedFriendData) {
@@ -139,6 +158,8 @@ export const Chat = () => {
     setSelectedFriendData([]);
   };
 
+  // adds uid of selected friend to selectedFriendData
+  // updates selectedFriendData
   const handleSelectFriend = ({ targetUid }) => {
     if (targetUid && friendListData) {
       let tmp = selectedFriendData;
@@ -148,6 +169,8 @@ export const Chat = () => {
     }
   };
 
+  // removes uid of selected friend from selectedFriendData
+  // updates selectedFriendData
   const handleDeselectFriend = ({ targetUid }) => {
     if (targetUid && selectedFriendData) {
       let tmp = selectedFriendData;
@@ -157,16 +180,24 @@ export const Chat = () => {
   };
 
   // render
-  if (!chatData || !chatMessages || !chatParticipantData || !friendListData) {
+  if (!chatParticipants) {
     return <Loading />;
-  } else if (chatParticipants && !chatAuthorized) {
+  } else if (!chatAuthorized) {
     return <Redirect to="/c" />;
+  } else if (
+    !chatData ||
+    !chatMessages ||
+    !chatParticipantData ||
+    !friendListData
+  ) {
+    return <Loading />;
   } else {
     const { type, icon, eid } = chatData;
     const title =
       type === "private"
         ? chatParticipantData.find((p) => p.uid !== userData.uid).username
         : chatData.title;
+
     return (
       <div style={theme.background}>
         <Navbar />
@@ -251,7 +282,7 @@ export const Chat = () => {
           </Form>
         </Modal>
 
-        <Container>
+        <Container style={{ marginBottom: "1rem" }}>
           <Row>
             <Col sm={12}>
               <ul>
@@ -314,6 +345,7 @@ const messageStyle = {
   },
 };
 
+// displays individual chat message
 const Message = ({ senderData, message }) => {
   const { userData } = useContext(UserContext);
 
