@@ -1,72 +1,43 @@
-import React, {useEffect, useState} from "react";
-import {Input, Button, Form, Media} from "reactstrap";
-import {storage} from "firebase";
+import React, { useState } from "react";
+import { Input, Button, Form, FormGroup, Label, Progress } from "reactstrap";
+import { uploadGymScheduleImage } from "../../utilityfunctions/Utilities";
 
-const EditScheduleImage = ({image_main}) => {
-  const [image, setImage] = useState(null);
-  const [url, setUrl] = useState(false);
-
-  useEffect(() => {
-    const fetchImage = async () => {
-      try {
-        const result = await storage().ref(image_main).getDownloadURL();
-        setUrl(result);
-      } catch (e) {}
-    };
-    fetchImage();
-  }, [image_main]);
+const EditScheduleImage = ({ id }) => {
+  const [imageFile, setImageFile] = useState();
+  const [uploadProgress, setUploadProgress] = useState();
 
   const handleUploadImage = async (e) => {
     e.preventDefault();
-    if (image) {
-      const progress = () => {};
-      const error = () => {};
-      const complete = async () => {
-        const urlResponse = await storage().ref(image_main).getDownloadURL();
-        // console.log(urlResponse);
-        setUrl(urlResponse);
-      };
-      const uploadTask = storage().ref(image_main).put(image);
-      uploadTask.on("state_changed", progress, error, complete);
+    if (imageFile) {
+      uploadGymScheduleImage({ imageFile, setUploadProgress, id });
     }
   };
 
   const handleImageInputChange = (e) => {
     const newImage = e.target.files[0];
     if (newImage) {
-      setImage(newImage);
+      setImageFile(newImage);
     }
   };
 
-  return (<div style={{
-      display: "relative"
-    }}>
+  return (
     <Form onSubmit={handleUploadImage}>
-      <label htmlFor="schedule">Upload a picture and let your mates know about the new schedule:</label>
-      <Input id="schedule" style={{
-          margin: "15px",
-          width: "300px"
-        }} type="file" accept="image/x-png,image/gif,image/jpeg" onChange={handleImageInputChange}/>
-      <Button color="info" block="block" size="sm" type="submit" style={{
-          marginBottom: "1rem"
-        }}>
-        Upload
+      <FormGroup>
+        <Label for="schedule-image">Update schedule?</Label>
+        <Input
+          id="schedule-image"
+          type="file"
+          accept="image/x-png,image/gif,image/jpeg"
+          onChange={handleImageInputChange}
+        />
+      </FormGroup>
+      <Button block color="info" size="sm" type="submit">
+        <i className="fas fa-upload"></i> Upload
       </Button>
+      <br />
+      {uploadProgress && <Progress color="info" value={uploadProgress} />}
     </Form>
-    <div style={{
-        position: "inline-block"
-      }}>
-      {
-        url
-          ? (<Media src={url} alt={image_main} style={{
-              width: "15rem",
-              display: "inline-block",
-              borderStyle: "outset"
-            }}/>)
-          : null
-      }
-    </div>
-  </div>);
+  );
 };
 
 export default EditScheduleImage;

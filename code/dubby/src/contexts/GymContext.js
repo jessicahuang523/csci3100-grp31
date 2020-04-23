@@ -16,7 +16,11 @@ const GymContextProvider = (props) => {
       .onSnapshot((snap) => {
         setGymLoading(true);
         let tmp = [];
-        snap.forEach((d) => tmp.push(d.data()));
+        snap.forEach((d) => {
+          const data = d.data();
+          const scheduleImageRef = d.ref.collection("schedule_images");
+          tmp.push({ ...data, scheduleImageRef });
+        });
         setGymData(tmp);
         setGymLoading(false);
       });

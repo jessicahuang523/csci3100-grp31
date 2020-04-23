@@ -1,5 +1,6 @@
 import React, { useState, useContext } from "react";
 import { GymContext } from "../../contexts/GymContext";
+import { ThemeContext } from "../../contexts/ThemeContext";
 import {
   Row,
   Col,
@@ -10,122 +11,80 @@ import {
   NavItem,
   NavLink,
   Card,
-  Button,
-  CardTitle,
-  CardHeader,
-  CardBody,
   CardText,
-  CardFooter,
 } from "reactstrap";
 import classnames from "classnames";
 import NavBar from "../Navbar/Navbar";
+import GymItemCard from "./GymItemCard";
 import Loading from "../Loading/Loading";
-import EditGymImage from "./EditGymImage";
-import EditScheduleImage from "./EditScheduleImage";
-import { ThemeContext } from "../../contexts/ThemeContext";
 
 const GymPage = () => {
   const { theme } = useContext(ThemeContext);
   const { gymData } = useContext(GymContext);
-  // const { scheduleData } = useContext(GymContext);
 
   const [activeTab, setActiveTab] = useState("1");
 
-  const toggle = (tab) => {
+  const toggleActiveTab = (tab) => {
     if (activeTab !== tab) setActiveTab(tab);
   };
 
   if (!gymData) {
     return <Loading noauth />;
   } else {
+    const universityList = [
+      { tabid: "1", display: "CUHK", value: "cuhk", background: "#cc33ff" },
+      { tabid: "2", display: "HKU", value: "hku", background: "#ffcc00" },
+      { tabid: "3", display: "UST", value: "ust", background: "#cccccc" },
+    ];
+
     return (
       <div style={theme.background}>
         <NavBar />
-        <Container>
+        <Container style={theme.mainContainer}>
+          {/* top list of universities */}
           <Nav tabs style={{ marginTop: "4rem" }}>
-            <NavItem>
-              <NavLink
-                style={{ backgroundColor: "#cc33ff" }}
-                className={classnames({ active: activeTab === "1" })}
-                onClick={() => toggle("1")}
-              >
-                CUHK
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                style={{ backgroundColor: "#ffcc00" }}
-                className={classnames({ active: activeTab === "2" })}
-                onClick={() => toggle("2")}
-              >
-                HKU
-              </NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink
-                style={{ backgroundColor: "#cccccc" }}
-                className={classnames({ active: activeTab === "3" })}
-                onClick={() => toggle("3")}
-              >
-                UST
-              </NavLink>
-            </NavItem>
+            {universityList.map(({ tabid, display, background }) => (
+              <NavItem key={tabid}>
+                <NavLink
+                  style={{ cursor: "pointer", background }}
+                  className={classnames({ active: activeTab === tabid })}
+                  onClick={() => toggleActiveTab(tabid)}
+                >
+                  {display}
+                </NavLink>
+              </NavItem>
+            ))}
           </Nav>
+          {/* content for gyms per university */}
           <TabContent activeTab={activeTab}>
-            <TabPane tabId="1">
-              <Row>
-                <Col sm={12}>
-                  {gymData.map((data) => (
-                    <GymListItem key={data.value} data={data} />
-                  ))}
-                </Col>
-              </Row>
-            </TabPane>
-            <TabPane tabId="2">
-              <Row>
-                <Col sm={12}>
-                  <Card body>
-                    <CardTitle>Special Title Treatment</CardTitle>
-                    <CardText>
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </CardText>
-                    <Button>Go somewhere</Button>
-                  </Card>
-                </Col>
-                <Col sm={6}>
-                  <Card body>
-                    <CardTitle>Special Title Treatment</CardTitle>
-                    <CardText>
-                      With supporting text below as a natural lead-in to
-                      additional content.
-                    </CardText>
-                    <Button>Go somewhere</Button>
-                  </Card>
-                </Col>
-              </Row>
-            </TabPane>
+            {universityList.map(({ tabid, value }) => {
+              const filteredData = gymData.filter(
+                (d) => d.value.substring(0, 4) === value
+              );
+
+              return (
+                <TabPane key={tabid} tabId={tabid}>
+                  <Row>
+                    <Col sm={12}>
+                      {filteredData && filteredData.length > 0 ? (
+                        filteredData.map((data) => (
+                          <GymItemCard key={data.value} data={data} />
+                        ))
+                      ) : (
+                        <Card body>
+                          <CardText>Constructing...</CardText>
+                        </Card>
+                      )}
+                    </Col>
+                  </Row>
+                </TabPane>
+              );
+            })}
           </TabContent>
         </Container>
       </div>
     );
   }
-};
-
-const GymListItem = ({ data }) => {
-  const { display, image_main, description } = data;
-  return (
-    <Card style={{ marginBottom: "3rem" }}>
-      <CardHeader>{display}</CardHeader>
-      <CardBody>{description}</CardBody>
-      <CardFooter
-        style={{ boxShadow: "5px 10px #999999", textAlign: "center" }}
-      >
-        <EditGymImage image_main={image_main} />
-        <EditScheduleImage image_main={image_main} />
-      </CardFooter>
-    </Card>
-  );
 };
 
 export default GymPage;

@@ -473,6 +473,57 @@ export const uploadProfileImage = async ({ imageFile, setUploadProgress }) => {
   }
 };
 
+// uploads gym image to firebase storage
+// requires imageFile from <input type="file"/>
+// and setUploadProgress() from useState
+// will then update gym data for image_main
+export const uploadGymImage = async ({ imageFile, setUploadProgress, id }) => {
+  if (auth().currentUser && imageFile) {
+    const storageRef = storage().ref("gym_images").child(imageFile.name);
+    const uploadTask = storageRef.put(imageFile);
+    const progress = (snap) =>
+      setUploadProgress(100 * (snap.bytesTransferred / snap.totalBytes));
+    const error = (e) => console.log(e.message);
+    const complete = async () => {
+      const image_main = await (await uploadTask).ref.getDownloadURL();
+      await firestore()
+        .collection("event_location")
+        .doc(id)
+        .update({ image_main });
+    };
+    uploadTask.on("state_changed", progress, error, complete);
+  }
+};
+
+// uploads gym image to firebase storage
+// requires imageFile from <input type="file"/>
+// and setUploadProgress() from useState
+// will then update gym data for image_main
+export const uploadGymScheduleImage = async ({
+  imageFile,
+  setUploadProgress,
+  id,
+}) => {
+  if (auth().currentUser && imageFile) {
+    const storageRef = storage()
+      .ref("schedule_images")
+      .child(`${Date.now()}-${imageFile.name}`);
+    const uploadTask = storageRef.put(imageFile);
+    const progress = (snap) =>
+      setUploadProgress(100 * (snap.bytesTransferred / snap.totalBytes));
+    const error = (e) => console.log(e.message);
+    const complete = async () => {
+      const src = await (await uploadTask).ref.getDownloadURL();
+      await firestore()
+        .collection("event_location")
+        .doc(id)
+        .collection("schedule_images")
+        .add({ src, timestamp: Date.now() });
+    };
+    uploadTask.on("state_changed", progress, error, complete);
+  }
+};
+
 // sends chat message given cid and inputMessage
 // checks if chatParticipants contain sender by uid
 // updates lastModified in chatData
