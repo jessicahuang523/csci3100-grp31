@@ -34,7 +34,7 @@ const GymItemCard = ({ data }) => {
         caption: data.display,
       });
       const unsubscribeScheduleImage = scheduleImageRef
-        .orderBy("timestamp", "desc")
+        .orderBy("timestamp", "asc")
         .limitToLast(3)
         .onSnapshot((snap) => {
           let tmp = [];
