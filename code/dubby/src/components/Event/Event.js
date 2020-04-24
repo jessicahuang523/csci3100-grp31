@@ -195,7 +195,9 @@ const Event = () => {
   };
 
   // render
-  if (
+  if (noEventRedirect) {
+    return <Redirect to="/e" />;
+  } else if (
     eventDeleteLoading ||
     joinLoading ||
     addParticipantLoading ||
@@ -205,8 +207,6 @@ const Event = () => {
     !friendContextLoaded
   ) {
     return <Loading />;
-  } else if (noEventRedirect) {
-    return <Redirect to="/e" />;
   } else {
     const { eventName, startingTime, allowedPeople, isPublic, cid } = eventData;
     const { uid } = userData;
