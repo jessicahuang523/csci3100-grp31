@@ -149,70 +149,11 @@ export const setupFirestoreForNewPrivateChat = async ({ targetUid }) => {
   }
 };
 
-// deletes event. Takes care of event participants and chat dependencies
-// calls deleteEventChat()
+// deletes event by sending a signal to backend (eventData.deleted=true)
 export const deleteEvent = async ({ eid }) => {
   if (auth().currentUser && eid) {
-    const { uid } = auth().currentUser;
     const eventDataRef = firestore().collection("event").doc(eid);
-    const eventDataSnap = await eventDataRef.get();
-    if (uid === eventDataSnap.data().hostUid) {
-      // participants
-      const eventParticipantRef = eventDataRef.collection("participants");
-      const eventParticipantSnap = await eventParticipantRef.get();
-      // delete participant docs and save data
-      let participants = [];
-      eventParticipantSnap.forEach(async (doc) => {
-        participants.push(doc.data());
-        await doc.ref.delete();
-      });
-      // delete event data from participant profiles
-      participants.forEach(async ({ uid }) => {
-        const participantDataRef = firestore()
-          .collection("user_profile")
-          .doc(uid);
-        await participantDataRef.collection("events").doc(eid).delete();
-      });
-      // chat
-      await deleteEventChat(eventDataSnap.data());
-      // delete event data
-      await eventDataRef.delete();
-    }
-  }
-};
-
-// deletes event chat if type === event and all its messages/participants
-export const deleteEventChat = async ({ cid }) => {
-  if (auth().currentUser && cid) {
-    const chatDataRef = firestore().collection("chat").doc(cid);
-    const chatDataSnap = await chatDataRef.get();
-    if (chatDataSnap.data().type === "event") {
-      // participants
-      const chatParticipantRef = chatDataRef.collection("participants");
-      const chatParticipantSnap = await chatParticipantRef.get();
-      // delete participant docs and save data
-      let participants = [];
-      chatParticipantSnap.forEach(async (doc) => {
-        participants.push(doc.data());
-        await doc.ref.delete();
-      });
-      // delete chat data from participant profiles
-      participants.forEach(async ({ uid }) => {
-        const participantDataRef = firestore()
-          .collection("user_profile")
-          .doc(uid);
-        await participantDataRef.collection("chats").doc(cid).delete();
-      });
-      // messages
-      const chatMessageRef = chatDataRef.collection("messages");
-      const chatMessageSnap = await chatMessageRef.get();
-      // delete messages
-      chatMessageSnap.forEach((doc) => {
-        doc.ref.delete();
-      });
-      // delete chat data
-      await chatDataRef.delete();
-    }
+    await eventDataRef.update({ deleted: true });
   }
 };
 
