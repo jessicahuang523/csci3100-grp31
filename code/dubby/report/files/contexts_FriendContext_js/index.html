@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - contexts/FriendContext.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="https://github.com/the-simian/es6-plato">ES6 Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+      <li class="active">
+        <a href="display.html">Summary Display</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>contexts/FriendContext.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">72.20</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">200</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">39.95</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">1.32</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">import React, { createContext, useState, useEffect, useContext } from &quot;react&quot;;
+import { firestore, auth } from &quot;firebase&quot;;
+import { UserContext } from &quot;./UserContext&quot;;
+
+export const FriendContext = createContext();
+
+const FriendContextProvider = (props) =&gt; {
+  const { userData } = useContext(UserContext);
+
+  // lists of friend contexts from current user
+  const [sentRequests, setSentRequests] = useState(null);
+  const [receivedRequests, setReceivedRequests] = useState(null);
+  const [friendList, setFriendList] = useState(null);
+  // (exported) given above list, fetched user data from each user in list
+  const [sentRequestData, setSentRequestData] = useState(null);
+  const [receivedRequestData, setReceivedRequestData] = useState(null);
+  const [friendListData, setFriendListData] = useState(null);
+  // information on whether data are loaded
+  const [srLoaded, setSrLoaded] = useState(false);
+  const [rrLoaded, setRrLoaded] = useState(false);
+  const [flLoaded, setFlLoaded] = useState(false);
+  // (exported) true when all data are loaded
+  const [friendContextLoaded, setFriendContextLoaded] = useState(false);
+
+  // given userData, subscribe to requests
+  // in /user_profile/{uid}/sent_friend_requests
+  // updates sentRequests
+  useEffect(() =&gt; {
+    if (userData) {
+      const { uid } = auth().currentUser;
+      const sentRequestsRef = firestore()
+        .collection(&quot;user_profile&quot;)
+        .doc(uid)
+        .collection(&quot;sent_friend_requests&quot;);
+      const unsubscribeSentRequestsRefData = sentRequestsRef.onSnapshot(
+        (snap) =&gt; {
+          if (snap.empty) {
+            setSentRequests(&quot;none&quot;);
+          } else {
+            let tmp = [];
+            snap.forEach((doc) =&gt; tmp.push(doc.data()));
+            setSentRequests(tmp);
+          }
+        }
+      );
+      return () =&gt; {
+        unsubscribeSentRequestsRefData();
+      };
+    }
+  }, [userData]);
+
+  // given userData, subscribe to requests
+  // in /user_profile/{uid}/received_friend_requests
+  // updates receivedRequests
+  useEffect(() =&gt; {
+    if (userData) {
+      const { uid } = auth().currentUser;
+      const receivedRequestsRef = firestore()
+        .collection(&quot;user_profile&quot;)
+        .doc(uid)
+        .collection(&quot;received_friend_requests&quot;);
+      const unsubscribeReceivedRequestData = receivedRequestsRef.onSnapshot(
+        (snap) =&gt; {
+          if (snap.empty) {
+            setReceivedRequests(&quot;none&quot;);
+          } else {
+            let tmp = [];
+            snap.forEach((doc) =&gt; tmp.push(doc.data()));
+            setReceivedRequests(tmp);
+          }
+        }
+      );
+      return () =&gt; {
+        unsubscribeReceivedRequestData();
+      };
+    }
+  }, [userData]);
+
+  // given userData, subscribe to friend data in /user_profile/{uid}/friend_list
+  // updates friendList
+  useEffect(() =&gt; {
+    if (userData) {
+      const { uid } = auth().currentUser;
+      const friendListRef = firestore()
+        .collection(&quot;user_profile&quot;)
+        .doc(uid)
+        .collection(&quot;friend_list&quot;);
+      const unsubscribeFriendListData = friendListRef.onSnapshot((snap) =&gt; {
+        if (snap.empty) {
+          setFriendList(&quot;none&quot;);
+        } else {
+          let tmp = [];
+          snap.forEach((doc) =&gt; tmp.push(doc.data()));
+          setFriendList(tmp);
+        }
+      });
+      return () =&gt; {
+        unsubscribeFriendListData();
+      };
+    }
+  }, [userData]);
+
+  // given sentRequests (or lack thereof),
+  // fetch user data of receivers from /user_profile/{uid}
+  // updates srLoaded and sentRequestData
+  useEffect(() =&gt; {
+    let data = [];
+    if (sentRequests) {
+      if (sentRequests === &quot;none&quot;) {
+        setSentRequestData([]);
+        setSrLoaded(true);
+        return;
+      }
+      sentRequests.forEach(({ uid }) =&gt; {
+        const ref = firestore().collection(&quot;user_profile&quot;).doc(uid);
+        ref.get().then((s) =&gt; {
+          data.push(s.data());
+          if (data.length === sentRequests.length) {
+            setSentRequestData(data);
+            setSrLoaded(true);
+          }
+        });
+      });
+    }
+  }, [sentRequests]);
+
+  // given receivedRequests (or lack thereof),
+  // fetch user data of sender from /user_profile/{uid}
+  // updates rrLoaded and receivedRequestData
+  useEffect(() =&gt; {
+    let data = [];
+    if (receivedRequests) {
+      if (receivedRequests === &quot;none&quot;) {
+        setReceivedRequestData([]);
+        setRrLoaded(true);
+        return;
+      }
+      receivedRequests.forEach(({ uid }) =&gt; {
+        const ref = firestore().collection(&quot;user_profile&quot;).doc(uid);
+        ref.get().then((s) =&gt; {
+          data.push(s.data());
+          if (data.length === receivedRequests.length) {
+            setReceivedRequestData(data);
+            setRrLoaded(true);
+          }
+        });
+      });
+    }
+  }, [receivedRequests]);
+
+  // given friendList (or lack thereof),
+  // fetch user data of friends from /user_profile/{uid}
+  // updates flLoaded and friendListData
+  useEffect(() =&gt; {
+    let data = [];
+    if (friendList) {
+      if (friendList === &quot;none&quot;) {
+        setFriendListData([]);
+        setFlLoaded(true);
+        return;
+      }
+      friendList.forEach(({ uid }) =&gt; {
+        const ref = firestore().collection(&quot;user_profile&quot;).doc(uid);
+        ref.get().then((s) =&gt; {
+          data.push(s.data());
+          if (data.length === friendList.length) {
+            setFriendListData(data);
+            setFlLoaded(true);
+          }
+        });
+      });
+    }
+  }, [friendList]);
+
+  // set friendContextLoaded (exported boolean) = true only when all
+  // sent/received requests and friend list are loaded
+  useEffect(() =&gt; {
+    if (srLoaded &amp;&amp; rrLoaded &amp;&amp; flLoaded) {
+      setFriendContextLoaded(true);
+    }
+  }, [srLoaded, rrLoaded, flLoaded]);
+
+  return (
+    // exports boolean friendContextLoaded, lists of user data in
+    // sentRequestData, receivedRequestData, and friendListData
+    &lt;FriendContext.Provider
+      value={{
+        sentRequestData,
+        receivedRequestData,
+        friendListData,
+        friendContextLoaded,
+      }}
+    &gt;
+      {props.children}
+    &lt;/FriendContext.Provider&gt;
+  );
+};
+
+export default FriendContextProvider;
+</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

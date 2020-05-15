@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - components/Event/EventCard.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="https://github.com/the-simian/es6-plato">ES6 Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+      <li class="active">
+        <a href="display.html">Summary Display</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>components/Event/EventCard.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">72.01</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">250</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">47.43</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">2.06</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">import React, { useState, useEffect, useContext } from &quot;react&quot;;
+import { GymContext } from &quot;../../contexts/GymContext&quot;;
+import { ThemeContext } from &quot;../../contexts/ThemeContext&quot;;
+import { EventTypeContext } from &quot;../../contexts/EventTypeContext&quot;;
+import { Link } from &quot;react-router-dom&quot;;
+import { firestore, auth } from &quot;firebase&quot;;
+import {
+  Card,
+  CardTitle,
+  CardSubtitle,
+  CardText,
+  Badge,
+  Col,
+} from &quot;reactstrap&quot;;
+import LoadingEventCard from &quot;../Loading/LoadingEventCard&quot;;
+import ProfileHead from &quot;../Profile/ProfileHead&quot;;
+
+const EventCard = ({ eid, searchString }) =&gt; {
+  const { gymData } = useContext(GymContext);
+  const { isPrimaryTheme } = useContext(ThemeContext);
+  const { eventTypeData } = useContext(EventTypeContext);
+
+  const [eventData, setEventData] = useState();
+  const [eventParticipants, setEventParticipants] = useState();
+  const [hostUserData, setHostUserData] = useState();
+  const [foundTypeData, setFoundTypeData] = useState();
+  const [foundLocationData, setFoundLocationData] = useState();
+  const [matchSearchResult, setMatchSearchResult] = useState(true);
+
+  // subscribe to event data from /event/{eid}
+  // and participant data from /event/{eid}/participants
+  // updates eventData and eventParticipants
+  useEffect(() =&gt; {
+    if (eid) {
+      const eventRef = firestore().collection(&quot;event&quot;).doc(eid);
+      const unsubscribeEventData = eventRef.onSnapshot((snap) =&gt;
+        setEventData(snap.data())
+      );
+      const unsubscribeEventParticipantData = eventRef
+        .collection(&quot;participants&quot;)
+        .onSnapshot((snap) =&gt; {
+          let tmp = [];
+          snap.forEach((doc) =&gt; tmp.push(doc.data()));
+          setEventParticipants(tmp);
+        });
+      return () =&gt; {
+        unsubscribeEventData();
+        unsubscribeEventParticipantData();
+      };
+    }
+  }, [eid]);
+
+  // loads data for type and location given eventData and type/gym contexts
+  // updates foundTypeData and foundLocationData
+  useEffect(() =&gt; {
+    if (eventData &amp;&amp; eventTypeData &amp;&amp; gymData) {
+      setFoundTypeData(
+        eventTypeData.find((t) =&gt; t.value === eventData.eventType)
+      );
+      setFoundLocationData(gymData.find((g) =&gt; g.value === eventData.location));
+    }
+  }, [eventData, eventTypeData, gymData]);
+
+  // subscribe to data for host user from /user_profile/{eventData.hostUid}
+  // updates hostUserData
+  useEffect(() =&gt; {
+    if (eventData) {
+      const userRef = firestore()
+        .collection(&quot;user_profile&quot;)
+        .doc(eventData.hostUid);
+      const unsubscribeUserData = userRef.onSnapshot((snap) =&gt;
+        setHostUserData(snap.data())
+      );
+      return () =&gt; {
+        unsubscribeUserData();
+      };
+    }
+  }, [eventData]);
+
+  // checks if this event should be displayed given search string
+  // updates matchSearchResult
+  useEffect(() =&gt; {
+    setMatchSearchResult(true);
+    try {
+      if (
+        eventData &amp;&amp;
+        hostUserData &amp;&amp;
+        searchString &amp;&amp;
+        eventData.eventName.toLowerCase().search(searchString.toLowerCase()) &lt;
+          0 &amp;&amp;
+        eventData.location.toLowerCase().search(searchString.toLowerCase()) &lt;
+          0 &amp;&amp;
+        eid.toLowerCase().search(searchString.toLowerCase()) &lt; 0 &amp;&amp;
+        foundTypeData.display.toLowerCase().search(searchString.toLowerCase()) &lt;
+          0 &amp;&amp;
+        foundTypeData.value.toLowerCase().search(searchString.toLowerCase()) &lt;
+          0 &amp;&amp;
+        foundLocationData.display
+          .toLowerCase()
+          .search(searchString.toLowerCase()) &lt; 0 &amp;&amp;
+        foundLocationData.display_short
+          .toLowerCase()
+          .search(searchString.toLowerCase()) &lt; 0 &amp;&amp;
+        foundLocationData.value
+          .toLowerCase()
+          .search(searchString.toLowerCase()) &lt; 0 &amp;&amp;
+        eid.toLowerCase().search(searchString.toLowerCase()) &lt; 0 &amp;&amp;
+        hostUserData.username.toLowerCase().search(searchString.toLowerCase()) &lt;
+          0
+      ) {
+        setMatchSearchResult(false);
+      }
+    } catch (e) {}
+  }, [
+    searchString,
+    eventData,
+    hostUserData,
+    eid,
+    foundTypeData,
+    foundLocationData,
+  ]);
+
+  // display string given event starting time
+  const parseTimeDisplay = (time) =&gt; {
+    const st = new Date(time);
+    const stt = st.toLocaleTimeString(&quot;en-US&quot;);
+    const std = st.toLocaleDateString(&quot;en-US&quot;);
+    const isToday =
+      new Date(Date.now()).toLocaleDateString(&quot;en-US&quot;) ===
+      st.toLocaleDateString(&quot;en-US&quot;);
+    const parsedTime =
+      (isToday ? &quot;Today&quot; : std.substring(0, std.length - 5)) +
+      &quot;, &quot; +
+      stt.substring(0, stt.length - 6) +
+      stt.substring(stt.length - 2);
+    return parsedTime;
+  };
+
+  // render
+  if (
+    !eventData ||
+    !eventParticipants ||
+    !hostUserData ||
+    !foundTypeData ||
+    !foundLocationData
+  ) {
+    return &lt;LoadingEventCard /&gt;;
+  } else if (
+    !matchSearchResult ||
+    // don&#039;t display if private and participants doesn&#039;t contain current user
+    (!eventParticipants.find((p) =&gt; p.uid === auth().currentUser.uid) &amp;&amp;
+      !eventData.isPublic)
+  ) {
+    return null;
+  } else {
+    const { eventName, startingTime, allowedPeople, eid } = eventData;
+    const { uid } = auth().currentUser;
+    const joinedParticipants = eventParticipants.filter(
+      ({ status }) =&gt; status === &quot;joined&quot;
+    );
+    const vacancy =
+      allowedPeople -
+        (joinedParticipants.length ? joinedParticipants.length : 0) &gt;
+      0
+        ? allowedPeople -
+          (joinedParticipants.length ? joinedParticipants.length : 0)
+        : 0;
+    const parsedStartingTime = parseTimeDisplay(startingTime);
+    const isFuture = startingTime &gt; Date.now();
+
+    return (
+      &lt;Col&gt;
+        &lt;div className=&quot;event-card&quot; style={{ marginBottom: &quot;1rem&quot; }}&gt;
+          &lt;Card
+            body
+            tag={Link}
+            to={`/e/${eid}`}
+            inverse={!isPrimaryTheme}
+            color={!isPrimaryTheme ? &quot;dark&quot; : null}
+          &gt;
+            &lt;CardSubtitle&gt;
+              &lt;Badge pill color=&quot;secondary&quot;&gt;
+                &lt;i className={foundTypeData.icon}&gt;&lt;/i&gt; {foundTypeData.display}
+              &lt;/Badge&gt;
+              {eventParticipants.find((p) =&gt; p.uid === uid) &amp;&amp;
+                eventParticipants.find((p) =&gt; p.uid === uid).status ===
+                  &quot;joined&quot; &amp;&amp; (
+                  &lt;Badge pill color=&quot;info&quot;&gt;
+                    Joined
+                  &lt;/Badge&gt;
+                )}
+              {eventParticipants.find((p) =&gt; p.uid === uid) &amp;&amp;
+                eventParticipants.find((p) =&gt; p.uid === uid).status ===
+                  &quot;invited&quot; &amp;&amp; (
+                  &lt;Badge pill color=&quot;dark&quot;&gt;
+                    Invited
+                  &lt;/Badge&gt;
+                )}
+              {eventData.isPublic || (
+                &lt;Badge pill color=&quot;success&quot;&gt;
+                  Private
+                &lt;/Badge&gt;
+              )}
+              {hostUserData.uid === uid &amp;&amp; (
+                &lt;Badge pill color=&quot;warning&quot;&gt;
+                  Hosting
+                &lt;/Badge&gt;
+              )}
+            &lt;/CardSubtitle&gt;
+            &lt;CardTitle tag=&quot;h3&quot;&gt;
+              &lt;b&gt;{eventName}&lt;/b&gt;
+            &lt;/CardTitle&gt;
+            &lt;CardText&gt;
+              &lt;Badge pill color=&quot;warning&quot;&gt;
+                Location
+              &lt;/Badge&gt;{&quot; &quot;}
+              {foundLocationData.display_short}
+            &lt;/CardText&gt;
+            &lt;CardText&gt;
+              &lt;Badge
+                pill
+                color={
+                  isFuture ? (isPrimaryTheme ? &quot;dark&quot; : &quot;light&quot;) : &quot;secondary&quot;
+                }
+              &gt;
+                {isFuture ? &quot;Starting&quot; : &quot;Started&quot;}
+              &lt;/Badge&gt;{&quot; &quot;}
+              {parsedStartingTime}
+              &lt;br /&gt;
+              &lt;Badge pill color=&quot;success&quot;&gt;
+                Vacancy
+              &lt;/Badge&gt;{&quot; &quot;}
+              {vacancy}/{allowedPeople}
+            &lt;/CardText&gt;
+            &lt;CardSubtitle&gt;
+              &lt;Badge pill color={isPrimaryTheme ? &quot;dark&quot; : &quot;light&quot;}&gt;
+                Host
+              &lt;/Badge&gt;{&quot; &quot;}
+              &lt;ProfileHead size=&quot;inline&quot; src={hostUserData.profileImageSrc} /&gt;{&quot; &quot;}
+              {hostUserData.username}
+            &lt;/CardSubtitle&gt;
+          &lt;/Card&gt;
+        &lt;/div&gt;
+      &lt;/Col&gt;
+    );
+  }
+};
+
+export default EventCard;
+</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>

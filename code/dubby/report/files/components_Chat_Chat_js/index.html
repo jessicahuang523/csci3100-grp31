@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Plato - components/Chat/Chat.js</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato.css" rel="stylesheet" type="text/css">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="navbar-brand" href="https://github.com/the-simian/es6-plato">ES6 Plato on Github</a>
+    <ul class="nav navbar-nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+      <li class="active">
+        <a href="display.html">Summary Display</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>components/Chat/Chat.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">70.64</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">260</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="col-md-6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="col-md-6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">31.12</p>
+    </div>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">1.83</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="col-md-12">import React, { useEffect, useState, useContext, useRef } from &quot;react&quot;;
+import { useParams, Redirect } from &quot;react-router-dom&quot;;
+import { firestore } from &quot;firebase&quot;;
+import { UserContext } from &quot;../../contexts/UserContext&quot;;
+import { ThemeContext } from &quot;../../contexts/ThemeContext&quot;;
+import { FriendContext } from &quot;../../contexts/FriendContext&quot;;
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Input,
+  Button,
+  InputGroup,
+  InputGroupAddon,
+} from &quot;reactstrap&quot;;
+import Navbar from &quot;../Navbar/Navbar&quot;;
+import Loading from &quot;../Loading/Loading&quot;;
+import Participants from &quot;./Participants&quot;;
+import ProfileHead from &quot;../Profile/ProfileHead&quot;;
+import { sendChatMessage } from &quot;../../utilityfunctions/Utilities&quot;;
+
+export const Chat = () =&gt; {
+  const { cid } = useParams();
+
+  const { theme } = useContext(ThemeContext);
+  const { userData } = useContext(UserContext);
+  const { friendListData } = useContext(FriendContext);
+
+  // data for chat from database
+  const [chatData, setChatData] = useState();
+  const [chatMessages, setChatMessages] = useState();
+  const [chatParticipants, setChatParticipants] = useState();
+  const [chatParticipantData, setchatParticipantData] = useState();
+  // redirects to /c if not authorized (uid not in chatParticipants)
+  const [chatAuthorized, setChatAuthorized] = useState(false);
+  // new message input string
+  const [inputMessage, setInputMessage] = useState(&quot;&quot;);
+
+  // ref to bottom for auto scrolling
+  const divRef = useRef(null);
+
+  // loads participants and determines if user is authorized
+  // if not authorized, will redirect to /c
+  // updates chatParticipants and chatAuthorized
+  useEffect(() =&gt; {
+    if (userData) {
+      const chatDataRef = firestore().collection(&quot;chat&quot;).doc(cid);
+      const chatParticipantsRef = chatDataRef.collection(&quot;participants&quot;);
+      const unsubscribeChatParticipants = chatParticipantsRef.onSnapshot(
+        (snap) =&gt; {
+          let tmp = [];
+          snap.forEach((doc) =&gt; {
+            tmp.push(doc.data());
+            if (userData.uid === doc.data().uid) {
+              setChatAuthorized(true);
+            }
+          });
+          setChatParticipants(tmp);
+        }
+      );
+      return () =&gt; {
+        unsubscribeChatParticipants();
+      };
+    }
+  }, [userData, cid]);
+
+  // loads data for chat if authorized
+  // updates chatData and chatMessages
+  useEffect(() =&gt; {
+    if (chatAuthorized) {
+      const chatDataRef = firestore().collection(&quot;chat&quot;).doc(cid);
+      const chatMessagesRef = chatDataRef.collection(&quot;messages&quot;);
+      const unsubscribeChatData = chatDataRef.onSnapshot((snap) =&gt; {
+        setChatData(snap.data());
+      });
+      const unsubscribeChatMessages = chatMessagesRef
+        .orderBy(&quot;created_at&quot;, &quot;asc&quot;)
+        .onSnapshot((snap) =&gt; {
+          let tmp = [];
+          snap.forEach((doc) =&gt; tmp.push(doc.data()));
+          setChatMessages(tmp);
+        });
+      return () =&gt; {
+        unsubscribeChatData();
+        unsubscribeChatMessages();
+      };
+    }
+  }, [chatAuthorized, cid]);
+
+  // fetches data for participants from database in chat given list of users
+  // updates chatParticipantData
+  useEffect(() =&gt; {
+    let pData = [];
+    if (chatParticipants) {
+      chatParticipants.forEach(({ uid }) =&gt; {
+        const pRef = firestore().collection(&quot;user_profile&quot;).doc(uid);
+        pRef.get().then((s) =&gt; {
+          pData.push(s.data());
+          if (pData.length === chatParticipants.length) {
+            setchatParticipantData(pData);
+          }
+        });
+      });
+    }
+  }, [chatParticipants]);
+
+  // scroll to bottom automatically
+  useEffect(() =&gt; {
+    scrollToBottom();
+  });
+
+  const scrollToBottom = () =&gt; {
+    if (divRef.current) {
+      divRef.current.scrollIntoView({ behavior: &quot;smooth&quot; });
+    }
+  };
+
+  // writes new message to database
+  // updates inputMessage (clears it)
+  const handleSendMessage = (e) =&gt; {
+    e.preventDefault();
+    if (inputMessage) {
+      sendChatMessage({ cid, inputMessage, chatParticipants });
+      setInputMessage(&quot;&quot;);
+    }
+  };
+
+  const handleInputChange = (e) =&gt; {
+    setInputMessage(e.target.value);
+  };
+
+  // render
+  if (!chatParticipants) {
+    return &lt;Loading /&gt;;
+  } else if (!chatAuthorized) {
+    return &lt;Redirect to=&quot;/c&quot; /&gt;;
+  } else if (
+    !chatData ||
+    !chatMessages ||
+    !chatParticipantData ||
+    !friendListData
+  ) {
+    return &lt;Loading /&gt;;
+  } else {
+    return (
+      &lt;div style={theme.background}&gt;
+        &lt;Navbar /&gt;
+        &lt;Participants
+          chatParticipantData={chatParticipantData}
+          chatData={chatData}
+        /&gt;
+        &lt;Container style={{ marginBottom: &quot;1rem&quot; }}&gt;
+          &lt;Row&gt;
+            &lt;Col sm={12}&gt;
+              {/* list of messages */}
+              &lt;ul&gt;
+                {chatMessages &amp;&amp;
+                  chatMessages.length &gt; 0 &amp;&amp;
+                  chatMessages.map((message) =&gt; (
+                    &lt;Message
+                      key={message.created_at}
+                      message={message}
+                      senderData={chatParticipantData.find(
+                        ({ uid }) =&gt; uid === message.sender.uid
+                      )}
+                    /&gt;
+                  ))}
+              &lt;/ul&gt;
+
+              {/* message input */}
+              &lt;Form onSubmit={handleSendMessage}&gt;
+                &lt;InputGroup&gt;
+                  &lt;Input
+                    id=&quot;message&quot;
+                    placeholder=&quot;message&quot;
+                    value={inputMessage}
+                    onChange={handleInputChange}
+                  /&gt;
+                  &lt;InputGroupAddon addonType=&quot;append&quot;&gt;
+                    &lt;Button color=&quot;primary&quot; type=&quot;submit&quot;&gt;
+                      &lt;i className=&quot;fas fa-paper-plane&quot;&gt;&lt;/i&gt;
+                    &lt;/Button&gt;
+                  &lt;/InputGroupAddon&gt;
+                &lt;/InputGroup&gt;
+              &lt;/Form&gt;
+            &lt;/Col&gt;
+          &lt;/Row&gt;
+        &lt;/Container&gt;
+        &lt;div ref={divRef} /&gt;
+      &lt;/div&gt;
+    );
+  }
+};
+
+const containerStyle = {
+  margin: &quot;40px&quot;,
+  display: &quot;grid&quot;,
+  columnGap: &quot;20px&quot;,
+};
+
+const messageStyle = {
+  left: {
+    container: {
+      ...containerStyle,
+      textAlign: &quot;left&quot;,
+      gridTemplateColumns: &quot;70px 1fr&quot;,
+    },
+    bubbleClassName: &quot;chat-bubble left&quot;,
+    textClassName: &quot;chat-text-left&quot;,
+  },
+  right: {
+    container: {
+      ...containerStyle,
+      textAlign: &quot;right&quot;,
+      gridTemplateColumns: &quot;1fr 70px&quot;,
+    },
+    bubbleClassName: &quot;chat-bubble right&quot;,
+    textClassName: &quot;chat-text-right&quot;,
+  },
+};
+
+// displays individual chat message
+const Message = ({ senderData, message }) =&gt; {
+  const { userData } = useContext(UserContext);
+
+  const { username } = senderData;
+  const { created_at, text, sender } = message;
+  const { profileImageSrc } = senderData;
+  const time = new Date(created_at);
+  const displayTime =
+    time.toLocaleDateString(&quot;en-US&quot;) ===
+    new Date(Date.now()).toLocaleDateString(&quot;en-US&quot;)
+      ? time.toLocaleTimeString(&quot;en-US&quot;)
+      : time.toLocaleDateString(&quot;en-US&quot;);
+
+  const style =
+    userData.uid === sender.uid ? messageStyle.right : messageStyle.left;
+
+  return (
+    &lt;li style={style.container}&gt;
+      {userData.uid === sender.uid || (
+        &lt;ProfileHead src={profileImageSrc} size=&quot;chat&quot; /&gt;
+      )}
+      &lt;div className={style.bubbleClassName}&gt;
+        &lt;p&gt;{username}&lt;/p&gt;
+        &lt;div className={style.textClassName}&gt;
+          &lt;p&gt;{text}&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;p&gt;{displayTime}&lt;/p&gt;
+      &lt;/div&gt;
+      {userData.uid === sender.uid &amp;&amp; (
+        &lt;ProfileHead src={profileImageSrc} size=&quot;chat&quot; /&gt;
+      )}
+    &lt;/li&gt;
+  );
+};
+
+export default Chat;
+</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
