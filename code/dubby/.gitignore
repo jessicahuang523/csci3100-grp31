@@ -25,3 +25,5 @@ yarn-error.log*
 
 /src/firebase-config.js
 /.firebase
+
+.scannerwork/
