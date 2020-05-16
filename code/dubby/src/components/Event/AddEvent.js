@@ -147,8 +147,11 @@ const AddEvent = () => {
                   required="required"
                   type="number"
                   id="allowedPeople"
+                  value={allowedPeople}
                   min={2}
-                  onChange={(e) => setAllowedPeople(e.target.value)}
+                  onChange={(e) =>
+                    setAllowedPeople(e.target.value > 2 ? e.target.value : 2)
+                  }
                 ></Input>
               </FormGroup>
             </Col>
