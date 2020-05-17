@@ -8,5 +8,5 @@ This project utilizes Firebase, React, and some other technology and we aim to p
 
 See our reports:
 
-- [Initial Design](docs/Group 31 Project Initial Design Report.md)
-- [Final Report](docs/CSCI3100 Final Report.md)
+- [Initial Design](docs/CSCI3100%20Final%20Report.md)
+- [Final Report](docs/CSCI3100%20Final%20Report.md)
