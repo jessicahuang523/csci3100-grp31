@@ -126,22 +126,22 @@ The context diagram generalizes the system, since our program does not contain �
 
 - Level 2 diagram goes deeper into several processes in level 1 diagram that needs further elaboration, namely upload gym info, chat and profile.
 
-  ![img](https://lh6.googleusercontent.com/p1jJ2_aaP_RSKYJsJ2CWO_kkxlFM_LCj8SIF5ewrBSAI3i_QoQTfsyAxPgURXaD0g1xI6iqbK2pYlIpgZsABuHfyE8uo5VmKntUQHfWkubh80AkbBxEG2U6rC5uAoiaiQ69qhRRn)
+![img](https://lh6.googleusercontent.com/p1jJ2_aaP_RSKYJsJ2CWO_kkxlFM_LCj8SIF5ewrBSAI3i_QoQTfsyAxPgURXaD0g1xI6iqbK2pYlIpgZsABuHfyE8uo5VmKntUQHfWkubh80AkbBxEG2U6rC5uAoiaiQ69qhRRn)
 
-  - Upload gym info: A user can upload two types of info, gym schedule and gym image into the database, but both are in picture format. The pictures will be shown inside the carousel on the gym page.
+- Upload gym info: A user can upload two types of info, gym schedule and gym image into the database, but both are in picture format. The pictures will be shown inside the carousel on the gym page.
 
-    ![img](https://lh5.googleusercontent.com/r-G-HV0_iExbIIruw7u3pcINsRpGRjksJeAN9asXbHiakVNdzj_htUBVM1ugd77eXMcrlYEpz24zBQpc53bbhRWC8o7brE1op2anJsJFh40cS3m26xjiMpc4tIU2fCYG9r-sOMIo)
+![img](https://lh5.googleusercontent.com/r-G-HV0_iExbIIruw7u3pcINsRpGRjksJeAN9asXbHiakVNdzj_htUBVM1ugd77eXMcrlYEpz24zBQpc53bbhRWC8o7brE1op2anJsJFh40cS3m26xjiMpc4tIU2fCYG9r-sOMIo)
 
-  - Profile
+- Profile
 
-    - When directly entering the “profile” page, the user will see his/her own profile, where he/she can choose to edit his/her own profile.
-    - A user can also view other users’ profiles through other methods, such as directly searching for users, checking user profiles from friends list, checking user profiles from joining the event process etc. When viewing another user’s profile, the current user could choose to send friend requests or unfriend the user.
+  - When directly entering the “profile” page, the user will see his/her own profile, where he/she can choose to edit his/her own profile.
+  - A user can also view other users’ profiles through other methods, such as directly searching for users, checking user profiles from friends list, checking user profiles from joining the event process etc. When viewing another user’s profile, the current user could choose to send friend requests or unfriend the user.
 
-      ![img](https://lh6.googleusercontent.com/KURkza7c9Ekci3kUz7oN8NAEHbZ6viES5kvGbXgzoOT4jklnrkBCF_VI1FJoAjFADoRbVfHsGijLVLnPFeX1lsnS2WRtQAPKg9c4u-SUpI_7_bzzRzn3ZlXMIeBVXMPsEx3B-lsH)
+![img](https://lh6.googleusercontent.com/KURkza7c9Ekci3kUz7oN8NAEHbZ6viES5kvGbXgzoOT4jklnrkBCF_VI1FJoAjFADoRbVfHsGijLVLnPFeX1lsnS2WRtQAPKg9c4u-SUpI_7_bzzRzn3ZlXMIeBVXMPsEx3B-lsH)
 
-  - Chat
-    - When entering the chat page, the user can see all the chats he/she has with other users, which the chat list will be retrieved from the chat database
-    - There are three types of chat in the dubby system, namely private chat, group chat and event chat. A user can create his/her own private chat and group chat, but an event chat is automatically created when an event is hosted. Other users will be added into this particular event chat if they join the event.
+- Chat
+  - When entering the chat page, the user can see all the chats he/she has with other users, which the chat list will be retrieved from the chat database
+  - There are three types of chat in the dubby system, namely private chat, group chat and event chat. A user can create his/her own private chat and group chat, but an event chat is automatically created when an event is hosted. Other users will be added into this particular event chat if they join the event.
 
 ## 3 DETAILED DESCRIPTION OF COMPONENTS by UML
 
@@ -181,6 +181,7 @@ Chats & Create Chats: Click “Chats'' in Navbar to enter the page. The system w
 
 ![img](https://lh6.googleusercontent.com/UHYQSF9FWvfSjcQkSfgnd6BAQilO06i7ECMPREMpj97a-mDDcjzAOOzU-vBnQ_AD7nQSaqB7GLR4lrX4JTuuElzuzeu4AWIpsy7ibjInhKeZLFmFbqFx-3CNK0TMJ5oJTIerYkEA)
 View Gym & Upload Gym Images: Click “Gym” in Navbar to enter the page. The data (gym info, gym pictures & gym schedule pictures) will be retrieved from the database, and users can update the schedule & gym picture by uploading pictures from their computer.
+
 ![img](https://lh3.googleusercontent.com/BowlFqqC89ZKM4-i5XfyUIG_5QpWSfa8bC4KMhKS3h_pxGOyCbgHKeYRF1IOdXohGj5W1NwDm79tvHikN-qpcneYUKqPxa2EBH9XOuojOl9Ur3iiFKlINhZw5pQDRKsPLSSKxMCe)
 
 View Profile & Edit Profile: Click on the “Profile” tag in Navbar to enter the page, the profile data of current user will be retrieved from database. Users can edit their own profile by clicking the “edit” button. The page will show the columns and profile picture upload function. Click “save” to save the updated information into the profile database. View profile function also allows the user to check other users’ profile by clicking other users’ name (from friends, chats or events), but he/she is not allowed to modify the profile data, instead, the edit button will become the “+add friend” button and the user could send a friend invitation.
@@ -224,9 +225,11 @@ After login to Dubby, the initial page is the “My Event” page (figure 4.2.2.
 ![figure 4.2.2.2](https://lh5.googleusercontent.com/xWlkdg_xUDmUyLRcuDMpXsv742K36zRAwCLgVWQe5fdLVku_PqtI24AiP3H1TEOc1Hybhwh2X74YlY99QfoLL-uarYZ18KZoy1CESepw2qSWSkmWEep0CfmPMI5FvlXtpeN5cIeL)
 
 Figure 4.2.2.2
+
 ![figure 4.2.2.3](https://lh6.googleusercontent.com/dIntTFMRShauX5q8ix6DuE3mmqPiBhD7uKPr4Wos2OTdWv0rDSpbYE8f0JmGe1J-WMSsT8LQkNcndbu6OcXX6Od9i6G2iQdhvbXaC3NCHbyYBZR0nDSQG7ffZoKv22LPBIb0XGvP)
 
 Figure 4.2.2.3
+
 ![figure 4.2.2.4](https://lh5.googleusercontent.com/MdqBNlArCqOrTyv6VoUlg6FR3dGEb05t9QPPPCHuVUwstQ-UKWM6kVHy0rwTOqKgFV-X6-Au3RPEbzOTq5q5e0PFho08o_bdh04FPfUKoT9cF1eOYCtNt_fq-v9METgTSrVpXYoT)
 
 Figure 4.2.2.4
@@ -238,6 +241,7 @@ The event page (figure 4.2.3.1) shows all the public events that are open for an
 ![figure 4.2.3.1](https://lh4.googleusercontent.com/gaFAVVv67ysGNKJObqDDm4sWyjNnIgQRKdh7EhjlOSfjntnjPcog6Uos0Gp-x8rAhXTAdUqmya0bHfovl2ndwDLxbEwpUwvBLEkqwrfp6QUp3cmVHlijYysZF_8vIFkeAaUPlYvq)
 
 Figure 4.2.3.1
+
 ![figure 4.2.3.2](https://lh6.googleusercontent.com/sjaT6javrW_xO-cGCCkX1N5Z0uBs_69ugFFUtpaLE9mQ3ts84uqlbMFK01OLqr_raqYhhWqKMbjtvznVZ7N-YUvzyRvveazU-uWwSjoNQWdFenbEjZOBD1z81daFqYJxPfJssdif)
 
 Figure 4.2.3.2
@@ -333,6 +337,7 @@ The profile page displays the personal information that users would like to show
 Figure 4.2.7.1
 
 Figure 4.2.7.2
+
 ![img](https://lh4.googleusercontent.com/A8wHqByi0ZUKEwgVkdLe09x6OmsZWK_LqmFuSP-6nPb69xn_yH5fkLwqvboAgOkZMN0yInqERiS4VERlakkv7G6RgJfEGZxtJxuwg0clQ8DoNX1y6BvLHl37ajvec1nNzmaJNJuU)
 
 ![img](https://lh5.googleusercontent.com/ptrErn7oqRaeNnK2AzOjfwM0o1Kx6VI_4H_whQw6rpXL-kK-SQAfO7sO9O_SwRrmkM3qhS-_4laxi7_pkrPsOt8mpw48vs7fgvHGAPn_0PMGtXx3AGMOSVMMKCxdMCRVOnwZ8DCS)
