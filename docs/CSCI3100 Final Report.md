@@ -82,10 +82,12 @@ In this program, we designed 337 functions to implement our thoughts. In total, 
 
 For our case, it would be too complicated to count the complexity of each module separately; therefore, we listed out the complexity for each page of our program (figure 1.4.2) (etc. chat page, gym page). However, the total complexity is not the total add-up of complexity of each page because the complexity would increase when combining different functions together as there will be data exchange between them.
 
-![Figure 1.4.1](https://lh6.googleusercontent.com/8uOrz314NvGxftpWgpH0x4nR9vdu1fKh6OEg9jxO3w4s8EZhY07oL11XJP_H5wOOClQL4VmfFXmK6kAH8r94_5toiG9GODKI0LsFQ-sguYhe7YNO0fKa0bc0G--UehTYlqPjCUeL)
+![figure 1.4.1](https://lh6.googleusercontent.com/8uOrz314NvGxftpWgpH0x4nR9vdu1fKh6OEg9jxO3w4s8EZhY07oL11XJP_H5wOOClQL4VmfFXmK6kAH8r94_5toiG9GODKI0LsFQ-sguYhe7YNO0fKa0bc0G--UehTYlqPjCUeL)
+
 Figure 1.4.1
 
-![Figure 1.4.2](https://lh5.googleusercontent.com/CLqeyqHsHfPHhFk2Zx_j0rWKzg3VpkC12GpxMsytuOO1AKOiddByt4S3QxIllaN0aBDVR1KLFJSW3cjEyyZiN4XTCG6SsMra0shjoM4BvmCwvNbQuV2lyuA3jayzxhOWlGvNsLpA)
+![figure 1.4.2](https://lh5.googleusercontent.com/CLqeyqHsHfPHhFk2Zx_j0rWKzg3VpkC12GpxMsytuOO1AKOiddByt4S3QxIllaN0aBDVR1KLFJSW3cjEyyZiN4XTCG6SsMra0shjoM4BvmCwvNbQuV2lyuA3jayzxhOWlGvNsLpA)
+
 Figure 1.4.2
 
 ## 2 SYSTEM ARCHITECTURAL DESIGN by DFD
@@ -203,97 +205,123 @@ There are mainly 7 parts of user interfaces, which are login/sign up pages, My E
 
 Firstly, the login page (figure 4.2.1.1) would be shown before users are able to access the main page. Login is necessary for using Dubby; consequently, for those who do not have an account should click the sign up button for creating a new user account in sign up page (figure 4.2.1.2). When users are setting their email account and password, the system would check the security of the password. If the password is too short or not secure, the warning message would pop up. So as for the login page, if the email or password is entered wrongly, the notification would pop up as a reminder.
 
-![Figure 4.2.1.1](https://lh5.googleusercontent.com/lSxpaxBgW9i0s2C3BVYKRqjDSjgiL8h_Xlbi_OF1jrddHH4fNwDp0q3gFG2ccJJrPXjNm1fJFKTqzih3DXAaG7VV-NbQwWjxf4WvOsLAn4P6awp3UcrEXGSnZsk1t8iGy_XFUeaJ)
+![figure 4.2.1.1](https://lh5.googleusercontent.com/lSxpaxBgW9i0s2C3BVYKRqjDSjgiL8h_Xlbi_OF1jrddHH4fNwDp0q3gFG2ccJJrPXjNm1fJFKTqzih3DXAaG7VV-NbQwWjxf4WvOsLAn4P6awp3UcrEXGSnZsk1t8iGy_XFUeaJ)
+
 Figure 4.2.1.1
 
-![Figure 4.2.1.2](https://lh3.googleusercontent.com/BPrkkk4wVzo1eJuM1oblPZTYQHQm_iWtBqWy232_js-pLLmxchNccN_eErgAlG-m2L5olzFbH-HfelOe-srTHj9NqxUjVTkxB5yVo3z2TV_HRfJyf3-a6UOXW5HcczKi81MHP9OX)
+![figure 4.2.1.2](https://lh3.googleusercontent.com/BPrkkk4wVzo1eJuM1oblPZTYQHQm_iWtBqWy232_js-pLLmxchNccN_eErgAlG-m2L5olzFbH-HfelOe-srTHj9NqxUjVTkxB5yVo3z2TV_HRfJyf3-a6UOXW5HcczKi81MHP9OX)
+
 Figure 4.2.1.2
 
 #### 4.2.2 my event (dubby):
 
-![Figure 4.2.2.1](https://lh6.googleusercontent.com/9K7DKua9ZF3-hfiHJnPiI4VTTS3aBSqj230CR28Hh-IDyFESzI2wosx_S_5uyfk68P9Nrq7oPxHV5lBCYMrak7TcUXP-q8Tutr6l4dJcybXmabkUDhH2_gqITzOeWjMVjXi4EYaZ)
+![figure 4.2.2.1](https://lh6.googleusercontent.com/9K7DKua9ZF3-hfiHJnPiI4VTTS3aBSqj230CR28Hh-IDyFESzI2wosx_S_5uyfk68P9Nrq7oPxHV5lBCYMrak7TcUXP-q8Tutr6l4dJcybXmabkUDhH2_gqITzOeWjMVjXi4EYaZ)
+
 Figure 4.2.2.1
 
 After login to Dubby, the initial page is the “My Event” page (figure 4.2.2.1), which shows all events that the user has decided to join. To access this page, users could also click the icon of “Dubby” on the left-top corner (figure 4.2.2.2). On this page, all the events that the user hosted or joined would be shown here, and the events are sorted by the event starting date. Moreover, the event that the user friends invited the user to join would also appear here. After the event starting time is over, the events would not be displayed on this page anymore. If users would like to host an event, they can create an event by clicking the “+ New Event!” button. After filling in all the required information (figure 4.2.2.3), such as event name, number of participants, sport type, location, and so on, the new event would be created and appear on the “My Event” page (figure 4.2.2.4). Or users can just select “Cancel” if they change their minds.
 
-![Figure 4.2.2.2](https://lh5.googleusercontent.com/xWlkdg_xUDmUyLRcuDMpXsv742K36zRAwCLgVWQe5fdLVku_PqtI24AiP3H1TEOc1Hybhwh2X74YlY99QfoLL-uarYZ18KZoy1CESepw2qSWSkmWEep0CfmPMI5FvlXtpeN5cIeL)
+![figure 4.2.2.2](https://lh5.googleusercontent.com/xWlkdg_xUDmUyLRcuDMpXsv742K36zRAwCLgVWQe5fdLVku_PqtI24AiP3H1TEOc1Hybhwh2X74YlY99QfoLL-uarYZ18KZoy1CESepw2qSWSkmWEep0CfmPMI5FvlXtpeN5cIeL)
+
 Figure 4.2.2.2
-![Figure 4.2.2.3](https://lh6.googleusercontent.com/dIntTFMRShauX5q8ix6DuE3mmqPiBhD7uKPr4Wos2OTdWv0rDSpbYE8f0JmGe1J-WMSsT8LQkNcndbu6OcXX6Od9i6G2iQdhvbXaC3NCHbyYBZR0nDSQG7ffZoKv22LPBIb0XGvP)
+![figure 4.2.2.3](https://lh6.googleusercontent.com/dIntTFMRShauX5q8ix6DuE3mmqPiBhD7uKPr4Wos2OTdWv0rDSpbYE8f0JmGe1J-WMSsT8LQkNcndbu6OcXX6Od9i6G2iQdhvbXaC3NCHbyYBZR0nDSQG7ffZoKv22LPBIb0XGvP)
+
 Figure 4.2.2.3
-![Figure 4.2.2.4](https://lh5.googleusercontent.com/MdqBNlArCqOrTyv6VoUlg6FR3dGEb05t9QPPPCHuVUwstQ-UKWM6kVHy0rwTOqKgFV-X6-Au3RPEbzOTq5q5e0PFho08o_bdh04FPfUKoT9cF1eOYCtNt_fq-v9METgTSrVpXYoT)
+![figure 4.2.2.4](https://lh5.googleusercontent.com/MdqBNlArCqOrTyv6VoUlg6FR3dGEb05t9QPPPCHuVUwstQ-UKWM6kVHy0rwTOqKgFV-X6-Au3RPEbzOTq5q5e0PFho08o_bdh04FPfUKoT9cF1eOYCtNt_fq-v9METgTSrVpXYoT)
+
 Figure 4.2.2.4
 
 #### 4.2.3 event (public):
 
 The event page (figure 4.2.3.1) shows all the public events that are open for any user to join. There is a search bar in the upper section, where the users could find all the related events by typing the key words (figure 4.2.3.2). The lower part displays all the events that are not overdue and public for everyone. Private events would also be shown here if the users are the hosts or they are allowed to join the private events. After the event date is passed, the event card would disappear and no longer be on this page. The events are sorted by the starting date order, the event with closer dates would appear on the top. Each event card would show the information for the event as introduced at my event part above. By clicking the event card, the events details would appear.
 
-![Figure 4.2.3.1](https://lh4.googleusercontent.com/gaFAVVv67ysGNKJObqDDm4sWyjNnIgQRKdh7EhjlOSfjntnjPcog6Uos0Gp-x8rAhXTAdUqmya0bHfovl2ndwDLxbEwpUwvBLEkqwrfp6QUp3cmVHlijYysZF_8vIFkeAaUPlYvq)
+![figure 4.2.3.1](https://lh4.googleusercontent.com/gaFAVVv67ysGNKJObqDDm4sWyjNnIgQRKdh7EhjlOSfjntnjPcog6Uos0Gp-x8rAhXTAdUqmya0bHfovl2ndwDLxbEwpUwvBLEkqwrfp6QUp3cmVHlijYysZF_8vIFkeAaUPlYvq)
+
 Figure 4.2.3.1
-![Figure 4.2.3.2](https://lh6.googleusercontent.com/sjaT6javrW_xO-cGCCkX1N5Z0uBs_69ugFFUtpaLE9mQ3ts84uqlbMFK01OLqr_raqYhhWqKMbjtvznVZ7N-YUvzyRvveazU-uWwSjoNQWdFenbEjZOBD1z81daFqYJxPfJssdif)
+![figure 4.2.3.2](https://lh6.googleusercontent.com/sjaT6javrW_xO-cGCCkX1N5Z0uBs_69ugFFUtpaLE9mQ3ts84uqlbMFK01OLqr_raqYhhWqKMbjtvznVZ7N-YUvzyRvveazU-uWwSjoNQWdFenbEjZOBD1z81daFqYJxPfJssdif)
+
+Figure 4.2.3.2
 
 #### 4.2.4 event card:
 
-![Figure 4.2.4.1](https://lh5.googleusercontent.com/aYlAgF0eTNM1-01Csi9bF3Dp2VIx0CmdhtAEZnzAjCAhk1g2kspJBifOepZiU0AH9YA9cnag6pwCN-emPcbV9Hu7DwanZcY-GmYMn-tRoKE8T3-stZqmwEaY3mzAHVK2S62Kzm4f)
+![figure 4.2.4.1](https://lh5.googleusercontent.com/aYlAgF0eTNM1-01Csi9bF3Dp2VIx0CmdhtAEZnzAjCAhk1g2kspJBifOepZiU0AH9YA9cnag6pwCN-emPcbV9Hu7DwanZcY-GmYMn-tRoKE8T3-stZqmwEaY3mzAHVK2S62Kzm4f)
+
 Figure 4.2.4.1
 
 The event information page (figure 4.2.4.1) would be shown when the event card is selected. It shows the information of what the sport category is, whether the user has joined or not, and who the host is. For each event page, users could see the location, starting time and vacancy of events (figure 4.2.4.2). There is also a return button (figure 4.2.4.3), which would bring users back to My Events page. The host of that event would also be displayed, and users could check the profile of that host by clicking the “host” button (figure 4.2.4.4). If the user has not joined the event, there is a “join” button at the bottom. After joining the event, users are able to open the group chat for that specific event (figure 4.2.4.5). If the user is the host of events or the user has joined the event and the event allows other people to join, there are two buttons “participants” and “invited friends” on the upper area (figure 4.2.4.6). By clicking “participants,” users could see the participants who have joined the event already (figure 4.2.4.7). They could also invite their friends by clicking the “invite friends” button (figure 4.2.4.8). In addition, if the user is the host of the event, he/she can delete the event at the event page by just clicking the “delete” button (figure 4.2.4.9).
 
-![Figure 4.2.4.2](https://lh5.googleusercontent.com/6DcYPoK-ipHUpcZhEybP2Gsw5dw--wobh-mGTx5bW74z0SST6mt0setIuJrQpK1q-yT-UWVnSsHNCr6mi5D849PEdUf_mhWDMiYAUizKfeP5UldxG_3JqE1jgTZ6fnJw12lXDdGy)
+![figure 4.2.4.2](https://lh5.googleusercontent.com/6DcYPoK-ipHUpcZhEybP2Gsw5dw--wobh-mGTx5bW74z0SST6mt0setIuJrQpK1q-yT-UWVnSsHNCr6mi5D849PEdUf_mhWDMiYAUizKfeP5UldxG_3JqE1jgTZ6fnJw12lXDdGy)
+
 Figure 4.2.4.2
 
-![Figure 4.2.4.3](https://lh5.googleusercontent.com/dDQSF8SVZ9FSqLSGgf_QBAB3xh55YyAuvGYsaKiXIUBMIung9tPbHHIR0wWahSnLpx4PeU5_AetMNkrR9R4U6IfELc0ZWRmJ3WT27E23EUCH5xVze1bi8UdGzbqlrSJu6UMcDKgr)
+![figure 4.2.4.3](https://lh5.googleusercontent.com/dDQSF8SVZ9FSqLSGgf_QBAB3xh55YyAuvGYsaKiXIUBMIung9tPbHHIR0wWahSnLpx4PeU5_AetMNkrR9R4U6IfELc0ZWRmJ3WT27E23EUCH5xVze1bi8UdGzbqlrSJu6UMcDKgr)
+
 Figure 4.2.4.3
 
-![Figure 4.2.4.4](https://lh3.googleusercontent.com/mXn2PBmUgoX4Tmc-LkrbNsgU_tb9mzxp5MfqH9LTiEDjKXLgiNP3x9Vx8KVLtDBs99Y2u0jWA86Ru5AXg_Q38-57t51zzuI_iWQAH7TnlX7XBh5x631VPlSvzaq8yYGsqFHrS6xS)
+![figure 4.2.4.4](https://lh3.googleusercontent.com/mXn2PBmUgoX4Tmc-LkrbNsgU_tb9mzxp5MfqH9LTiEDjKXLgiNP3x9Vx8KVLtDBs99Y2u0jWA86Ru5AXg_Q38-57t51zzuI_iWQAH7TnlX7XBh5x631VPlSvzaq8yYGsqFHrS6xS)
+
 Figure 4.2.4.4
 
-![Figure 4.2.4.5](https://lh5.googleusercontent.com/LIDJwuDPJ0H1bliz7131hiDk_Wm5S_HB9woDAISdPZ08cmL2mKGQJCWtwqafrdTV3brYfrR9SJFqMkF1pMZpmN8IEfe0UWhfSOV7UDADM4Pi2SzcZJlwn2SKY52jX9BMdHMUzevO)
+![figure 4.2.4.5](https://lh5.googleusercontent.com/LIDJwuDPJ0H1bliz7131hiDk_Wm5S_HB9woDAISdPZ08cmL2mKGQJCWtwqafrdTV3brYfrR9SJFqMkF1pMZpmN8IEfe0UWhfSOV7UDADM4Pi2SzcZJlwn2SKY52jX9BMdHMUzevO)
+
 Figure 4.2.4.5
 
-![Figure 4.2.4.6](https://lh6.googleusercontent.com/aKj9gaKFylCSCWxbqfp2ExhdwALJOWUXsFk04RdeRFP9LZuh2q_4mW6QEjREFLU7wsl6LK3KOnb6-GPtzCx0QCAGdK6AzprY5jH_ytq27L9CENcQkjT9YeBCU4WsQuv72zN0PPMS)
+![figure 4.2.4.6](https://lh6.googleusercontent.com/aKj9gaKFylCSCWxbqfp2ExhdwALJOWUXsFk04RdeRFP9LZuh2q_4mW6QEjREFLU7wsl6LK3KOnb6-GPtzCx0QCAGdK6AzprY5jH_ytq27L9CENcQkjT9YeBCU4WsQuv72zN0PPMS)
+
 Figure 4.2.4.6
 
-![Figure 4.2.4.7](https://lh3.googleusercontent.com/bBZh1dFIfPOR_hDLNh7J81kIfth6v2Vvg293rOu9fB9NaPLNK8kmCpy-VZpolbTh1jW0S5zDTFk_vhok54zXlMqf04OhH6tdVyQAzcX9Gry9MpQZlrAZ4YVpEXu75IXP0iqbERdl)
+![figure 4.2.4.7](https://lh3.googleusercontent.com/bBZh1dFIfPOR_hDLNh7J81kIfth6v2Vvg293rOu9fB9NaPLNK8kmCpy-VZpolbTh1jW0S5zDTFk_vhok54zXlMqf04OhH6tdVyQAzcX9Gry9MpQZlrAZ4YVpEXu75IXP0iqbERdl)
+
 Figure 4.2.4.7
 
-![Figure 4.2.4.8](https://lh6.googleusercontent.com/YO4kTWpS696_4epVL5ycQ45rsowkDv-Z0n4U80jxqGCsOMah1HIAywr_LDZMmwUwvKpl8rShHJucHFUU_t77hT1wOhByXi6lbHuRkiZmXs0KsxHixmiQNvsb7ewUxUJWbgduR8Ey)
+![figure 4.2.4.8](https://lh6.googleusercontent.com/YO4kTWpS696_4epVL5ycQ45rsowkDv-Z0n4U80jxqGCsOMah1HIAywr_LDZMmwUwvKpl8rShHJucHFUU_t77hT1wOhByXi6lbHuRkiZmXs0KsxHixmiQNvsb7ewUxUJWbgduR8Ey)
 
-![Figure 4.2.4.9](https://lh3.googleusercontent.com/dszBz0cubK8AzEakFLv8ZZzcwyHrBkLe7PRJvXwUYD9wIXW0YPyRScL-oAr1Fsqzfl0BQTRSJxoRPnmj0epdR4lCeTiT4w3dTjMeDFsxnNZR3e3rM2dmWFsKJf6ZmjqSYp2Njkg3)
+![figure 4.2.4.9](https://lh3.googleusercontent.com/dszBz0cubK8AzEakFLv8ZZzcwyHrBkLe7PRJvXwUYD9wIXW0YPyRScL-oAr1Fsqzfl0BQTRSJxoRPnmj0epdR4lCeTiT4w3dTjMeDFsxnNZR3e3rM2dmWFsKJf6ZmjqSYp2Njkg3)
+
 Figure 4.2.4.9
 
 #### 4.2.5 chat:
 
 On the chat page (figure 4.2.5.1), all the chat records are saved here. Each chat bar represents a chatting group, with the event name, icon of the user who sent the latest message and the message they sent. The event type is shown on the right hand side. Yellow bar represents the chat is a group chat automatically created after the event is created or after the user joins the event, and green bar represents a private chat with any user's friend. Users are also able to create a new chat group by clicking the blue button on the top, so they can select any users’ friends for a group chat (figure 4.2.5.2). By clicking the private chat, users could find their friends they would like to message directly (figure 4.2.5.3). The chat history would be shown if they already have chatted before. On this page, the latest updated chat group would be pushed to the top, so that users would be noticed if there are some new messages.To enter the chat room, users could just simply click the chat group showing on the chat page. For the event group chat, users can check the participants of the event (figure 4.2.5.4), and they can also check the event detail by clicking the circle icon “i” on the right side (figure 4.2.5.5). Besides the chatting content would be shown, the time of sent message would also be stated under each chat bubble.
 
-![Figure 4.2.5.1](https://lh6.googleusercontent.com/s8XNlHSjna2pwfB5C51n_MMgevCAp_pwuSgpp73G1yvo4ThELSPI4jzZcDVScvdBj493SmJ3MiTQ3g-sA-oNKQc_sgAGoKVsWo-Hk4LppHmQXyAMZQOFUkZjqB6kcWsv6orQlfLv)
+![figure 4.2.5.1](https://lh6.googleusercontent.com/s8XNlHSjna2pwfB5C51n_MMgevCAp_pwuSgpp73G1yvo4ThELSPI4jzZcDVScvdBj493SmJ3MiTQ3g-sA-oNKQc_sgAGoKVsWo-Hk4LppHmQXyAMZQOFUkZjqB6kcWsv6orQlfLv)
+
 Figure 4.2.5.1
 
-![Figure 4.2.5.2](https://lh4.googleusercontent.com/Uc3xVmqicrzPdOa4TRcyVidlukCxZdipc3ZrJNoO4gXHkTaKWiP1qt1aZ4PBBdXKfPMQ3RFEDGF4rHvVN2Ev16HEahWWsVVX74s8QWKpkQGTuEi2YgqFau1wsl--w0d1SaX9pTup)
+![figure 4.2.5.2](https://lh4.googleusercontent.com/Uc3xVmqicrzPdOa4TRcyVidlukCxZdipc3ZrJNoO4gXHkTaKWiP1qt1aZ4PBBdXKfPMQ3RFEDGF4rHvVN2Ev16HEahWWsVVX74s8QWKpkQGTuEi2YgqFau1wsl--w0d1SaX9pTup)
+
 Figure 4.2.5.2
 
-![Figure 4.2.5.3](https://lh4.googleusercontent.com/4KRbzOAMHM-vqPZB3wUPaHB9DymG_uXEHy-9xTYPs_0MKawEml-abYRR2FY6KjJJAzU1EhnbNNoZpoqCti_UAIKFDOgGJTshFVJcuN7eWV79GLv6YpaziHNOlGmo0dQl7LadK6TH)
+![figure 4.2.5.3](https://lh4.googleusercontent.com/4KRbzOAMHM-vqPZB3wUPaHB9DymG_uXEHy-9xTYPs_0MKawEml-abYRR2FY6KjJJAzU1EhnbNNoZpoqCti_UAIKFDOgGJTshFVJcuN7eWV79GLv6YpaziHNOlGmo0dQl7LadK6TH)
+
 Figure 4.2.5.3
 
-![Figure 4.2.5.4](https://lh3.googleusercontent.com/jCuZRL8E7z3eGqWVKNddkGGRMkCCk-hrIVWpYznd86ZkKBji9x5uJ_HoczCdWRg45lEkwB2CNRVdpuUhl-86xnm5ctYoTEtRw9j4EwconPk03HEzW019IgCtk7Y5jOaa5tF4GTjM)
+![figure 4.2.5.4](https://lh3.googleusercontent.com/jCuZRL8E7z3eGqWVKNddkGGRMkCCk-hrIVWpYznd86ZkKBji9x5uJ_HoczCdWRg45lEkwB2CNRVdpuUhl-86xnm5ctYoTEtRw9j4EwconPk03HEzW019IgCtk7Y5jOaa5tF4GTjM)
+
 Figure 4.2.5.4
 
-![Figure 4.2.5.5](https://lh5.googleusercontent.com/SvbOYeRt35EuWxYUOGfcxCdUE-_UbgfQ8iWTB_tDP8vrmsm0c5Ry4Af2F1Sq-b9APonBP-Vg2g6CyQwoNStHvUMT0nNERL9E4z5BEfZeo6PhhVbg2X2q4dPFBbt3kAjqNv2upQER)
+![figure 4.2.5.5](https://lh5.googleusercontent.com/SvbOYeRt35EuWxYUOGfcxCdUE-_UbgfQ8iWTB_tDP8vrmsm0c5Ry4Af2F1Sq-b9APonBP-Vg2g6CyQwoNStHvUMT0nNERL9E4z5BEfZeo6PhhVbg2X2q4dPFBbt3kAjqNv2upQER)
+
 Figure 4.2.5.5
 
 #### 4.2.6 gym (cuhk, hku, ust):
 
 On the gym page, the information of the gyms from different universities would be shown here (figure 4.2.6.1). Gym page would list out all the gyms that the university has. Take the CUHK for an example. Users can see descriptions, pictures and the open schedule of the gym. Users can click the right and left arrows on the picture for checking the pictures and schedules (figure 4.2.6.2). Users are allowed to upload the latest gym image or schedule by selecting the file and “Upload” button (figure 4.2.6.3). Moreover, the notification would pop out when the photo upload is complete, so that users could make sure the information is updated (figure 4.2.6.4). Basically, only one gym picture would be kept for each gym, which is the first image, and the rest of pictures are the schedule that any other users uploaded. This page would only keep the latest three photos of schedule; therefore, we have at most four images totally (one gym picture and three schedule images).
 
-![Figure 4.2.6.1](https://lh6.googleusercontent.com/aezY_GuO9d6-2K0PyC7IpxmtBk5nbJff9jmJ3-gLpo4mbA3hU63NeVD-fp32hJ92CnfRjvmMaRZ-y3UAKE-9tZ5QFXPI188TigzKRTHJ9GbYIShNx-F8knWaGWu1-RLKJEskbQlY)
+![figure 4.2.6.1](https://lh6.googleusercontent.com/aezY_GuO9d6-2K0PyC7IpxmtBk5nbJff9jmJ3-gLpo4mbA3hU63NeVD-fp32hJ92CnfRjvmMaRZ-y3UAKE-9tZ5QFXPI188TigzKRTHJ9GbYIShNx-F8knWaGWu1-RLKJEskbQlY)
+
 Figure 4.2.6.1
 
-![Figure 4.2.6.2](https://lh5.googleusercontent.com/OHUJWRz3kNqnThkU5cTqYfQjQMHc9zIymwD5WWGnFbJtcilusQqAOq_4jdIS4sl-FU0k0GAEBVWgR-q6pJG3Pq1tKNYt2_kbOrNlDgbybD_CtYs9UUDa-md97c-7L6egbiMIY6G7)
+![figure 4.2.6.2](https://lh5.googleusercontent.com/OHUJWRz3kNqnThkU5cTqYfQjQMHc9zIymwD5WWGnFbJtcilusQqAOq_4jdIS4sl-FU0k0GAEBVWgR-q6pJG3Pq1tKNYt2_kbOrNlDgbybD_CtYs9UUDa-md97c-7L6egbiMIY6G7)
+
 Figure 4.2.6.2
 
-![Figure 4.2.6.3](https://lh5.googleusercontent.com/q_cUhhobdsDuMBUU0jl45g78k-an2FimO7wuJwpqQ2G1i4PJ_PzNtM-mmwFN5Tjh5ZxnQoKt-8zcbHd34p59S7HJ8XvCEVLrD-cW31agPddTIj_rP8FpSqC7oj2pzGt9G07GGLn5)
+![figure 4.2.6.3](https://lh5.googleusercontent.com/q_cUhhobdsDuMBUU0jl45g78k-an2FimO7wuJwpqQ2G1i4PJ_PzNtM-mmwFN5Tjh5ZxnQoKt-8zcbHd34p59S7HJ8XvCEVLrD-cW31agPddTIj_rP8FpSqC7oj2pzGt9G07GGLn5)
+
 Figure 4.2.6.3
 
-![Figure 4.2.6.4](https://lh4.googleusercontent.com/Ry8DtdyBPuPVJobJ8Jx9t-kFOKGWoXiDxy6oBmA9wvVdOasjYV57Wtj6TvjAQISEkpbFWBoIMI9Ban-WWKZHXHRQDF8px8Nj-AyN-33RnUHSZlF4ctbIcYJyj4xyM6Rfcfd1bPfG)
+![figure 4.2.6.4](https://lh4.googleusercontent.com/Ry8DtdyBPuPVJobJ8Jx9t-kFOKGWoXiDxy6oBmA9wvVdOasjYV57Wtj6TvjAQISEkpbFWBoIMI9Ban-WWKZHXHRQDF8px8Nj-AyN-33RnUHSZlF4ctbIcYJyj4xyM6Rfcfd1bPfG)
+
 Figure 4.2.6.4
 
 #### 4.2.7 profile:
@@ -301,15 +329,18 @@ Figure 4.2.6.4
 The profile page displays the personal information that users would like to show to the public. There is a profile photo with a circle frame, user name, personal descriptions, university, and the interested sports (figure 4.2.7.1). For browsing others’ profile pages, the profile photo and information would be shown, and there is an add friend button at the bottom so that users could send the friend request for sports partners they are interested in (figure 4.2.7.2). If the user and that particular user are friends already, the add friend button would become an unfriend button (figure 4.2.7.3). On the other hand, for users themselves, they are allowed to edit their information by clicking the edit button. In the profile editing page (figure 4.2.7.4), users are able to change their profile photo by choosing the picture and uploading it. The alterations would only be saved after the save button is selected.
 
 ![img](https://lh6.googleusercontent.com/i0jA6pCoqQjcWqTr2FmY5aIQjG3YEupoVo0HTiJID5F30qZosTGN0_GaVCp7n2DXNlgjuMhroEzTq48Dwy6kbdjeEkdw_p7Q2tZomk_dCZXHwxItOOFJIWpd_EXgwrcPkVyCMgg2)
+
 Figure 4.2.7.1
 
 Figure 4.2.7.2
 ![img](https://lh4.googleusercontent.com/A8wHqByi0ZUKEwgVkdLe09x6OmsZWK_LqmFuSP-6nPb69xn_yH5fkLwqvboAgOkZMN0yInqERiS4VERlakkv7G6RgJfEGZxtJxuwg0clQ8DoNX1y6BvLHl37ajvec1nNzmaJNJuU)
 
 ![img](https://lh5.googleusercontent.com/ptrErn7oqRaeNnK2AzOjfwM0o1Kx6VI_4H_whQw6rpXL-kK-SQAfO7sO9O_SwRrmkM3qhS-_4laxi7_pkrPsOt8mpw48vs7fgvHGAPn_0PMGtXx3AGMOSVMMKCxdMCRVOnwZ8DCS)
+
 Figure 4.2.7.3
 
 ![img](https://lh4.googleusercontent.com/Nc4eAk1RDU1thYdgslVXF36zD1ZF75Blr9kHrJMqyrrwp2Hgn4_4FHV1UBveIRxa-1iFELYDfT_NG1XHNOx1Ept4z45lzj_IpQWqnoTna3jUXLJItoqpwzCYXX2-UAjWm_RzTtHH)
+
 Figure 4.2.7.4
 
 #### 4.2.8 menu (friends, purple, sign out):
@@ -317,36 +348,45 @@ Figure 4.2.7.4
 Under the menu, there are three different options. These three functions are not listed on the top page because they are subsidiary functions (figure 4.2.8.1). To make the main page clear, we decided to hide them under the menu.
 
 ![img](https://lh4.googleusercontent.com/ya6aCID6A9vz4IJrRqvlEdwYDTJ2QlCiUVXQsTrIXRa5jAmxvLeEWDxKMJEpV7OHdtml_N6kHXx-cG5sNQ2B8r6lrB15s8bmJdc03iOZKTn8JnTE3c00OJ6gVXhi_h39g9z6DxuN)
+
 Figure 4.2.8.1
 
 The first one is the friends page (figure 4.2.8.2). There are mainly four parts on this page: searching bar, friends list, sent requests and received requests. For the searching bar, users can either type the user’s name they want to search (figure 4.2.8.3), or search by interested sports (figure 4.2.8.4). It should be noted that the searching bar is case sensitive. After clicking the button, users can select the sport they are interested in and find other users who are also interested in this sport. For the friends list (figure 4.2.8.5), it shows all the friends the user has. They can unfriend their friend by clicking the red “unfriend” button, or check their friend's profile by clicking their names. For the sent requests (figure 4.2.8.6), it shows all the friend requests the user has sent, and by clicking the “unrequest” button, the request would be retrieved. For the received requests (figure 4.2.8.7), it shows all the friend requests that are sent by other users. After clicking the “accept button”, the accepted user would become the user’s friends, listed on the friends list.
 
 ![img](https://lh3.googleusercontent.com/tISyIRcIpUiq_ANDOn_YsiOJck2rOvd0vNNOWbCyj03VCaoROGHhJul-KGn0G6C9_wFkbDNB9ehiO5-3ADBVShtgZkGq8FAVOwrRzPvWrmnv1sSRRUhGTvRGl_g51X3H59uqWZ8t)
+
 Figure 4.2.8.2
 
 ![img](https://lh6.googleusercontent.com/mtBTnT1svAYzwOXYZwuc2cyXifWe8rAu91jQBfNIevWD9lFvFE_bJZzk7sOPUnIEfF9j5cy4dQLgU8_X4E9CE7y-DiKWJpZ6Lgr7PbNhxS9pzV2WsKsUUpOONvXC_3Qb11Xl7OdD)
+
 Figure 4.2.8.3
 
 ![img](https://lh3.googleusercontent.com/ZvmLT1ZJ6HhJssqlNWXy-lj6KQOUI_LxvHswwDBNjR5HXvRVuG0zh6fS3YpYJgy88zzI_Bf5Y_V_HJVvVmVf_aBBIw8-3ICY6QO5TG5g_SAQ_BEkTqfkQjgbQLrujLIpMvq0lagc)
+
 Figure 4.2.8.4
 
 ![img](https://lh3.googleusercontent.com/hVQOeD-AvgyF2qk-qn2k1xju8-CkTGIohG8g8k4hz-KxJPPWbVyyu1Vb57P8Z57YK4iqO93xrdzxe7eXJhowlca6-2Zy_GX5hTc--YWTPOQVA4ZHsgVtY-rvRZ-HJC0UhaulRwgq)
+
 Figure 4.2.8.5
 
 ![img](https://lh4.googleusercontent.com/l-qDOGNlNgSUkB2Q0_2w0Y7RpR1f2NG7meij1TO-J7r4bGT2a4lfnRuKpIP4ZWV4KWnw3ikCMnzRn_oXqo-nWWuPwceeE6n34y0phHWy-S-GkWjdhSfWgF1YMTc0lD0yT7WdNBaF)
+
 Figure 4.2.8.6
 
 ![img](https://lh3.googleusercontent.com/w6rZZKlfx7MC56sOX93RIZwQqu7QG4MI53jq434bxyclVbTHo7v7MHrqaqKoHNJrnkQ7NVQEt_q38oKmZTTbkZ5IGV8JFtC-k92gFCFYKsw98SgzOOZgWwr-Qy9Nuc_S9kela0a1)
+
 Figure 4.2.8.7
 
 The second option is purple. By clicking “purple”, the user interface would be changed into purple theme (figure 4.2.8.8), which is the dark mode. With lower brightness, users are able to protect their eyes. If the theme color is purple, this button under the menu would become “yellow” (figure 4.2.8.9), and by clicking it, the theme color would be changed back to yellow.
 
 ![img](https://lh3.googleusercontent.com/pxu0MldWeJrZEt_0ZeWeXJ7ehZuqqo0Djz04_2zvWIo2lW-aZxF5v_Es-aMDLxLhwdmZtwDw5KfODA-VzQhIvIgZseX5bwwORjufUna2Ud727V4P39UgN1JzkZOBBxn0fFtlR5e6)
+
 Figure 4.2.8.8
 
 The third option is the “sign out” button, where the user could sign out the account, and the login page would be displayed again.
 
 ![img](https://lh6.googleusercontent.com/vJxWqROnm1jKhgwJcQVLgkiDAvlgWVeUQcvJ0lpizJNSue5orCfx5dU6EWwAd0odBT9Tput2omnMHF1FCE0MGBQigbVSkZBHqCJxft4vaL6uG6nbBaguHkj9Yi_gZhwX9B-jO_bH)
+
 Figure 4.2.8.9
 
 ## 5 TEST
