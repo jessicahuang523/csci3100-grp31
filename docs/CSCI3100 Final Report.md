@@ -370,37 +370,31 @@ For Dubby, our basic testing logic is: Testing each small parts inside different
 
 #### 5.3.1 account login
 
-| Case Description | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ---------------- | ------- | ----- | --------------- | ------------------ |
-
-
-| correct account and correct password | To see if correct account and correct password can login successfully | email: “12345678@email.com”password: 12345678 | Login successfully | Pass |
-| incorrect account and incorrect password | To see if incorrect account and incorrect password can login successfully | email: “1234567@email.com”password: 1234567 | The warning “Please check your email or password!” would pop out. | Pass |
-| incorrect account and correct password | To see if incorrect account and correct password can login successfully | email: “1234567@email.com”password: 12345678 | The warning “Please check your email or password!” would pop out. | Pass |
-| correct account and incorrect password | To see if correct account and incorrect password can login successfully | email: “12345678@email.com”password: 1234567 | The warning “Please check your email or password!” would pop out. | Pass |
+| Case Description                         | Purpose                                                                   | Input                                         | Expected Output                                                   | Pass/Fail Criteria |
+| ---------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------- | ----------------------------------------------------------------- | ------------------ |
+| correct account and correct password     | To see if correct account and correct password can login successfully     | email: “12345678@email.com”password: 12345678 | Login successfully                                                | Pass               |
+| incorrect account and incorrect password | To see if incorrect account and incorrect password can login successfully | email: “1234567@email.com”password: 1234567   | The warning “Please check your email or password!” would pop out. | Pass               |
+| incorrect account and correct password   | To see if incorrect account and correct password can login successfully   | email: “1234567@email.com”password: 12345678  | The warning “Please check your email or password!” would pop out. | Pass               |
+| correct account and incorrect password   | To see if correct account and incorrect password can login successfully   | email: “12345678@email.com”password: 1234567  | The warning “Please check your email or password!” would pop out. | Pass               |
 
 ### 5.4 event:
 
 #### 5.4.1 create new event
 
-| Case Description | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ---------------- | ------- | ----- | --------------- | ------------------ |
-
-
-| Event name not blank, proper number of participants, starting time is after current time | To check if users are able to create an event as expected event information input. | Event Name: This is a testParticipants allowed: 5Event type: BasketballPublic Event: YesEvent Location: Shaw College CourtStarting Date: 2020/6/25Starting Time: 11:30 A.M. | Successfully create an event | Pass |
-| Blank event name | To check if users are able to create an event without event name | Event Name: (blank)Participants allowed: 5Event type: BasketballPublic Event: YesEvent Location: Shaw College CourtStarting Date: 2020/6/25Starting Time: 11:30 A.M. | The warning pops up and asks the user to fill in the Event Name. The event will not be created. | Pass |
-| wrong number of participants (lower than 2) | To check if users are able to create an event with wrong number of participants | Event Name: This is a testParticipants allowed: 1Event type: BasketballPublic Event: YesEvent Location: Shaw College CourtStarting Date: 2020/6/25Starting Time: 11:30 A.M. | Not allowed to have the option of choosing participants lower than two. | Pass |
-| starting date is earlier than today | To check if users are able to create an event with passed starting date | Event Name: This is a testParticipants allowed: 5Event type: BasketballPublic Event: YesEvent Location: Shaw College CourtStarting Date: 2020/4/25Starting Time: 11:30 A.M. | The warning pop up and ask the user to fill in starting date later than current date. The event will not be created. | Pass |
-| starting time is earlier than current time | To check if users are able to create an event with passed starting time | Event Name: This is a testParticipants allowed: 5Event type: BasketballPublic Event: YesEvent Location: Shaw College CourtStarting Date: 2020/5/16Starting Time: 06:30 A.M. | The warning pops up and asks the user to fill in starting time later than current time. The event will not be created. | Pass |
-| cancel the event | To check whether users are able to cancel the event creation | click the cancel button | Back to My Event page | Pass |
+| Case Description                                                                         | Purpose                                                                            | Input                                                                                                                                                                       | Expected Output                                                                                                        | Pass/Fail Criteria |
+| ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| Event name not blank, proper number of participants, starting time is after current time | To check if users are able to create an event as expected event information input. | Event Name: This is a testParticipants allowed: 5Event type: BasketballPublic Event: YesEvent Location: Shaw College CourtStarting Date: 2020/6/25Starting Time: 11:30 A.M. | Successfully create an event                                                                                           | Pass               |
+| Blank event name                                                                         | To check if users are able to create an event without event name                   | Event Name: (blank)Participants allowed: 5Event type: BasketballPublic Event: YesEvent Location: Shaw College CourtStarting Date: 2020/6/25Starting Time: 11:30 A.M.        | The warning pops up and asks the user to fill in the Event Name. The event will not be created.                        | Pass               |
+| wrong number of participants (lower than 2)                                              | To check if users are able to create an event with wrong number of participants    | Event Name: This is a testParticipants allowed: 1Event type: BasketballPublic Event: YesEvent Location: Shaw College CourtStarting Date: 2020/6/25Starting Time: 11:30 A.M. | Not allowed to have the option of choosing participants lower than two.                                                | Pass               |
+| starting date is earlier than today                                                      | To check if users are able to create an event with passed starting date            | Event Name: This is a testParticipants allowed: 5Event type: BasketballPublic Event: YesEvent Location: Shaw College CourtStarting Date: 2020/4/25Starting Time: 11:30 A.M. | The warning pop up and ask the user to fill in starting date later than current date. The event will not be created.   | Pass               |
+| starting time is earlier than current time                                               | To check if users are able to create an event with passed starting time            | Event Name: This is a testParticipants allowed: 5Event type: BasketballPublic Event: YesEvent Location: Shaw College CourtStarting Date: 2020/5/16Starting Time: 06:30 A.M. | The warning pops up and asks the user to fill in starting time later than current time. The event will not be created. | Pass               |
+| cancel the event                                                                         | To check whether users are able to cancel the event creation                       | click the cancel button                                                                                                                                                     | Back to My Event page                                                                                                  | Pass               |
 
 #### 5.4.2 click the event card
 
-| Case Description | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ---------------- | ------- | ----- | --------------- | ------------------ |
-
-
-| click any event card | To check whether the event information would show properly from clicking the event card | click “this is a test” event | The event information of “this is a test” should be shown | Pass |
+| Case Description     | Purpose                                                                                 | Input                        | Expected Output                                           | Pass/Fail Criteria |
+| -------------------- | --------------------------------------------------------------------------------------- | ---------------------------- | --------------------------------------------------------- | ------------------ |
+| click any event card | To check whether the event information would show properly from clicking the event card | click “this is a test” event | The event information of “this is a test” should be shown | Pass               |
 
 #### 5.4.3 search for events
 
@@ -423,140 +417,112 @@ For Dubby, our basic testing logic is: Testing each small parts inside different
 
 #### 5.5.2 join event
 
-| Case Description                                                                                                | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| --------------------------------------------------------------------------------------------------------------- | ------- | ----- | --------------- | ------------------ |
-| click the join event button                                                                                     | To      |
-| check whether the join event button worksclick the buttonjoin the event and the event is shown on My Event page | Pass    |
+| Case Description            | Purpose                                      | Input            | Expected Output                                        | Pass/Fail Criteria |
+| --------------------------- | -------------------------------------------- | ---------------- | ------------------------------------------------------ | ------------------ |
+| click the join event button | To check whether the join event button works | click the button | join the event and the event is shown on My Event page | Pass               |
 
 #### 5.5.3 check participants
 
-| Case Description                                                                                          | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| --------------------------------------------------------------------------------------------------------- | ------- | ----- | --------------- | ------------------ |
-| click the participant button                                                                              | To      |
-| check whether the button works properlyclick the “participants” buttonAll the participants are listed out | Pass    |
+| Case Description             | Purpose                                    | Input                           | Expected Output                     | Pass/Fail Criteria |
+| ---------------------------- | ------------------------------------------ | ------------------------------- | ----------------------------------- | ------------------ |
+| click the participant button | To check whether the button works properly | click the “participants” button | All the participants are listed out | Pass               |
 
 #### 5.5.4 invite friends
 
-| Case Description                                                                                                                                                           | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ----- | --------------- | ------------------ |
-| click invite friends button                                                                                                                                                | To      |
-| see whether the button work properlyclick the buttonThe tab that allow the user to invite friend should appear                                                             | Pass    |
-| add friends                                                                                                                                                                | To      |
-| see whether the user can add a friend to invite listclick the plus button of friendThe selected friends are moved from “Add friends” list to “invites” list                | Pass    |
-| remove invited friends                                                                                                                                                     | To      |
-| see whether the user can remove invited friend from “invites” listclick the minus button of friendThe selected friends are moved from “invites” list to “Add friends” list | Pass    |
-| invite at least one friend and “cancel”                                                                                                                                    | To      |
-| see whether the cancel button worksinvite one friend and click cancel buttonThe invite process would be canceled                                                           | Pass    |
-| invite at least one friend and “done”                                                                                                                                      | To      |
-| see whether users are able to invite friendsinvite one friend and click done buttonThe invited event would appear on invited user’s event page                             | Pass    |
+| Case Description                        | Purpose                                                               | Input                                     | Expected Output                                                          | Pass/Fail Criteria |
+| --------------------------------------- | --------------------------------------------------------------------- | ----------------------------------------- | ------------------------------------------------------------------------ | ------------------ |
+| click invite friends button             | To see whether the button work properly                               | click the button                          | The tab that allow the user to invite friend should appear               | Pass               |
+| add friends                             | To see whether the user can add a friend to invite list               | click the plus button of friend           | The selected friends are moved from “Add friends” list to “invites” list | Pass               |
+| remove invited friends                  | To see whether the user can remove invited friend from “invites” list | click the minus button of friend          | The selected friends are moved from “invites” list to “Add friends” list | Pass               |
+| invite at least one friend and “cancel” | To see whether the cancel button works                                | invite one friend and click cancel button | The invite process would be canceled                                     | Pass               |
+| invite at least one friend and “done”   | To see whether users are able to invite friends                       | invite one friend and click done button   | The invited event would appear on invited user’s event page              | Pass               |
 
 #### 5.5.5 group chat
 
-| Case Description                                                                                                                          | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ----------------------------------------------------------------------------------------------------------------------------------------- | ------- | ----- | --------------- | ------------------ |
-| click the chat button                                                                                                                     | To      |
-| see whether users could enter the group chat from event informationclick the chat buttonThe page redirect to the chat room for that event | Pass    |
+| Case Description      | Purpose                                                                | Input                 | Expected Output                                   | Pass/Fail Criteria |
+| --------------------- | ---------------------------------------------------------------------- | --------------------- | ------------------------------------------------- | ------------------ |
+| click the chat button | To see whether users could enter the group chat from event information | click the chat button | The page redirect to the chat room for that event | Pass               |
 
 #### 5.5.6 delete event (if the user is the host)
 
-| Case Description                                                                                                                                                                     | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ----- | --------------- | ------------------ |
-| click the delete button and cancel                                                                                                                                                   | To      |
-| see what if users accidentally delete the eventclick the delete event button and select cancelThe confirming tab would pop up, and after clicking cancel, nothing happen             | Pass    |
-| click the delete button and delete                                                                                                                                                   | To      |
-| check whether users could delete the eventclick the delete event button and select deleteThe confirming tab would pop up, and after clicking delete, the event would no longer exist | Pass    |
+| Case Description                   | Purpose                                            | Input                                           | Expected Output                                                                             | Pass/Fail Criteria |
+| ---------------------------------- | -------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------ |
+| click the delete button and cancel | To see what if users accidentally delete the event | click the delete event button and select cancel | The confirming tab would pop up, and after clicking cancel, nothing happen                  | Pass               |
+| click the delete button and delete | To check whether users could delete the event      | click the delete event button and select delete | The confirming tab would pop up, and after clicking delete, the event would no longer exist | Pass               |
 
 #### 5.5.7 check host profile
 
-| Case Description                                                                                                           | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| -------------------------------------------------------------------------------------------------------------------------- | ------- | ----- | --------------- | ------------------ |
-| click the host button                                                                                                      | To      |
-| check whether users can check the profile of event hostclick the host buttonThe page would redirect to the profile of host | Pass    |
+| Case Description      | Purpose                                                    | Input                 | Expected Output                                | Pass/Fail Criteria |
+| --------------------- | ---------------------------------------------------------- | --------------------- | ---------------------------------------------- | ------------------ |
+| click the host button | To check whether users can check the profile of event host | click the host button | The page would redirect to the profile of host | Pass               |
 
 ### 5.6 chat:
 
 #### 5.6.1 create private chat
 
-| Case Description | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ---------------- | ------- | ----- | --------------- | ------------------ |
-
-
-create a private chat with a friend that never chat before| To
-see whether the private chat workschoose from friends listcreate a new private chat room with correct title and image, messages sent and received successfully, database updated, chat room displayed on the top of user’s chat rooms listpasscreate a private chat with a friend that have chat history| To
-see whether the chat history could be retrievedchoose from friends listdirect to the already existed private chat roompass
+| Case Description                                           | Purpose                                            | Input                    | Expected Output                                                                                                                                                                  | Pass/Fail Criteria |
+| ---------------------------------------------------------- | -------------------------------------------------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| create a private chat with a friend that never chat before | To see whether the private chat works              | choose from friends list | create a new private chat room with correct title and image, messages sent and received successfully, database updated, chat room displayed on the top of user’s chat rooms list | pass               |
+| create a private chat with a friend that have chat history | To see whether the chat history could be retrieved | choose from friends list | direct to the already existed private chat room                                                                                                                                  | pass               |
 
 #### 5.6.2 group chat
 
-| Case Description | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ---------------- | ------- | ----- | --------------- | ------------------ |
-
-
-chat with friends for the same eventfacilitate discussion between participants, let user discover new friendsjoin the event, send message in the automatically joined/created event chat roomjoined chat room successfully, able to view the corresponding event and participants, messages displayed correctly, database updated, chat room displayed on the top of user’s chat rooms listpasscreate a group chat with users friends| To
-see whether group chat could be createdenter group name and choose participants from friends listchat room created successfully, able to add more participants and view participants, messages sent and received correctly, database updated, chat room displayed on the top of user’s chat rooms listpass
+| Case Description                       | Purpose                                                                   | Input                                                                            | Expected Output                                                                                                                                                                                       | Pass/Fail Criteria |
+| -------------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| chat with friends for the same event   | facilitate discussion between participants, let user discover new friends | join the event, send message in the automatically joined/created event chat room | joined chat room successfully, able to view the corresponding event and participants, messages displayed correctly, database updated, chat room displayed on the top of user’s chat rooms list        | pass               |
+| create a group chat with users friends | To see whether group chat could be created                                | enter group name and choose participants from friends list                       | chat room created successfully, able to add more participants and view participants, messages sent and received correctly, database updated, chat room displayed on the top of user’s chat rooms list | pass               |
 
 #### 5.6.3 private chat with friends
 
-| Case Description | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ---------------- | ------- | ----- | --------------- | ------------------ |
-
-
-send a text string to a friendto chat with other users in a one-to-one private chat roomtype in the message boxmessage displayed in correct chat bubble style for both users, database updated, chat room displayed on the top of user’s chat rooms listpass
+| Case Description               | Purpose                                                    | Input                   | Expected Output                                                                                                                           | Pass/Fail Criteria |
+| ------------------------------ | ---------------------------------------------------------- | ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------ |
+| send a text string to a friend | to chat with other users in a one-to-one private chat room | type in the message box | message displayed in correct chat bubble style for both users, database updated, chat room displayed on the top of user’s chat rooms list | pass               |
 
 ### 5.7 gym:
 
 #### 5.7.1 check the photo of gym/ schedule
 
-| Case Description                                                                                                                | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ------------------------------------------------------------------------------------------------------------------------------- | ------- | ----- | --------------- | ------------------ |
-| check the photos and click left and right arrows                                                                                | To      |
-| see whether the photo function work properlyclick the left and right arrow of picturesthe right or left pictures would be shown | Pass    |
-| leave the page still and see if the photo change automatically                                                                  | To      |
-| see whether the photos would show like slidesclick the gym page and waitthe pictures would show as slides automatically         | Pass    |
+| Case Description                                               | Purpose                                          | Input                                      | Expected Output                                 | Pass/Fail Criteria |
+| -------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------ | ----------------------------------------------- | ------------------ |
+| check the photos and click left and right arrows               | To see whether the photo function work properly  | click the left and right arrow of pictures | the right or left pictures would be shown       | Pass               |
+| leave the page still and see if the photo change automatically | To see whether the photos would show like slides | click the gym page and wait                | the pictures would show as slides automatically | Pass               |
 
 #### 5.7.2 upload gym photo
 
-| Case Description                                                                                 | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ------------------------------------------------------------------------------------------------ | ------- | ----- | --------------- | ------------------ |
-| upload a gym photo                                                                               | To      |
-| check whether the upload function worksUpload a photo from update gym imagethe photo is uploaded | Pass    |
+| Case Description   | Purpose                                    | Input                                | Expected Output       | Pass/Fail Criteria |
+| ------------------ | ------------------------------------------ | ------------------------------------ | --------------------- | ------------------ |
+| upload a gym photo | To check whether the upload function works | Upload a photo from update gym image | the photo is uploaded | Pass               |
 
 #### 5.7.3 upload schedule photo
 
-| Case Description                                                                                      | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ----------------------------------------------------------------------------------------------------- | ------- | ----- | --------------- | ------------------ |
-| upload a schedule photo                                                                               | To      |
-| check whether the upload function worksUpload a photo from update schedule imagethe photo is uploaded | Pass    |
+| Case Description        | Purpose                                    | Input                                     | Expected Output       | Pass/Fail Criteria |
+| ----------------------- | ------------------------------------------ | ----------------------------------------- | --------------------- | ------------------ |
+| upload a schedule photo | To check whether the upload function works | Upload a photo from update schedule image | the photo is uploaded | Pass               |
 
 ### 5.8 profile:
 
-#### #### 5.8.1 edit profile
+#### 5.8.1 edit profile
 
-| Case Description                                                                                                                                            | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ----- | --------------- | ------------------ |
-| click the Edit button                                                                                                                                       | To      |
-| see whether the edit button works properlyclick the edit profile buttonThe page redirected to profile editing page                                          | Pass    |
-| change the username and save                                                                                                                                | To      |
-| see whether users could change the usernamechange the username to be “the changed name” and savethe username become “the changed name”                      | Pass    |
-| change the description and save                                                                                                                             | To      |
-| see whether the user can change the descriptionchange the description to be “say sth” and savethe description is changed                                    | Pass    |
-| change the university and save                                                                                                                              | To      |
-| see whether the user can change the university namechange the university to be “CU”the university is changed                                                | Pass    |
-| select interested sports and save                                                                                                                           | To      |
-| see whether the user can edit the interested sportsselect Badminton, Basketball, and Runningthe interested sports shows: Badminton, Basketball, and Running | Pass    |
-| select nothing (no interested sports) and save                                                                                                              | To      |
-| see whether the user can select no interested sportsselect nothingshow no interested sports                                                                 | Pass    |
+| Case Description                               | Purpose                                                 | Input                                                 | Expected Output                                                 | Pass/Fail Criteria |
+| ---------------------------------------------- | ------------------------------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------- | ------------------ |
+| click the Edit button                          | To see whether the edit button works properly           | click the edit profile button                         | The page redirected to profile editing page                     | Pass               |
+| change the username and save                   | To see whether users could change the username          | change the username to be “the changed name” and save | the username become “the changed name”                          | Pass               |
+| change the description and save                | To see whether the user can change the description      | change the description to be “say sth” and save       | the description is changed                                      | Pass               |
+| change the university and save                 | To see whether the user can change the university name  | change the university to be “CU”                      | the university is changed                                       | Pass               |
+| select interested sports and save              | To see whether the user can edit the interested sports  | select Badminton, Basketball, and Running             | the interested sports shows: Badminton, Basketball, and Running | Pass               |
+| select nothing (no interested sports) and save | To see whether the user can select no interested sports | select nothing                                        | show no interested sports                                       | Pass               |
 
-5.8.2 upload image
+#### 5.8.2 upload image
+
 | Case Description | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| --------------------------------------------------------- | ------------------------------------------------------------ | --------------------------------------------- | ------------------- | ------------------ |
-upload a photo
+| ---------------- | ------- | ----- | --------------- | ------------------ |
+| upload a photo   |
 
-#### #### 5.8.3 Corresponding username changed
+#### 5.8.3 Corresponding username changed
 
-| Case Description                                                                                                           | Purpose | Input | Expected Output | Pass/Fail Criteria |
-| -------------------------------------------------------------------------------------------------------------------------- | ------- | ----- | --------------- | ------------------ |
-| Change username and see if the username of My event has changed as well                                                    | To      |
-| check whether the username changed globallychange the user name and check other page the username has been changed as well | Pass    |
+| Case Description                                                        | Purpose                                        | Input                                     | Expected Output                       | Pass/Fail Criteria |
+| ----------------------------------------------------------------------- | ---------------------------------------------- | ----------------------------------------- | ------------------------------------- | ------------------ |
+| Change username and see if the username of My event has changed as well | To check whether the username changed globally | change the user name and check other page | the username has been changed as well | Pass               |
 
 ### 5.9 friend:
 
@@ -640,4 +606,5 @@ Some parts we would do differently if we can re-do the project:
 ## 7 CONCLUSION
 
 For the project, we have developed an event-based socializing app Dubby where university students can easily find their sports buddies. We analyzed students’ needs and implemented several functions into our system, including hosting & joining sport events, viewing & uploading gym schedules, a chat function, a profile function and a friend system. We drafted diagrams such as Data Flow Diagram and UML sequence diagram to help us with the design and implementation of the system, and perform module and integration testing to ensure the system has met our requirements. Although there are still flaws inside the program and we did wish to redo modules to perfect the system, we are generally satisfied with the program we have created. We tried to practice the software engineering principles and knowledge learned in class throughout our system and it did help us a lot in different stages of the engineering process.
+
 At last, once again thanks to Professor Lyu and all the teaching assistants in the class that provide us important experience on software engineering, thank you.
