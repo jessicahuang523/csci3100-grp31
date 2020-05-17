@@ -35,6 +35,7 @@ Our target users are students in universities in Hong Kong who would like to fin
 1. Events
 
    1. Hold/edit events
+
       - Dubby allows users to hold a particular sports game initiative. The creators can add descriptions such as the location, expected participants, date, and time of the game. The user can also set whether the event is open to everyone or is it private.
 
    2. Join/interested in events
@@ -118,6 +119,7 @@ https://drive.google.com/file/d/1zKsO5qReWf2nBPrCzPecadcHxMxy5jjl/view?usp=shari
 - Sequence Diagram (Appendix 4.4, 4.5) https://drive.google.com/file/d/1ex7DJqTXlXFkHm52WnGAVPxuhH6g3w0o/view?usp=sharing
 
 ## Appendix
+
 ![img](https://lh4.googleusercontent.com/ZmQPQ1x2-jt5cqFmdWfYgiSpiwHmqbY7Rew1tLD7v0PV-klxxsK0d7zRqDmONNrXflf4bkewfuMgnmQylvsOXi2lWvWdV3-NhPHnWSKUupFa6E6k3P-TSGz_4vQ8rmH4S9OclNFO)
 (Appendix 3.1 DFD Level 0)
 ![img](https://lh4.googleusercontent.com/p9PVoH25IMX0o0lzeCVtrCCy18I_4WG_rgg0OaNMRwrjIr52325t9QTciQl0WUlQvt0rzGFpZZMQdN_Ha913QWvqgHMyA_m6az2ZXW4M-luJzlAA6IXVzN45KBfD9l5_WzRpekrX)
