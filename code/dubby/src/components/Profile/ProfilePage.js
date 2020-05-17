@@ -169,9 +169,9 @@ const ProfilePage = () => {
                 <hr />
                 <EditProfileImage />
                 <hr />
-                <Button block type="reset">
+                {/* <Button block type="reset">
                   <i className="fas fa-times"></i> Cancel
-                </Button>
+                </Button> */}
                 <Button block type="submit">
                   <i className="fas fa-save"></i> Save
                 </Button>
