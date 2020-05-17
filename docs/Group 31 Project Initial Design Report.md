@@ -143,5 +143,4 @@ https://drive.google.com/file/d/1zKsO5qReWf2nBPrCzPecadcHxMxy5jjl/view?usp=shari
 ![img](https://lh4.googleusercontent.com/LImEI3LCot5g78TK0CR4Hl03yNtJchWjAMzWMWzxn51DaQn4Qoq2hADX-GPomYANPjxTKdlu6KL3X-O7c5-5fPENDl4-3nreGJlSxPI7zqd9xPkRDGiC19aqVpX8OHupwOiIW0j2)
 (Appendix 4.4 Host Event Sequence Diagram)
 ![img](https://lh6.googleusercontent.com/VAV9z9GjlPyoAvm2V7nQHvPtSK-13jJYseNNona5XYxAoRHWPNP2ce9aS-hJ_ABACiBhi-yb8hIPwdongppOTWyaE7XMHENPayEx9L1e1YZkFo17pBCPvoJ-nva8ffR9EUstUZp7)
-
 (Appendix 4.5 Join Event Sequence Diagram)
