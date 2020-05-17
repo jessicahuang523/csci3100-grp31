@@ -280,6 +280,8 @@ Figure 4.2.4.7
 
 ![figure 4.2.4.8](https://lh6.googleusercontent.com/YO4kTWpS696_4epVL5ycQ45rsowkDv-Z0n4U80jxqGCsOMah1HIAywr_LDZMmwUwvKpl8rShHJucHFUU_t77hT1wOhByXi6lbHuRkiZmXs0KsxHixmiQNvsb7ewUxUJWbgduR8Ey)
 
+Figure 4.2.4.8
+
 ![figure 4.2.4.9](https://lh3.googleusercontent.com/dszBz0cubK8AzEakFLv8ZZzcwyHrBkLe7PRJvXwUYD9wIXW0YPyRScL-oAr1Fsqzfl0BQTRSJxoRPnmj0epdR4lCeTiT4w3dTjMeDFsxnNZR3e3rM2dmWFsKJf6ZmjqSYp2Njkg3)
 
 Figure 4.2.4.9
@@ -336,9 +338,9 @@ The profile page displays the personal information that users would like to show
 
 Figure 4.2.7.1
 
-Figure 4.2.7.2
-
 ![img](https://lh4.googleusercontent.com/A8wHqByi0ZUKEwgVkdLe09x6OmsZWK_LqmFuSP-6nPb69xn_yH5fkLwqvboAgOkZMN0yInqERiS4VERlakkv7G6RgJfEGZxtJxuwg0clQ8DoNX1y6BvLHl37ajvec1nNzmaJNJuU)
+
+Figure 4.2.7.2
 
 ![img](https://lh5.googleusercontent.com/ptrErn7oqRaeNnK2AzOjfwM0o1Kx6VI_4H_whQw6rpXL-kK-SQAfO7sO9O_SwRrmkM3qhS-_4laxi7_pkrPsOt8mpw48vs7fgvHGAPn_0PMGtXx3AGMOSVMMKCxdMCRVOnwZ8DCS)
 
